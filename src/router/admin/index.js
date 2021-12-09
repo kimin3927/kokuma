@@ -1,0 +1,25 @@
+import Home from '../../views/Home.vue'
+import Tester from '../../views/Tester.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../../views/About.vue')
+  },
+  {
+    path: '/tester',
+    name: 'Tester',
+    component: Tester,
+  }
+]
+
+export default routes
