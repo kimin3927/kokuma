@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import adminRouter from './admin';
 
+
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -11,7 +13,8 @@ const routes = [
 console.log(adminRouter)
 
 const router = new VueRouter({
-  routes,
+  mode: 'history',
+  routes
 })
 
 export default router
