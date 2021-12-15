@@ -2,15 +2,17 @@
   <div id="app">
     <Header />
     <router-view></router-view>
+    <Footer />
   </div>
 </template>
 <script>
 import Header from './components/layout/Header.vue'
+import Footer from './components/layout/Footer.vue'
 
 export default {
   name: "App",
   components: {
-    Header,
+    Header,Footer
   },
 };
 </script>
@@ -35,5 +37,9 @@ export default {
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+Footer{
+  position: absolute;
 }
 </style>

@@ -1,6 +1,9 @@
 import Home from '../../views/Home.vue'
 import About from '../../views/About.vue';
 import Tester from '../../views/Tester.vue'
+import Gallery from '../../views/Gallery.vue'
+import Dimension from '../../views/Dimension.vue'
+import Price from '../../views/Price.vue'
 
 const routes = [
   {
@@ -17,10 +20,25 @@ const routes = [
     component: About
   },
   {
-    path: '/tester',
+    path: '/Tester',
     name: 'Tester',
     component: Tester,
-  }
+  },
+  {
+    path: '/Gallery',
+    name: 'Gallery',
+    component: Gallery,
+  },
+  {
+    path: '/Dimension',
+    name: 'Dimension',
+    component: Dimension,
+  },
+  {
+    path: '/Price',
+    name: 'Price',
+    component: Price,
+  },
 ]
 
 export default routes
