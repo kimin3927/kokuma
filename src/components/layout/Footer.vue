@@ -29,9 +29,7 @@ export default {
 
 <style>
     #footerDiv{
-        position: absolute;
         width:100%;
-        top: 200vh;
         background-color: #1a4977;
         height: 820px;
         padding-top:4%;

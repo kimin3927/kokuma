@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_01_w.jpg" alt="">
+    <img src="https://files.porsche.com/filestore/image/multimedia/none/992-carrera-360-exterior-001/normal/f244be45-796a-11ea-80c9-005056bbdc38;sK;twebp;c1350;gc/porsche-normal.webp" alt="">
     <div id='basicInfo'>
       <div class='basicInfoItem'>
         <div class='basicInfoImgDiv'>
@@ -43,14 +43,14 @@
         <span class='basicInfoSpanThree'></span>
       </div>
     </div>
-    <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_exterior_01.jpg" alt="">
+    <img src="https://files.porsche.com/filestore/galleryimagerwd/multimedia/none/modelseries-911carrera992-outdoor-22/zoom2/637a33d7-c4a9-11e9-80c5-005056bbdc38;sI;twebp/porsche-zoom2.webp" alt="">
     <div id='outsideDetail'>
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_full_led_headlamps_w.jpg" alt="">
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_led_rear_combination-lamp_w.jpg" alt="">
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_hidden_rear_wiper_w.jpg" alt="">
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_exterior_detail_04.jpg" alt="">
     </div>
-    <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_interior_01.jpg" alt="">
+    <img src="https://files.porsche.com/filestore/galleryimagerwd/multimedia/none/modelseries-911carrera992-outdoor-07/zoom2/a3f1236f-e75d-11e8-bec8-0019999cd470;sI;twebp/porsche-zoom2.webp" alt="">
   </div>
 </template>
 
