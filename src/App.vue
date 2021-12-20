@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <button @click="this.kimin"> {{this.kkkk.message}}</button>
+    <!-- <button @click="kimin"> {{ kkkk.message }}</button> -->
     <Header :message="this.kkkk"/>
     <div>
       <router-view></router-view>
@@ -25,7 +25,7 @@ export default {
           koko: 'kimin'
         },
         kkkk: {
-          message: "object message",
+          message: "최초의",
         }
       }
     },
@@ -33,9 +33,10 @@ export default {
 
     methods:{
       kimin(){
-        this.kkkk.message = "1"
+        if(this.kkkk.message === "1"){
+          this.kkkk.message = "학교"  
+        } else this.kkkk.message = "1";
         console.log(this.$el)
-        // console.log(this.person.koko)
       }
     }
 };
