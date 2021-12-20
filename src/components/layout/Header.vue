@@ -1,18 +1,36 @@
 <template>
   <div id='header'>
     <div id='topHeader'>
-      <div class='topHeaderItemDiv'><a href="https://www.kia.com/kr/about-kia/prcenter/news-list.html" class='topHeaderItem'>기아소식</a>  | <a href="http://career.kia.com/kfront/main.do?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_recruit" class='topHeaderItem'>인재채용</a> | <a href="" class='topHeaderItem'>EN Brochure</a></div>
-      <div class='topHeaderItemDiv'><a href="" class='topHeaderItem'>로그인</a>  | <a href="" class='topHeaderItem'>회원가입</a> | <a href="" class='topHeaderItem'>마이기아</a> | <a href="" class='topHeaderItem'>SEARCH</a></div>
+      <div v-for="i in 2" :key="i" class='topHeaderItemDiv'>
+        <a v-for="item in element.topHeader.title[i]" :key="item" :href="element.topHeader.links[0]" class='topHeaderItem'>{{item}}</a>|
+      </div>
     </div>
     <div id='middleHeader'>
-      <div class='middleHeaderItemDiv'><a href="" class='middleHeaderItem'>차량</a><a href="" class='middleHeaderItem'>구매정보</a><a href="" class='middleHeaderItem'>체험센터</a><a href="" class='middleHeaderItem'>이벤트</a><a href="" class='middleHeaderItem'>고객센터</a></div>
-      <div class='middleHeaderItemDiv logoDiv'><a href='/'><img src="https://d3jn14jkdoqvmm.cloudfront.net/wp/wp-content/uploads/2021/09/13140152/%E1%84%80%E1%85%B5%E1%84%8B%E1%85%A1-KIA-%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-%E1%84%90%E1%85%AE%E1%84%86%E1%85%A7%E1%86%BC.png"></a></div>
-      <div class='middleHeaderItemDiv'><a href="" class='middleHeaderItem'>브랜드</a><a href="" class='middleHeaderItem'>Kia EV</a><a href="" class='middleHeaderItem'>기아멤버스</a></div>
+      <div class='middleHeaderItemDiv'>
+        <router-link v-for="title in element.middleHeader.title[0]" :key="title" to="/" class='middleHeaderItem'>{{title}}</router-link>
+      </div>
+      <div class='middleHeaderItemDiv logoDiv'>
+        <router-link href='/'>
+          <img src="https://d3jn14jkdoqvmm.cloudfront.net/wp/wp-content/uploads/2021/09/13140152/%E1%84%80%E1%85%B5%E1%84%8B%E1%85%A1-KIA-%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-%E1%84%90%E1%85%AE%E1%84%86%E1%85%A7%E1%86%BC.png">
+        </router-link>
+      </div>
+      <div class='middleHeaderItemDiv'>
+        <router-link v-for="title in element.middleHeader.title[1]" :key="title" to="/" class='middleHeaderItem'>{{title}}</router-link>
+      </div>
     </div>
     <div id='bottomHeader'>
-      <div id='bottomFirstDiv'><a id='productName' href='/'>쏘렌토 하이브리드</a></div>
-      <div id='bottomSecondDiv'><a href="/" class='bottomSecondDivItem'>특징</a><a href='/Gallery' class='bottomSecondDivItem'>갤러리</a><a href="/Dimension" class='bottomSecondDivItem'>제원</a><a href="/Price" class='bottomSecondDivItem'>가격</a></div>
-      <div id='bottomLastDiv'><a id='productCategory' href="">쏘렌토</a></div>
+      <div id='bottomFirstDiv'>
+        <router-link id='productName' to="/">{{ this.testComputed }}</router-link>
+      </div>
+      <div id='bottomSecondDiv'>
+        <router-link to="/" class='bottomSecondDivItem'>특징</router-link>
+        <router-link to="/Gallery" class='bottomSecondDivItem'>갤러리</router-link>
+        <router-link to="/Dimension" class='bottomSecondDivItem'>제원</router-link>
+        <router-link to="/Price" class='bottomSecondDivItem'>가격</router-link>
+      </div>
+      <div id='bottomLastDiv'>
+        <router-link id='productCategory' href="">쏘렌토</router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -21,6 +39,36 @@
 
 export default { 
     name: "Header",
+    props: [
+      'message',
+    ],
+    data: function () {
+      return {
+        Header: document.querySelector("#header"),
+        element: {
+          topHeader: {
+            title: [[],["기아소식", "인재채용", "EN Brochure"], ["로그인", "회원가입", "마이기아", "SEARCH"]],
+            links: ["https://www.naver.com/", "https://www.daum.net", "wwww.youtube.com"]
+          },
+          middleHeader: {
+            title: [["차량", "구매정보", "체험센터", "이벤트","고객센터"], ["브랜드" , "Kia EV", "기아멤버스"]]
+          }
+        }
+      }
+    },
+    computed: {
+      // 계산된 getter
+      testComputed: function () {
+        let result;
+        console.log(this.message.message);
+        if(this.message.message === "1") { result = "숫자로들어왔네"}
+        else {result=  "문자네" ;}
+        return result;
+      }
+    },
+    methods:{
+      
+    }
 }
 
 </script>

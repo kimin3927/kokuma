@@ -1,56 +1,22 @@
 <template>
   <div class="home">
-    <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_01_w.jpg" alt="">
+    <img src="https://files.porsche.com/filestore/image/multimedia/none/992-carrera-360-exterior-001/normal/f244be45-796a-11ea-80c9-005056bbdc38;sK;twebp;c1350;gc/porsche-normal.webp" alt="">
     <div id='basicInfo'>
-      <div class='basicInfoItem'>
+      <div v-for="(text, i) in element.basicInfo.text" :key="text" class='basicInfoItem'>
         <div class='basicInfoImgDiv'>
           <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_1.png">
         </div>
-        <span class='basicInfoSpanOne'>FROM 차량기본가격</span>
-        <span class='basicInfoSpanTwo'>&#8361;37,260,000</span>
-        <span class='basicInfoSpanThree'>(개별소비세 5%기준)</span>
-      </div>
-      <div class='basicInfoItem'>
-        <div class='basicInfoImgDiv'>
-          <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_2.png">
-        </div>
-        <span class='basicInfoSpanOne'>UP TO 복합연비</span>
-        <span class='basicInfoSpanTwo'>15.3km/ℓ</span>
-        <span class='basicInfoSpanThree'></span>
-      </div>
-      <div class='basicInfoItem'>
-        <div class='basicInfoImgDiv'>
-          <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_3.png">
-        </div>
-        <span class='basicInfoSpanOne'>UP TO 배기량</span>
-        <span class='basicInfoSpanTwo'>1,598cc</span>
-        <span class='basicInfoSpanThree'></span>
-      </div>
-      <div class='basicInfoItem'>
-        <div class='basicInfoImgDiv'>
-          <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_4.png">
-        </div>
-        <span class='basicInfoSpanOne'>UP TO 최고출력(ps/rpm)</span>
-        <span class='basicInfoSpanTwo'>180/5,500</span>
-        <span class='basicInfoSpanThree'></span>
-      </div>
-      <div class='basicInfoItem' style="borderRight: 1px solid grey;">
-        <div class='basicInfoImgDiv'>
-          <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_5.png">
-        </div>
-        <span class='basicInfoSpanOne'>HEV 전용 부품</span>
-        <span class='basicInfoSpanTwo'>10년/20만km</span>
-        <span class='basicInfoSpanThree'></span>
+        <span v-for="number in numbers" :key="number" :class='element.basicInfo.classForSpan[number]'>{{element.basicInfo.text[i][number]}}</span>
       </div>
     </div>
-    <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_exterior_01.jpg" alt="">
+    <img src="https://files.porsche.com/filestore/galleryimagerwd/multimedia/none/modelseries-911carrera992-outdoor-22/zoom2/637a33d7-c4a9-11e9-80c5-005056bbdc38;sI;twebp/porsche-zoom2.webp" alt="">
     <div id='outsideDetail'>
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_full_led_headlamps_w.jpg" alt="">
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_led_rear_combination-lamp_w.jpg" alt="">
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_hidden_rear_wiper_w.jpg" alt="">
       <img class='outsideDetailImg' src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_exterior_detail_04.jpg" alt="">
     </div>
-    <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_interior_01.jpg" alt="">
+    <img src="https://files.porsche.com/filestore/galleryimagerwd/multimedia/none/modelseries-911carrera992-outdoor-07/zoom2/a3f1236f-e75d-11e8-bec8-0019999cd470;sI;twebp/porsche-zoom2.webp" alt="">
   </div>
 </template>
 
@@ -62,7 +28,18 @@ export default {
   name: 'home',
   components: {
     HelloWorld
-  }
+  },
+  data: function () {
+    return {
+      element: {
+        basicInfo: {
+          text: [["FROM 차량기본가격", "₩37,260,000", "(개별소비세 5%기준)"], ["UP TO 복합연비", "15.3km/ℓ"], ["UP TO 배기량", "1,598cc"], ["UP TO 최고출력(ps/rpm)", "180/5,500"], ["HEV 전용 부품", "10년/20만km"]],
+          classForSpan: ["basicInfoSpanOne", "basicInfoSpanTwo", "basicInfoSpanThree"],
+        },
+      },
+      numbers: [0,1,2]
+    }
+  },
 }
 </script>
 <style>
