@@ -45,6 +45,7 @@ export default {
   methods:{
     increaseCount(i){
       this.count[i]++;
+      this.count = [...this.count];
       console.log(this.count)
       console.log(i)
     }
