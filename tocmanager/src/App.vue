@@ -1,9 +1,8 @@
 <template>
   <div id="app">
     <Header></Header>
-    <Main @connect="kim"></Main>
+    <Main @connect="connectTable2Nav"></Main>
     <Nav :tableRow="tableRow"></Nav>
-    {{ kimin2 }}
   </div>
 </template>
 
@@ -20,18 +19,13 @@ export default {
       kimin:  1 * 1,
     }
   },
-  computed: {
-    kimin2(){
-      return this.kimin * 3
-    }
-  },
   components: {
     Header,
     Nav,
     Main,
   },
   methods: {
-    kim(data){
+    connectTable2Nav(data){
       this.tableRow = [...data];
       console.log(data)
     }

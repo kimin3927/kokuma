@@ -12,10 +12,10 @@
           </tr>
         </thead>
         <button id='tableRowAddBtn' @click="addNewRow">+</button>
-        <tbody @keyup="saveItem">
+        <tbody>
           <tr v-for="row in tableRow" :key="row.id">
-            <td class="level"></td>
-            <td class="motherNumber"></td>
+            <td class="level">{{row.level}}</td>
+            <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD"><div class="number">{{row.no}}</div></td>
             <td class="resgistDate">{{row.registDate}}</td>
             <td class='content'>
@@ -23,7 +23,7 @@
                   <div class='title'>
                       <input v-model="row.title">
                   </div>
-                  <div v- class='contents'>
+                  <div class='contents'>
                       <input v-model="row.contents">
                   </div>
               </div>
@@ -37,8 +37,9 @@
             <td  class="manage">
               <div class='hoverHidden'>
                 <button class='saveBtn'>완료</button>
-                <button class='remove' style=color:red @click="removeRow"> 삭제</button>
-                <button class='makeSub'>추가</button></div>
+                <button class='remove' style=color:red @click="removeRow">삭제</button>
+                <button class='makeSub' @click="makeSub">추가</button>
+              </div>
             </td>
           </tr>
         </tbody>
@@ -60,6 +61,10 @@ export default {
   mounted(){
     this.reCallData()
   },
+  updated() {
+    localStorage.setItem("toc", JSON.stringify(this.tableRow))
+    this.$emit("connect", this.tableRow)
+  },
   methods: {
     itemClass(level,motherNumber,no,registDate,finDate,title,contents){
       const itemObj = {
@@ -73,9 +78,12 @@ export default {
       }
       return itemObj;
     },
-    saveItem(){
-      // localStorage.setItem("toc", JSON.stringify(this.tableRow));
-      this.$emit("connect", this.tableRow)
+    makeSub(e){
+      console.log(e)
+      const motherRow = e.currentTarget;
+      console.log(motherRow)
+      const newSubRow = new this.itemClass(1,1,1,1,1,1,1)
+      console.log(newSubRow)
     },
     addNewRow(){
       const nextNumber = this.tableRow.length + 1;

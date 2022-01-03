@@ -20,10 +20,13 @@ export default {
   computed: {
     // 계산된 getter
     convertedRow: function () {
-      // `this` 는 vm 인스턴스를 가리킵니다.
-
       const newData = this.tableRow.map((item) => {
-        return item.no +"."+ /..../.exec(item.title) + "...";
+        let title = item.title
+        if(title.length > 10){
+          title = /.{10}/.exec(title) + "..."
+        }
+        const no = item.no
+        return no +". "+ title;
       })
       return newData;
     }
