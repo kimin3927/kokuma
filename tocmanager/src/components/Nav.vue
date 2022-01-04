@@ -1,7 +1,7 @@
 <template>
     <nav>
       <ul @click="change11">
-        <li v-for="item of convertedRow" :key="item">{{item}}</li>
+        <li v-for="item of convertedRow" :key="item"> {{item}}</li>
       </ul>
       <!-- <span v-for="item of kimin" :key=item>{{item}}</span> -->
     </nav>
@@ -12,21 +12,22 @@ export default {
   name: 'Nav',
   data(){
     return{
-      // kimin: this.findTitle(),
       tableItems : [],
     }
   },
   props: ['tableRow'],
   computed: {
-    // 계산된 getter
     convertedRow: function () {
       const newData = this.tableRow.map((item) => {
-        let title = item.title
+        const no = String(item.no)
+        const countDot = no.match(/./g).length - 1;
+        let blank = ' '
+        blank = blank.repeat(countDot)
+        let title = item.title ?? "";
         if(title.length > 10){
           title = /.{10}/.exec(title) + "..."
         }
-        const no = item.no
-        return no +". "+ title;
+        return `${blank}${no}.${title}`;
       })
       return newData;
     }

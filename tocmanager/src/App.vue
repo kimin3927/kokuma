@@ -43,7 +43,7 @@ export default {
   width: 99vw;
   height: 98vh;
   display: grid;
-  grid-template-columns: 1% 10% 88% 1%;
+  grid-template-columns: 1% 13% 85% 1%;
   grid-template-rows: 0% 15% 85% 0%;
   grid-template-areas: 
   ". . . ."

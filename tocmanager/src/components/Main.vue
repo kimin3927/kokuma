@@ -13,7 +13,7 @@
         </thead>
         <button id='tableRowAddBtn' @click="addNewRow">+</button>
         <tbody>
-          <tr v-for="row in tableRow" :key="row.id">
+          <tr v-for="(row,i) in tableRow" :key="row.id" :id="row.id" :class="classComputed[i]">
             <td class="level">{{row.level}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD"><div class="number">{{row.no}}</div></td>
@@ -58,6 +58,21 @@ export default {
       tableRow: []
     }
   },
+  computed : {
+    classComputed: function () {
+      const classMatch = {
+        1 : "firstLevel",
+        2 : "secondLevel",
+        3 : "thirdLevel",
+        4 : "fourthLevel"
+      }
+      const result = this.tableRow.map((item) => {
+        const level = String(item.level)
+        return classMatch[level]
+      })
+      return result
+    }
+  },
   mounted(){
     this.reCallData()
   },
@@ -66,28 +81,70 @@ export default {
     this.$emit("connect", this.tableRow)
   },
   methods: {
-    itemClass(level,motherNumber,no,registDate,finDate,title,contents){
+    issueID(){
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
+      return v.toString(16);
+      });
+    },
+    itemClass(level, motherNumber, no, order, finDate,title,contents){
       const itemObj = {
         level : level,
         motherNumber : motherNumber,
         no :  no,
-        registDate :  registDate,
+        order : order,
         finDate :  finDate,
         title :  title,
-        contents :  contents
+        contents :  contents,
+        registDate :  this.clockSet(),
+        id: this.issueID() //this가 가르키는 것은??
       }
       return itemObj;
     },
+    findItsObjIndex(row){
+      for(let i = 0; i<this.tableRow.length; i++){
+        if(this.tableRow[i].id == row.id){
+          return i;
+        }
+      }
+    },
+    sortItemGroups(){
+      this.tableRow.sort((a,b) => {
+        return a["order"] - b["order"];
+      })
+      for(let i = 0; i < this.tableRow.length; i++){
+        this.tableRow[i].order = i + 1;
+      }
+    },
     makeSub(e){
-      console.log(e)
-      const motherRow = e.currentTarget;
-      console.log(motherRow)
-      const newSubRow = new this.itemClass(1,1,1,1,1,1,1)
-      console.log(newSubRow)
+      const motherRow = e.currentTarget.closest("tr");
+      const motherIndex = this.findItsObjIndex(motherRow)
+      const motherObj = this.tableRow[motherIndex]
+      const motherOrder = motherObj.order ;
+      let myOrder = motherOrder + 0.1;
+      let sibling = 1;
+      let siblingOrder;
+      for(let i = 0; i < this.tableRow.length; i++){
+        if(this.tableRow[i].motherNumber == motherObj.no){
+        sibling++
+        siblingOrder = this.tableRow[i].order;
+        myOrder = siblingOrder + 0.1;
+        }
+      }
+      const myNumber = motherObj.no + "." + sibling;
+      const newSubItem = this.itemClass(motherObj.level + 1, motherObj.no, myNumber, myOrder,"","") // new가 왜 불필요한지 
+      this.tableRow.splice(motherOrder + 1, 0, newSubItem)
+      this.sortItemGroups()
     },
     addNewRow(){
+      let nextOrder;
+      if(!this.tableRow[0]){
+        nextOrder = 0
+      } else{
+        nextOrder = this.tableRow.length;
+      }
       const nextNumber = this.tableRow.length + 1;
-      const newRow = this.itemClass("", "", nextNumber, this.clockSet(), "", "", "")
+      const newRow = this.itemClass(1, "", nextNumber, nextOrder)
       this.tableRow.push(newRow)
     },
     reCallData(){
@@ -123,12 +180,12 @@ export default {
       }
     },
     clockSet(){
-    const date = new Date();
-    const Month = date.getMonth();
-    const date2 = date.getDate();
-    const hours = String(date.getHours()).padStart(2,"0");
-    const minuetes = String(date.getMinutes()).padStart(2,"0");
-    return `${Month}/${date2} ${hours}:${minuetes}`;
+      const date = new Date();
+      const Month = date.getMonth();
+      const date2 = date.getDate();
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minuetes = String(date.getMinutes()).padStart(2, "0");
+      return `${Month}/${date2} ${hours}:${minuetes}`;
     }
   },
 }
@@ -138,7 +195,6 @@ export default {
 <style>
 
 main{
-  grid-area: m;
   margin: 0.5vw;
   padding: 1vw;
   padding-top: 0;
@@ -160,32 +216,31 @@ th{
   background-color: rgb(131, 221, 243);
 }
 
-
 th:nth-child(1){
-    width: 7%;
-    border-radius: 10px 0 0 10px;
+  width: 7%;
+  border-radius: 10px 0 0 10px;
 }
 
 th:nth-child(2){
-    width: 10%;
+  width: 7%;
 }
 
 th:nth-child(4){
-    width: 10%;
+  width: 7%;
 }
 
 th:nth-child(5){
-    width: 10%;
-    border-radius: 0 10px 10px 0;
+  width: 10%;
+  border-radius: 0 10px 10px 0;
 }
 
 #tableRowAddBtn{
-    width: 1425%;
-    height: 1.5vw;
-    border-radius: 10px;
-    font-size: 1vw;
-    background-color: transparent;
-    border: 0.1px dashed rgba(128, 128, 128, 0.527);
+  width: 1425%;
+  height: 1.5vw;
+  border-radius: 10px;
+  font-size: 1vw;
+  background-color: transparent;
+  border: 0.1px dashed rgba(128, 128, 128, 0.527);
 }
 
 #tableRowAddBtn:active{
@@ -226,7 +281,9 @@ td{
 .number{
   display: inline-block;
   width: 100%;
-  height: 101%;
+  height: 100%;
+  padding-top: 5%;
+  padding-bottom: 5%;
   text-align: left;
   text-indent: 15%;
   border-radius: 10px 0 0 10px;
@@ -285,19 +342,52 @@ td{
 
 tr {
   height: 20px;
-  background-color: rgb(136, 218, 82);
   border-top: white 2px solid;
 }
 
+.firstLevel > td {
+  background-color: rgb(136, 218, 82);
+}
+
+.firstLevel > .numberTD > .number {
+  background-color: rgb(136, 218, 82);
+}
+
+.secondLevel > td{
+  background-color: rgba(136, 218, 82, 0.6);
+}
+
+.secondLevel > .numberTD > .number {
+  background-color: rgba(136, 218, 82, 0.6);
+  width: 83%;
+}
+
+.thirdLevel > td{
+  background-color: rgba(211, 240, 51, 0.4);
+}
+
+.thirdLevel > .numberTD > .number {
+  background-color: rgba(211, 240, 51, 0.4);
+  width: 76%;
+}
+
+.fourthLevel > td{
+  background-color: rgba(236, 234, 132, 0.4);;
+}
+
+.fourthLevel > .numberTD > .number {
+  background-color: rgba(236, 234, 132, 0.4);;
+  width: 58%;
+}
+
 .hoverHidden > button{
-    background-color: transparent;
-    border: none;
+  background-color: transparent;
+  border: none;
 }
 
 .hoverHidden > button:active{
-    background-color: rgba(207, 204, 204, 0.603);
-    border: 1px solid rgb(85, 84, 84);
-    border-radius: 5px;
+  background-color: rgba(207, 204, 204, 0.603);
+  border-radius: 5px;
 }
 
 </style>
