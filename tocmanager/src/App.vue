@@ -1,8 +1,13 @@
 <template>
   <div id="app">
-    <Header></Header>
-    <Main @connect="connectTable2Nav"></Main>
-    <Nav :tableRow="tableRow"></Nav>
+    <div id="left">
+      <div id="navShowBtnDiv" v-if=navBtn><button id="navShowBtn" @click="toggleNav">&gt;&gt;</button></div>
+      <Nav @hide="toggleNav" :tableRow="tableItems" :navRow="finTableItems"></Nav>
+    </div>
+    <div id="right">
+      <Header></Header>
+      <Main @connect="connectTable2Nav" @finish="connectFinishedItem"></Main>
+    </div>
   </div>
 </template>
 
@@ -15,8 +20,9 @@ export default {
   name: 'App',
   data(){
     return{
-      tableRow:[],
-      kimin:  1 * 1,
+      tableItems:[],
+      finTableItems:[],
+      navBtn: false
     }
   },
   components: {
@@ -26,8 +32,32 @@ export default {
   },
   methods: {
     connectTable2Nav(data){
-      this.tableRow = [...data];
-      console.log(data)
+      this.tableItems = [...data];
+    },
+    connectFinishedItem(item){
+      this.finTableItems = [...item]
+    },
+    toggleNav(){
+      const nav = document.querySelector("Nav")
+      const left = document.querySelector("#left")
+      const right = document.querySelector("#right")
+      if(this.navBtn == false){
+        nav.style.width = 0;
+        nav.style.margin = 0;
+        nav.style.padding = 0;
+        left.style.width = '3vw';
+        right.style.width = '95vw'
+        setTimeout(() => {
+          this.navBtn = true;
+        }, 400)
+      } else {
+        nav.style.width = '12vw';
+        nav.style.margin = '0.5vw';
+        nav.style.padding = '0 0 0 0.5vw';
+        left.style.width = '13vw';
+        right.style.width = '86vw'
+        this.navBtn = false;
+      }
     }
   }
 }
@@ -41,30 +71,68 @@ export default {
   text-align: center;
   color: #2c3e50;
   width: 99vw;
-  height: 98vh;
-  display: grid;
-  grid-template-columns: 1% 13% 85% 1%;
-  grid-template-rows: 0% 15% 85% 0%;
-  grid-template-areas: 
-  ". . . ."
-  ". h h ."
-  ". n m ."
-  ". . . ."
-  ;
+  height: 97vh;
+  display: flex;
+}
+#left{
+  width: 13vw;
+  transition: 300ms;
+}
+#right{
+  width: 86vw;
+  transition: 300ms;
 }
 
 Header{
-  grid-area: h;
 }
 
 Main{
-  grid-area: m;
 }
 
 Nav {
-  grid-area: n;
-  border: 1px solid red;
+  height: 100%;
+  transition: 200ms;
 }
+
+#navShowBtnDiv{
+  margin-top: 0.5vw;
+  width: 3vw;
+  height: 3vw;
+  border: 0;
+  opacity: 1;
+  transition: 300ms;
+}
+
+#navShowBtn{
+  width: 3vw;
+  height: 3vw;
+  background-color:transparent;
+  border: 0;
+  font-size: 110%;
+  color: rgba(128, 128, 128, 0.212);
+  transition: 300ms;
+}
+
+#navShowBtn:hover{
+  width: 3vw;
+  height: 3vw;
+  border: 0;
+  background-color: rgba(255, 136, 0, 0.753);
+  color: grey;
+  opacity: 1;
+  z-index: 1;
+}
+
+@media screen and (max-width: 768px) { 
+  #left{
+    display: none;
+  }
+  #right{
+    width: 98%;
+  }
+}
+
+
 
 </style>
 

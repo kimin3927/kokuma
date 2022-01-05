@@ -1,8 +1,16 @@
 <template>
     <nav>
-      <ul @click="change11">
-        <li v-for="item of convertedRow" :key="item"> {{item}}</li>
-      </ul>
+      <div id="hideButtonDiv"><button id="hideButton" @click="hideBtnHandler"> &lt;&lt; </button></div>
+      <div id="tableNav">
+        <ul>
+          <li v-for="item of convertedRow" :key="item"> {{item}}</li>
+        </ul>
+      </div>
+      <div id="finTableNav">
+        <ul>
+          <li v-for="item of convertedFinishedRow" :key="item"> {{item}}</li>
+        </ul>
+      </div>
       <!-- <span v-for="item of kimin" :key=item>{{item}}</span> -->
     </nav>
 </template>
@@ -12,10 +20,9 @@ export default {
   name: 'Nav',
   data(){
     return{
-      tableItems : [],
     }
   },
-  props: ['tableRow'],
+  props: ['tableRow', 'navRow'],
   computed: {
     convertedRow: function () {
       const newData = this.tableRow.map((item) => {
@@ -30,21 +37,26 @@ export default {
         return `${blank}${no}.${title}`;
       })
       return newData;
+    },
+    convertedFinishedRow: function() {
+        const newData = this.navRow.map((item) => {
+        const no = String(item.no)
+        const countDot = no.match(/./g).length - 1;
+        let blank = ' '
+        blank = blank.repeat(countDot)
+        let title = item.title ?? "";
+        if(title.length > 10){
+          title = /.{10}/.exec(title) + "..."
+        }
+        return `${blank}${no}.${title}`;
+      })
+      return newData;
     }
   },
   methods:{
-    change11:function () {
-      this.tableRow = [1,2,3]
+    hideBtnHandler(){
+      this.$emit("hide")
     }
-    // findTitle(){
-    //   let title = this.tableRow.title;
-    //   console.log(title)
-    //   if(title.length > 10) {
-    //     title = /........./.exec(title) + "...";
-    //   }
-    //   console.log(title)
-    //   return title;
-    // }
   }
 }
 </script>
@@ -54,9 +66,33 @@ nav{
     background-color: rgba(157, 219, 221, 0.5);
     border-radius: 10px;
     margin: 0.5vw;
-    padding-left: 0.5vw;
+    padding: 0 0 0 0.5vw;
     overflow-y: auto;
     text-align: left;
+}
+#hideButtonDiv{
+  text-align:right;
+}
+
+#hideButton{
+  width: 3vw;
+  height: 3vw;
+  border: 0;
+  transition: 200ms;
+}
+
+#hideButton:hover{
+  width: 3vw;
+  height: 3vw;
+  border: 0;
+  background-color: rgba(255, 136, 0, 0.753);
+}
+
+#tableNav{
+  min-height: 410px;
+}
+
+#finTableNav{
 }
 
 ul{
@@ -66,4 +102,6 @@ ul{
 li{
     list-style: none;
 }
+
+
 </style>
