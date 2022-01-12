@@ -3,12 +3,12 @@
       <div id="hideButtonDiv"><button id="hideButton" @click="hideBtnHandler"> &lt;&lt; </button></div>
       <div id="tableNav">
         <ul>
-          <li v-for="item of convertedRow" :key="item"> {{item}}</li>
+          <li v-for="item of convertedRow" :key="item" v-html="item"></li>
         </ul>
       </div>
       <div id="finTableNav">
         <ul>
-          <li v-for="item of convertedFinishedRow" :key="item"> {{item}}</li>
+          <li v-for="item of convertedFinishedRow" :key="item"> {{testcount}}</li>
         </ul>
       </div>
       <!-- <span v-for="item of kimin" :key=item>{{item}}</span> -->
@@ -24,11 +24,14 @@ export default {
   },
   props: ['tableRow', 'navRow'],
   computed: {
+     testcount() {
+      return this.$store.getters.getCount;
+    },
     convertedRow: function () {
       const newData = this.tableRow.map((item) => {
         const no = String(item.no)
         const countDot = no.match(/./g).length - 1;
-        let blank = ' '
+        let blank = '&nbsp;'
         blank = blank.repeat(countDot)
         let title = item.title ?? "";
         if(title.length > 10){
@@ -36,11 +39,12 @@ export default {
         }
         return `${blank}${no}.${title}`;
       })
+
       return newData;
     },
     convertedFinishedRow: function() {
         const newData = this.navRow.map((item) => {
-        const no = String(item.no)
+        const no = String(item.finNo)
         const countDot = no.match(/./g).length - 1;
         let blank = ' '
         blank = blank.repeat(countDot)
@@ -92,8 +96,6 @@ nav{
   min-height: 410px;
 }
 
-#finTableNav{
-}
 
 ul{
   padding:0;

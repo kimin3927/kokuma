@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div id="left">
-      <div id="navShowBtnDiv" v-if=navBtn><button id="navShowBtn" @click="toggleNav">&gt;&gt;</button></div>
+      <div id="navShowBtnDiv" v-if=navBtn>
+        <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
+      </div>
       <Nav @hide="toggleNav" :tableRow="tableItems" :navRow="finTableItems"></Nav>
     </div>
     <div id="right">
@@ -81,12 +83,6 @@ export default {
 #right{
   width: 86vw;
   transition: 300ms;
-}
-
-Header{
-}
-
-Main{
 }
 
 Nav {

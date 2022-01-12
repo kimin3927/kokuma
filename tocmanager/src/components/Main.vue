@@ -1,14 +1,27 @@
 
-
-
-
 <template>
+
   <main>
+    <div v-if='customOn' id='customBoard'>
+      <div class="closeBtnWrapper"><button class="closeBtn" @click="deleteBox">x</button></div>
+      <div @click="colorPicker">
+          <input type="radio" id="red" value="rgba(255,0,0,1)">
+          <label for="red" style="color:red">■</label>
+          <input type="radio" id="green" value="rgba(0,255,0,1)">
+          <label for="green" style="color:green">■</label>
+          <input type="radio" id="yellow" value="rgba(255,255,0,1)">
+          <label for="yellow" style="color:yellow">■</label>
+      </div>
+    </div>
+    <form oninput = "result.value=parseInt(a.value)">
+    <input @input="controlLevelView" type="range" id="a" name="a" min="0" max="5" step="1">
+    <output name="result" for="a"></output>
+    </form>
     <div id="tableDiv">
       <table>
         <thead>
           <tr>
-              <th>순번</th>
+              <th>{{testcount}}</th>
               <th>날짜</th>
               <th>내용</th>
               <th>완료</th>
@@ -17,30 +30,30 @@
         </thead>
         <button id='tableRowAddBtn' @click="addNewRow">+</button>
         <tbody>
-          <tr v-for="(row,i) in tableRow" :key="row.id" :id="row.id" :class="classComputed[i]">
-            <td class="level">{{row.level}}</td>
+          <tr v-for="(row) in tableRow" :key="row.id" :id="row.id" :class="row.levelClass" :style="{backgroundColor: row.color}">
+            <td class="level">{{row.targetLevel}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD">
+              <div class="number" :style="{backgroundColor: row.color}">{{row.no}}</div>
               <div class="control">
-                <svg viewBox="-2 -2 20 20" class="plus" style="width: 16px; height: 85%; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden;">
-                  <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z">
-                  </path>
-                </svg>
                 <svg @click="tableRowStyler" viewBox="-1 -2 12 12" class="dragHandle" style="width: 15px; height: 20px; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden;">
                   <path d="M3,2 C2.44771525,2 2,1.55228475 2,1 C2,0.44771525 2.44771525,0 3,0 C3.55228475,0 4,0.44771525 4,1 C4,1.55228475 3.55228475,2 3,2 Z M3,6 C2.44771525,6 2,5.55228475 2,5 C2,4.44771525 2.44771525,4 3,4 C3.55228475,4 4,4.44771525 4,5 C4,5.55228475 3.55228475,6 3,6 Z M3,10 C2.44771525,10 2,9.55228475 2,9 C2,8.44771525 2.44771525,8 3,8 C3.55228475,8 4,8.44771525 4,9 C4,9.55228475 3.55228475,10 3,10 Z M7,2 C6.44771525,2 6,1.55228475 6,1 C6,0.44771525 6.44771525,0 7,0 C7.55228475,0 8,0.44771525 8,1 C8,1.55228475 7.55228475,2 7,2 Z M7,6 C6.44771525,6 6,5.55228475 6,5 C6,4.44771525 6.44771525,4 7,4 C7.55228475,4 8,4.44771525 8,5 C8,5.55228475 7.55228475,6 7,6 Z M7,10 C6.44771525,10 6,9.55228475 6,9 C6,8.44771525 6.44771525,8 7,8 C7.55228475,8 8,8.44771525 8,9 C8,9.55228475 7.55228475,10 7,10 Z">
                   </path>
                 </svg>
+                <svg viewBox="-2 -2 20 20" class="plus" style="width: 16px; height: 85%; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden;">
+                  <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z">
+                  </path>
+                </svg>
               </div>
-              <div class="number">{{row.no}}</div>
             </td>
-            <td class="resgistDate">{{row.registDate}}</td>
+            <td class="resgistDate" >{{row.convertedRegistDate}}</td>
             <td class='content'>
               <div class='contentWrapper'>
                   <div class='title'>
                       <input v-model="row.title">
                   </div>
                   <div class='contents'>
-                      <input v-model="row.contents">
+                      <textarea v-model="row.contents"></textarea>
                   </div>
               </div>
               <div  class='extension hoverHidden'>
@@ -48,7 +61,7 @@
               </div>
             </td>
             <td class="finDate">
-              <input v-model="row.finDate">
+              <input v-model="row.convertedFinDate">
             </td>
             <td  class="manage">
               <div class='hoverHidden'>
@@ -73,25 +86,25 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="row in finTableRow" :key="row.id" :id="row.id">
+          <tr v-for="(row) in finTableRow" :key="row.id" :id="row.id">
             <td class="level">{{row.level}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
-            <td class="numberTD"><div class="number">{{row.no}}</div></td>
-            <td class="resgistDate">{{row.registDate}}</td>
+            <td class="numberTD"><div class="number">{{row.finNo}}</div></td>
+            <td class="resgistDate">{{row.convertedRegistDate}}</td>
             <td class='content'>
               <div class='contentWrapper'>
                   <div class='title'>
                       <input v-model="row.title">
                   </div>
                   <div class='contents'>
-                      <input v-model="row.contents">
+                      <input type='textarea' v-model="row.contents">
                   </div>
               </div>
               <div class='extension hoverHidden'>
                   <button class='extensionBtn' @click="controlExtensionBtn">∨</button>
               </div>
             </td>
-            <td class="finDate">{{row.finDate}}</td>
+            <td class="finDate">{{row.convertedFinDate}}</td>
             <td  class="manage">
               <div class='hoverHidden'>
                 <button class='saveBtn' @click="recoverBtnHandler">복귀</button>
@@ -111,27 +124,15 @@ export default {
   name: 'Main',
   data: function() {
     return {
-      기민: "기민",
       tableRow: [],
-      finTableRow: []
-    }
-  },
-  computed : {
-    classComputed: function () {
-      const classMatch = {
-        1 : "firstLevel",
-        2 : "secondLevel",
-        3 : "thirdLevel",
-        4 : "fourthLevel"
-      }
-      const result = this.tableRow.map((item) => {
-        const level = String(item.level)
-        return classMatch[level]
-      })
-      return result
+      finTableRow: [],
+      hideItems:[],
+      customOn: false,
+      tempData:[],
     }
   },
   mounted(){
+    console.log(this.$store);
     this.reCallData()
   },
   updated() {
@@ -140,68 +141,193 @@ export default {
     this.$emit("connect", this.tableRow)
     this.$emit("finish", this.finTableRow)
   },
+  computed : {
+    testcount() {
+      return this.$store.getters.getCount;
+    },
+    totalPeriod(){
+      const fullItems = [...this.tableRow, ...this.finTableRow]
+      let allTimeofFullItems = []
+      for(let item of fullItems) {
+        allTimeofFullItems.push(item.registDate, item.finDate);
+      }//1시간은 3,600,000ms
+      const convertedTimes = allTimeofFullItems.map(x => parseInt(x/3600000)*3600000)
+      const allTimes = convertedTimes.reduce((onlyArray, item) =>
+      onlyArray.includes(item) ? onlyArray : [...onlyArray, item], []).filter(Boolean)
+      if(!allTimes[0]){
+        allTimes.push(parseInt(Date.now(new Date())/3600000)*3600000)
+      }
+      if(allTimes.length < 10){
+        for(let i = 0; i < 10 - allTimes.length; i++){
+          allTimes.push(allTimes[i] + 3600000)
+        }
+      }
+      return allTimes;
+    }
+  },
   methods: {
     issueID(){
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
-      return v.toString(16);
+      return 'a' + v.toString(16);
       });
     },
-    tableRowStyler(e){
-      const targetRow = e.currentTarget.closest("tr");
-      //상대위치 찾고, 
-      //div 생성 미리 클래스 만들어놓고, 위치는 위에서 정의한 위치
-      // append하고
-      // 외부 클릭 및 esc는 remove시키고. 
-      const tdGroup = [...targetRow.querySelectorAll("td"), targetRow.querySelector(".number")]
-      const myColor = 'rgba(150,0,250,0.5)'
-      for(let td of tdGroup){
-        td.style.backgroundColor = myColor;
+    controlLevelView(e){
+      const inputValue = Number(e.currentTarget.value);
+      for(let i = this.tableRow.length - 1; i > -1; i--){
+        console.log(`inputValue는${inputValue}level은${this.tableRow[i].level}`)
+        console.log(`길이는${this.tableRow.length}`)
+        if(this.tableRow[i].level > inputValue){
+          this.tableRow[i].status = false;
+          console.log(`${this.tableRow[i].no}는 숨겨졌다`)
+        } else {
+          this.tableRow[i].status = true;
+          console.log(`${this.tableRow[i].no}를 다시보여주자`)
+        }
       }
     },
-    itemClass(level, motherNumber, no, order, finDate, title, contents){
+    deleteBox(){
+      this.customOn = !this.customOn;
+    },
+    findMyChildren(myRow, location){
+      const children = [];
+      const myObj = this.findItsObj(myRow, location)
+      for(let obj of location){
+        if(obj.motherNumber == myObj.no){
+          children.push(obj);
+          children.push(this.findMyChildren(obj, location))
+        }
+      }
+      function flatDeep(arr, d = 1) {
+        return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), []) : arr.slice();
+      }
+      return flatDeep(children,Infinity);
+    },
+    colorPicker(e){
+      const pickedColor = e.target.value;
+      const targetTR = document.querySelector("#" + this.tempData);
+      const targetArea = [...targetTR.querySelectorAll("td")];
+      targetArea.push(targetTR.querySelector(".number"))
+      for(let td of targetArea){
+        td.style.backgroundColor = pickedColor;
+      }
+      const targetObj = this.tableRow[this.findItsObjIndex(targetTR,this.tableRow)];
+      targetObj.color = pickedColor;
+      const children = this.findMyChildren(targetTR, this.tableRow)
+      for(let sonRow of children){
+        const sonObj = this.tableRow[this.findItsObjIndex(sonRow, this.tableRow)]
+        sonObj.color = this.findMyColor(sonRow);
+      }
+    },
+    tableRowStyler(){
+
+      this.$store.dispatch('firstAction', 10);
+      // this.customOn = !this.customOn;
+      // const targetTR = e.currentTarget.closest("tr")
+      // this.tempData = targetTR.id;
+    },
+    itemClass(level, motherNumber, no, order, finDate, title, contents, levelClass, color){
       const itemObj = {
         level : level,
         motherNumber : motherNumber,
         no :  no,
+        levelClass : levelClass,
         order : order,
         finDate :  finDate,
         title :  title,
         contents :  contents,
-        registDate :  this.clockSet(),
-        status: "",
+        color: color,
+        registDate :  this.getTime(),
+        convertedRegistDate : this.convertTime(this.getTime()),
+        status: true,
         id: this.issueID() //this가 가르키는 것은??
       }
       return itemObj;
     },
-    finishBtnHandler(e){
-      const targetRow = e.currentTarget.closest("tr");
-      const targetIndex = this.findItsObjIndex(targetRow, this.tableRow)
-      const targetObj = this.tableRow[targetIndex]
-      const idNo = this.finTableRow.length + 1;
-      const finNo = String(new Date().getFullYear()).slice(2,4) + String(new Date().getMonth() + 1).padStart(2,'0') + "-" +String(idNo).padStart(2,'0');
-      targetObj.finDate = this.clockSet();
-      targetObj.status = "finish"
-      this.$emit("finish", this.finTableRow);
-      if(targetObj.level !== 1){
-        if(!targetRow.classList.contains("finish")) {
-          targetRow.classList.add("finish")
-        } else {
-          targetRow.classList.remove("finish")
-          targetObj.finDate = ""
+    findItsObj(row, location){
+      if(Array.isArray(row)){
+        const result = [];
+        for(let item of row) {
+          const itemObj = location[this.findItsObjIndex(item, location)]
+          result.push(itemObj)
         }
-      } else if(targetObj.level == 1) {
-        console.log(finNo)
-        targetObj.no = finNo;
-        console.log(targetObj)
-        this.tableRow.splice(targetIndex, 1)
-        this.finTableRow.push(targetObj);
+        return result;
+      } else {
+        const itemObj = location[this.findItsObjIndex(row, location)];
+        return itemObj;
       }
     },
-    findItsObjIndex(row, array){
-      for(let i = 0; i< array.length; i++){
-        if(array[i].id == row.id){
-          return i;
+    findChildrenRow(row, divID){
+      const rows = [...document.querySelector(divID).querySelector("tbody").querySelectorAll("tr")];
+      const children = [];
+      const rowNo = row.querySelector(".number").textContent;
+      for(let i = 0; i < rows.length; i++){
+        if(rows[i].querySelector(".motherNumber").textContent == rowNo) {
+          children.push(rows[i])
+          children.push(this.findChildrenRow(rows[i], divID))
+        }
+      }
+      return children.flat(1);
+    },
+    finishBtnHandler(e){
+      const targetRow = e.currentTarget.closest("tr");
+      const targetObj = this.findItsObj(targetRow, this.tableRow)
+      const children = this.findChildrenRow(targetRow, '#tableDiv')
+      const familyArray = [targetRow, ...children];
+      const items = this.findItsObj(familyArray, this.tableRow);
+      if(targetObj.level !== 1){
+        if(!targetRow.classList.contains("finish")) {
+          for(let row of familyArray){
+            row.classList.add("finish")
+            row.querySelector(".number").classList.add("finish")
+          }
+          for(let item of items){
+            item.status = "finish"
+            item.finDate = this.getTime();
+            item.convertedFinDate = this.convertTime(this.getTime());
+          }
+        } else {
+          for(let row of familyArray) {
+            row.classList.remove("finish")
+            row.querySelector(".number").classList.remove("finish")
+          }
+          for(let item of items){
+            item.status = ""
+            item.finDate = "";
+            item.convertedFinDate = "";
+          }
+        }
+      } else if(targetObj.level == 1) {
+          for(let i = 0 ; i < items.length; i++) {
+            const idNo = this.finTableRow.length + 1;
+            const finNo = String(new Date().getFullYear()).slice(2,4) + String(new Date().getMonth() + 1).padStart(2,'0') + "-" +String(idNo).padStart(2,'0');
+            items[i].finNo = finNo;
+            items[i].finDate = this.getTime();
+            items[i].convertedFinDate = this.convertTime(this.getTime());
+            items[i].status = "finish";
+            this.finTableRow.push(items[i]);
+            this.tableRow.splice(this.findItsObjIndex(familyArray[i], this.tableRow), 1)
+          }
+          this.$emit("finish", this.finTableRow);
+      }
+    },
+    findItsObjIndex(row, location){
+      if(Array.isArray(row)){
+        const result = [];
+        for(let i = 0; i < row.length; i++){
+          for(let j = 0; j < location.length; i++) {
+            if(row[i].id == location[i].id) {
+              result.push(i);
+              break;
+            }
+          }
+        }
+        return result;
+      } else {
+        for(let i = 0; i< location.length; i++){
+          if(location[i].id == row.id){
+            return i;
+          }
         }
       }
     },
@@ -213,24 +339,60 @@ export default {
         this.tableRow[i].order = i + 1;
       }
     },
+    findMyOrder(motherObj){
+      let lastBrother;
+      let myOrder = Number(motherObj.order) + 0.1;
+      for(let i = 0; i < this.tableRow.length; i++){
+        if(this.tableRow[i].motherNumber == motherObj.no){
+          lastBrother = this.tableRow[i];
+          myOrder = Number(lastBrother.order) + 0.1;
+        }
+      }
+      if(lastBrother){
+        myOrder = this.findMyOrder(lastBrother)
+      }
+      return myOrder;
+    },
+    findMyColor(myObj){
+      let motherObj;
+      for(let obj of this.tableRow){
+        if(obj.no == myObj.motherNumber){
+          motherObj = obj;
+          break;
+        }
+      }
+      const motherColor = motherObj.color.replace("rgba(","").replace(")","").split(",");
+      let motherR = Number(motherColor[0])
+      let motherG = Number(motherColor[1])
+      let motherB = Number(motherColor[2])
+      let motherA = Number(motherColor[3])
+      const myColor = `rgba(${motherR + 55},${motherG + 55},${motherB + 55},${(motherA - 0.25).toFixed(1)})`
+      return myColor;
+    },
     makeSub(e){
       const motherRow = e.currentTarget.closest("tr");
       const motherIndex = this.findItsObjIndex(motherRow, this.tableRow)
       const motherObj = this.tableRow[motherIndex]
-      const motherOrder = motherObj.order ;
-      let myOrder = motherOrder + 0.1;
-      let sibling = 1;
-      let siblingOrder;
+      let siblingCount = 1;
       for(let i = 0; i < this.tableRow.length; i++){
         if(this.tableRow[i].motherNumber == motherObj.no){
-        sibling++
-        siblingOrder = this.tableRow[i].order;
-        myOrder = siblingOrder + 0.1;
+          siblingCount++
         }
       }
-      const myNumber = motherObj.no + "." + sibling;
-      const newSubItem = this.itemClass(motherObj.level + 1, motherObj.no, myNumber, myOrder,"","") // new가 왜 불필요한지 
-      this.tableRow.splice(motherOrder + 1, 0, newSubItem)
+      const myNumber = motherObj.no + "." + siblingCount;
+      const myOrder = this.findMyOrder(motherObj);
+      const classMatch = {
+        1 : "firstLevel",
+        2 : "secondLevel",
+        3 : "thirdLevel",
+        4 : "fourthLevel"
+      }
+      const myLevel = motherObj.level + 1
+      const myLevelClass = classMatch[myLevel + ''];
+      const newSubItem = this.itemClass(myLevel, motherObj.no, myNumber, myOrder, "", "", "", myLevelClass) // new가 왜 불필요한지 
+      const myColor = this.findMyColor(newSubItem)
+      newSubItem.color = myColor;
+      this.tableRow.splice(myOrder - 0.1, 0, newSubItem)
       this.sortItemGroups()
     },
     addNewRow(){
@@ -243,7 +405,7 @@ export default {
         }
       }
       const nextNumber = lastNumber + 1;
-      const newRow = this.itemClass(1, "", nextNumber)
+      const newRow = this.itemClass(1, "", nextNumber, this.tableRow.length,"","","","firstLevel","rgba(0,255,0,1)")
       this.tableRow.push(newRow)
     },
     reCallData(){
@@ -264,36 +426,64 @@ export default {
       const targetBtn = e.currentTarget;
       const targetTR = targetBtn.closest("tr")
       const targetContents = targetTR.querySelector(".contents");
+      const trSize = Number(window.getComputedStyle(targetTR).height.replace("px",""));
       if(targetBtn.textContent == "∨"){
         targetBtn.textContent = "∧";
-        targetContents.style.height =  "20px";
-        targetContents.querySelector("input").style.display = "block"
+        targetContents.style.height =  "28px";
+        console.log(trSize)
+        targetTR.querySelector(".number").style.height = trSize + 15 + "px"
+        targetContents.querySelector("textarea").style.display = "block"
       } else {
         targetBtn.textContent = "∨";
         targetContents.style.height = "0";
-        targetContents.querySelector("input").style.display = "none"
+        targetTR.querySelector(".number").style.height = "2vh";
+        targetContents.querySelector("textarea").style.display = "none"
       }
     },
     removeRow(e){
       const targetRow = e.currentTarget.closest("tr");
+      let location;
+      if(targetRow.closest("div").id == "tableDiv"){
+        location = this.tableRow
+      } else location = this.finTableRow;
+      const children = this.findMyChildren(targetRow, location)
+      const targetArray = [targetRow,...children];
       const targetDiv = targetRow.closest("div"); //tableDiv거나 finTableDiv거나
       if(targetDiv.id == "tableDiv"){
-        let targetIndex = this.findItsObjIndex(targetRow, this.tableRow)
-        this.tableRow.splice(targetIndex, 1)
+        for(let i = targetArray.length - 1; i > -1; i--){
+          let targetIndex = this.findItsObjIndex(targetArray[i], this.tableRow)
+          this.tableRow.splice(targetIndex, 1)
+        }
       } else{
-        let targetIndex = this.findItsObjIndex(targetRow, this.finTableRow)
-        this.finTableRow.splice(targetIndex, 1)
+        for(let i = targetArray.length - 1; i > -1; i--){
+          let targetIndex = this.findItsObjIndex(targetArray[i], this.finTableRow)
+          this.finTableRow.splice(targetIndex, 1)
+        }
       }
     },
     recoverBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
       const targetIndex = this.findItsObjIndex(targetRow, this.finTableRow)
       const targetObj = this.finTableRow[targetIndex];
+      targetObj.finDate = ""
+      targetObj.convertedFinDate = "";
       this.tableRow.push(targetObj);
       this.finTableRow.splice(targetIndex, 1);
     },
     clockSet(){
       const date = new Date();
+      const Month = String(date.getMonth() + 1).padStart(2,'0');
+      const date2 = String(date.getDate()).padStart(2,'0');
+      const hours = String(date.getHours()).padStart(2, "0");
+      const minuetes = String(date.getMinutes()).padStart(2, "0");
+      return `${Month}/${date2} ${hours}:${minuetes}`;
+    },
+    getTime(){
+      const time = Date.now(new Date);
+      return time;
+    },
+    convertTime(time){
+      const date = new Date(time);
       const Month = String(date.getMonth() + 1).padStart(2,'0');
       const date2 = String(date.getDate()).padStart(2,'0');
       const hours = String(date.getHours()).padStart(2, "0");
@@ -324,6 +514,7 @@ main{
 table{
   width: 100%;
   border-collapse: collapse;
+  color: black;
 }
 
 th{
@@ -331,7 +522,7 @@ th{
 }
 
 th:nth-child(1){
-  width: 11%;
+  width: 15%;
   border-radius: 10px 0 0 10px;
 }
 
@@ -371,29 +562,49 @@ td{
   border: 0.5px solid rgb(129, 129, 129);
   border-bottom: none;
   border-top: none;
-  font-size: 0.8vw
+  font-size: 0.8vw;
 }
 
 .numberTD{
-  display: flex;
-  justify-content: space-between;
   border:none;
   border-radius: 10px 0 0 10px;
   text-align: right;
   padding: 0;
-  background-color: transparent !important;
+  background-color: white !important;
 }
 
 .control{
-  display: flex;
-  opacity: 0;
+  float: right;
+  text-align: right;
+  width: 25%;
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px red dotted;
+  opacity: 1;
 }
+
+.number{
+  float: right;
+  display: table-cell;
+  height: 100%;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  text-align: left;
+  text-indent: 15%;
+  border-radius: 10px 0 0 10px;
+  transition: 200ms;
+}
+
 
 .control:hover{
   opacity: 1;
 }
 
 .control svg{
+  float: right;
+  vertical-align: middle;
+  width: 100%;
+  height: 100%;
   transition: 400ms;
   border-radius: 4px;
 }
@@ -419,17 +630,6 @@ td{
   display: none;
 }
 
-.number{
-  display: inline-block;
-  width: 100%;
-  height: 100%;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  text-align: left;
-  text-indent: 15%;
-  border-radius: 10px 0 0 10px;
-}
-
 .contentWrapper{
   float: left;
   width: 90%;
@@ -445,18 +645,25 @@ td{
   width: 100%;
 }
 
-.contents > input{
+.contents > textarea{
   background-color: transparent;
   border: none;
-  margin-top: 2px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  overflow: hidden;
   width: 107%;
+  height: auto;
   display: none;
+  font-family: inherit;
+  resize:none;
 }
+
 
 .finDate > input{
   background-color: transparent;
   border: none;
   width: 100%;
+  text-align: center;
 }
 
 .extension{
@@ -475,6 +682,10 @@ td{
   background-color: transparent;
 }
 
+h1{
+  color:red;
+}
+
 .contents{
   width: 100%;
   height: 0;
@@ -486,40 +697,20 @@ tr {
   border-top: white 2px solid;
 }
 
-.firstLevel > td {
-  background-color: rgb(136, 218, 82);
-}
-
 .firstLevel > .numberTD > .number {
-  background-color: rgb(136, 218, 82);
-  width: 85%;
-}
-
-.secondLevel > td{
-  background-color: rgba(136, 218, 82, 0.6);
+  width: 70%;
 }
 
 .secondLevel > .numberTD > .number {
-  background-color: rgba(136, 218, 82, 0.6);
-  width: 68%;
-}
-
-.thirdLevel > td{
-  background-color: rgba(211, 240, 51, 0.4);
+  width: 55%;
 }
 
 .thirdLevel > .numberTD > .number {
-  background-color: rgba(211, 240, 51, 0.4);
-  width: 61%;
-}
-
-.fourthLevel > td{
-  background-color: rgba(236, 234, 132, 0.4);;
+  width: 40%;
 }
 
 .fourthLevel > .numberTD > .number {
-  background-color: rgba(236, 234, 132, 0.4);;
-  width: 43%;
+  width: 28%;
 }
 
 .hoverHidden > button{
@@ -533,21 +724,44 @@ tr {
 }
 
 .finish{
-  background-color: grey;
+  background-color: rgb(185, 185, 185) !important;
 }
 
 .finish *{
   text-decoration: line-through;
 }
 
-
 #finTableDiv{
   width: 100%;
 }
 
-
 #finTableDiv tr{
   background-color: rgb(190, 190, 190);
+}
+
+#customBoard{
+  position: absolute;
+  left: 41vh;
+  width: 20vh;
+  height: 40vh;
+  border: 1px solid grey;
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 2px 2px 5px grey;
+  font-size: 4vh;
+}
+
+.closeBtnWrapper{
+  width: 100%;
+  padding: 2% 3% 0 0;
+  text-align: right;
+  box-sizing: border-box;
+}
+
+.closeBtn{
+  font-size: 3vh;
+  color: grey;
+  background-color: transparent;
+  border:0;
 }
 
 </style>
