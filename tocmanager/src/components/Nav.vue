@@ -11,7 +11,6 @@
           <li v-for="item of convertedFinishedRow" :key="item"> {{testcount}}</li>
         </ul>
       </div>
-      <!-- <span v-for="item of kimin" :key=item>{{item}}</span> -->
     </nav>
 </template>
 

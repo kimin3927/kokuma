@@ -21,7 +21,7 @@
       <table>
         <thead>
           <tr>
-              <th>{{testcount}}</th>
+              <th>순번</th>
               <th>날짜</th>
               <th>내용</th>
               <th>완료</th>
@@ -30,7 +30,7 @@
         </thead>
         <button id='tableRowAddBtn' @click="addNewRow">+</button>
         <tbody>
-          <tr v-for="(row) in tableRow" :key="row.id" :id="row.id" :class="row.levelClass" :style="{backgroundColor: row.color}">
+          <tr v-for="(row) in storeTableRow" :key="row.id" :id="row.id" :class="row.levelClass" :style="{backgroundColor: row.color}">
             <td class="level">{{row.targetLevel}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD">
@@ -75,7 +75,7 @@
       </table>
     </div>
     <div id="finTableDiv">
-      <table v-if="finTableRow[0]" id="finTable">
+      <table v-if="storeFinTableRow[0]" id="finTable">
         <thead>
           <tr>
               <th>순번</th>
@@ -86,7 +86,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row) in finTableRow" :key="row.id" :id="row.id">
+          <tr v-for="(row) in storeFinTableRow" :key="row.id" :id="row.id">
             <td class="level">{{row.level}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD"><div class="number">{{row.finNo}}</div></td>
@@ -132,37 +132,51 @@ export default {
     }
   },
   mounted(){
-    console.log(this.$store);
-    this.reCallData()
+    // this.reCallData()
+		this.$store.dispatch("init")
   },
   updated() {
-    localStorage.setItem("toc", JSON.stringify(this.tableRow))
-    localStorage.setItem("tocFin", JSON.stringify(this.finTableRow))
+    localStorage.setItem("toc", JSON.stringify(this.storeTableRow))
+    localStorage.setItem("tocFin", JSON.stringify(this.storeFinTableRow))
     this.$emit("connect", this.tableRow)
     this.$emit("finish", this.finTableRow)
   },
   computed : {
-    testcount() {
-      return this.$store.getters.getCount;
-    },
+		storeTableRow(){
+			return this.$store.getters.getTableRow;
+		},
+		storeFinTableRow(){
+			return this.$store.getters.getFinTableRow;
+		},
     totalPeriod(){
       const fullItems = [...this.tableRow, ...this.finTableRow]
-      let allTimeofFullItems = []
+      let allTimes = []
       for(let item of fullItems) {
-        allTimeofFullItems.push(item.registDate, item.finDate);
-      }//1시간은 3,600,000ms
-      const convertedTimes = allTimeofFullItems.map(x => parseInt(x/3600000)*3600000)
-      const allTimes = convertedTimes.reduce((onlyArray, item) =>
-      onlyArray.includes(item) ? onlyArray : [...onlyArray, item], []).filter(Boolean)
-      if(!allTimes[0]){
-        allTimes.push(parseInt(Date.now(new Date())/3600000)*3600000)
+        allTimes.push(item.registDate, item.finDate);
       }
-      if(allTimes.length < 10){
-        for(let i = 0; i < 10 - allTimes.length; i++){
-          allTimes.push(allTimes[i] + 3600000)
-        }
-      }
-      return allTimes;
+			const allTimes2 = allTimes.reduce((onlyArr, item) => {
+				return onlyArr.includes(item) ? onlyArr : [...onlyArr, item]
+			}, []).filter(Boolean)//중복제거, 빈값제거
+			const term = ((basis) => {
+				switch(basis){
+					case "day" : return 86400000
+					case "hours" : return 3600000
+			}
+			})("day")
+			var minNum = parseInt(allTimes2.reduce((previous, current) => { 
+				return previous < current ? previous:current;
+      })/term)*term; 
+      var maxNum = parseInt(allTimes2.reduce((previous, current) => { 
+				return previous > current ? previous:current;
+      })/term)*term;
+      const defMaxNmin = `${(maxNum - minNum)/term} `;
+			const allTime3 = [];
+			if(defMaxNmin < 25){
+				for(let i = 0; i < 25; i++){
+					allTime3.push(minNum + i * term);
+				}
+			}
+      return allTime3;
     }
   },
   methods: {
@@ -175,8 +189,6 @@ export default {
     controlLevelView(e){
       const inputValue = Number(e.currentTarget.value);
       for(let i = this.tableRow.length - 1; i > -1; i--){
-        console.log(`inputValue는${inputValue}level은${this.tableRow[i].level}`)
-        console.log(`길이는${this.tableRow.length}`)
         if(this.tableRow[i].level > inputValue){
           this.tableRow[i].status = false;
           console.log(`${this.tableRow[i].no}는 숨겨졌다`)
@@ -219,12 +231,10 @@ export default {
         sonObj.color = this.findMyColor(sonRow);
       }
     },
-    tableRowStyler(){
-
-      this.$store.dispatch('firstAction', 10);
-      // this.customOn = !this.customOn;
-      // const targetTR = e.currentTarget.closest("tr")
-      // this.tempData = targetTR.id;
+    tableRowStyler(e){
+      this.customOn = !this.customOn;
+      const targetTR = e.currentTarget.closest("tr")
+      this.tempData = targetTR.id;
     },
     itemClass(level, motherNumber, no, order, finDate, title, contents, levelClass, color){
       const itemObj = {
@@ -271,10 +281,10 @@ export default {
     },
     finishBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
-      const targetObj = this.findItsObj(targetRow, this.tableRow)
+      const targetObj = this.findItsObj(targetRow, this.storeTableRow)
       const children = this.findChildrenRow(targetRow, '#tableDiv')
       const familyArray = [targetRow, ...children];
-      const items = this.findItsObj(familyArray, this.tableRow);
+      const items = this.findItsObj(familyArray, this.storeTableRow);
       if(targetObj.level !== 1){
         if(!targetRow.classList.contains("finish")) {
           for(let row of familyArray){
@@ -299,19 +309,26 @@ export default {
         }
       } else if(targetObj.level == 1) {
           for(let i = 0 ; i < items.length; i++) {
-            const idNo = this.finTableRow.length + 1;
+            const idNo = this.storeFinTableRow.length + 1;
             const finNo = String(new Date().getFullYear()).slice(2,4) + String(new Date().getMonth() + 1).padStart(2,'0') + "-" +String(idNo).padStart(2,'0');
+						const index = this.findItsObjIndex(items[i], this.storeTableRow)
             items[i].finNo = finNo;
             items[i].finDate = this.getTime();
             items[i].convertedFinDate = this.convertTime(this.getTime());
             items[i].status = "finish";
-            this.finTableRow.push(items[i]);
-            this.tableRow.splice(this.findItsObjIndex(familyArray[i], this.tableRow), 1)
+						this.$store.dispatch("finishItem", {item:items[i], index:index});
           }
           this.$emit("finish", this.finTableRow);
       }
     },
     findItsObjIndex(row, location){
+			if(row.id){
+				for(let i = 0; i < location.length; i++) {
+					if(location[i].id == row.id){
+						return i
+					}
+				}
+			}
       if(Array.isArray(row)){
         const result = [];
         for(let i = 0; i < row.length; i++){
@@ -324,7 +341,7 @@ export default {
         }
         return result;
       } else {
-        for(let i = 0; i< location.length; i++){
+        for(let i = 0; i < location.length; i++){
           if(location[i].id == row.id){
             return i;
           }
@@ -371,11 +388,11 @@ export default {
     },
     makeSub(e){
       const motherRow = e.currentTarget.closest("tr");
-      const motherIndex = this.findItsObjIndex(motherRow, this.tableRow)
-      const motherObj = this.tableRow[motherIndex]
+      const motherIndex = this.findItsObjIndex(motherRow, this.storeTableRow)
+      const motherObj = this.storeTableRow[motherIndex]
       let siblingCount = 1;
       for(let i = 0; i < this.tableRow.length; i++){
-        if(this.tableRow[i].motherNumber == motherObj.no){
+        if(this.storeTableRow[i].motherNumber == motherObj.no){
           siblingCount++
         }
       }
@@ -397,31 +414,31 @@ export default {
     },
     addNewRow(){
       let lastNumber = 0;
-      if(this.tableRow.length !== 0){
-        for(let i = 0; i < this.tableRow.length; i++) {
-          if(this.tableRow[i].level == 1){
+      if(this.storeTableRow.length !== 0){
+        for(let i = 0; i < this.storeTableRow.length; i++) {
+          if(this.storeTableRow[i].level == 1){
             lastNumber++
           }
         }
       }
       const nextNumber = lastNumber + 1;
       const newRow = this.itemClass(1, "", nextNumber, this.tableRow.length,"","","","firstLevel","rgba(0,255,0,1)")
-      this.tableRow.push(newRow)
+			this.$store.dispatch("addRow", {item:newRow});
     },
-    reCallData(){
-      const data = JSON.parse(localStorage.getItem("toc"))
-      const finData = JSON.parse(localStorage.getItem("tocFin"))
-      if(data){
-        for(let i = 0; i < data.length; i++){
-          this.tableRow.push(data[i]);
-        }
-      }
-      if(finData){
-        for(let i = 0; i < finData.length; i++) {
-          this.finTableRow.push(finData[i]);
-        }
-      }
-    },
+    // reCallData(){
+    //   const data = JSON.parse(localStorage.getItem("toc"))
+    //   const finData = JSON.parse(localStorage.getItem("tocFin"))
+    //   if(data){
+    //     for(let i = 0; i < data.length; i++){
+		// 			this.$store.dispatch("addRow", {item: data[i]});
+    //     }
+    //   }
+    //   if(finData){
+    //     for(let i = 0; i < finData.length; i++) {
+    //       this.$store.dispatch("addFinRow", {item: finData[i]});
+    //     }
+    //   }
+    // },
     controlExtensionBtn(e) {
       const targetBtn = e.currentTarget;
       const targetTR = targetBtn.closest("tr")
@@ -430,7 +447,6 @@ export default {
       if(targetBtn.textContent == "∨"){
         targetBtn.textContent = "∧";
         targetContents.style.height =  "28px";
-        console.log(trSize)
         targetTR.querySelector(".number").style.height = trSize + 15 + "px"
         targetContents.querySelector("textarea").style.display = "block"
       } else {
@@ -441,34 +457,47 @@ export default {
       }
     },
     removeRow(e){
-      const targetRow = e.currentTarget.closest("tr");
+			const targetRow = e.currentTarget.closest("tr");
       let location;
       if(targetRow.closest("div").id == "tableDiv"){
-        location = this.tableRow
-      } else location = this.finTableRow;
+        location = this.storeTableRow;
+      } else location = this.storeFinTableRow;
       const children = this.findMyChildren(targetRow, location)
       const targetArray = [targetRow,...children];
-      const targetDiv = targetRow.closest("div"); //tableDiv거나 finTableDiv거나
-      if(targetDiv.id == "tableDiv"){
-        for(let i = targetArray.length - 1; i > -1; i--){
-          let targetIndex = this.findItsObjIndex(targetArray[i], this.tableRow)
-          this.tableRow.splice(targetIndex, 1)
-        }
-      } else{
-        for(let i = targetArray.length - 1; i > -1; i--){
-          let targetIndex = this.findItsObjIndex(targetArray[i], this.finTableRow)
-          this.finTableRow.splice(targetIndex, 1)
-        }
-      }
-    },
+			for(let i = targetArray.length - 1; i > -1; i--){
+				const targetIndex = this.findItsObjIndex(targetArray[i], location)
+				if(location == this.storeTableRow){
+					this.$store.dispatch("removeRow", {location : "table", index : targetIndex})
+				} else this.$store.dispatch("removeRow", {location : "finTable", index : targetIndex})
+			}
+		},
+      // const targetRow = e.currentTarget.closest("tr");
+      // let location;
+      // if(targetRow.closest("div").id == "tableDiv"){
+      //   location = this.tableRow
+      // } else location = this.finTableRow;
+      // const children = this.findMyChildren(targetRow, location)
+      // const targetArray = [targetRow,...children];
+      // const targetDiv = targetRow.closest("div"); //tableDiv거나 finTableDiv거나
+      // if(targetDiv.id == "tableDiv"){
+      //   for(let i = targetArray.length - 1; i > -1; i--){
+      //     let targetIndex = this.findItsObjIndex(targetArray[i], this.tableRow)
+      //     this.tableRow.splice(targetIndex, 1)
+      //   }
+      // } else{
+      //   for(let i = targetArray.length - 1; i > -1; i--){
+      //     let targetIndex = this.findItsObjIndex(targetArray[i], this.finTableRow)
+      //     this.finTableRow.splice(targetIndex, 1)
+      //   }
+      // }
     recoverBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
-      const targetIndex = this.findItsObjIndex(targetRow, this.finTableRow)
-      const targetObj = this.finTableRow[targetIndex];
+      const targetIndex = this.findItsObjIndex(targetRow, this.storeFinTableRow)
+      const targetObj = this.storeFinTableRow[targetIndex];
       targetObj.finDate = ""
       targetObj.convertedFinDate = "";
-      this.tableRow.push(targetObj);
-      this.finTableRow.splice(targetIndex, 1);
+			this.$store.dispatch("addRow", targetObj)
+			this.$store.dispatch("removeRow", {location : this.storeTableRow, index: targetIndex})
     },
     clockSet(){
       const date = new Date();
@@ -489,6 +518,14 @@ export default {
       const hours = String(date.getHours()).padStart(2, "0");
       const minuetes = String(date.getMinutes()).padStart(2, "0");
       return `${Month}/${date2} ${hours}:${minuetes}`;
+    },
+    convertTime2Date(time){
+      const date = new Date(time);
+      const year = date.getFullYear();
+      const Month = String(date.getMonth() + 1).padStart(2,'0');
+      const date2 = String(date.getDate()).padStart(2,'0');
+      const hours = String(date.getHours()).padStart(2, "0");
+      return `${year}-${Month}-${date2}, ${hours}`;
     }
   },
 }

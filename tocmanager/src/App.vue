@@ -4,7 +4,7 @@
       <div id="navShowBtnDiv" v-if=navBtn>
         <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
       </div>
-      <Nav @hide="toggleNav" :tableRow="tableItems" :navRow="finTableItems"></Nav>
+      <!-- <Nav @hide="toggleNav" :tableRow="tableItems" :navRow="finTableItems"></Nav> -->
     </div>
     <div id="right">
       <Header></Header>
@@ -15,7 +15,7 @@
 
 <script>
 import Header from './components/Header.vue'
-import Nav from './components/Nav.vue'
+// import Nav from './components/Nav.vue'
 import Main from './components/Main.vue'
 
 export default {
@@ -29,7 +29,7 @@ export default {
   },
   components: {
     Header,
-    Nav,
+    // Nav,
     Main,
   },
   methods: {
