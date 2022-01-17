@@ -1,7 +1,7 @@
 
 <template>
-
   <main>
+    <div style="width:100px; height:100px; border: 1px solid red">1</div>
     <div v-if='customOn' id='customBoard'>
       <div class="closeBtnWrapper"><button class="closeBtn" @click="deleteBox">x</button></div>
       <div @click="colorPicker">
@@ -13,15 +13,17 @@
           <label for="yellow" style="color:yellow">■</label>
       </div>
     </div>
-    <form oninput = "result.value=parseInt(a.value)">
-    <input @input="controlLevelView" type="range" id="a" name="a" min="0" max="5" step="1">
-    <output name="result" for="a"></output>
-    </form>
+    <div class="levelFormDiv">
+      <form class="levelForm" oninput = "result.value=parseInt(a.value)">
+        <input @input="kimin" type="range" id="a" name="a" min="1" max="5" step="1">
+        <output name="result" for="a"></output>
+      </form>
+    </div>
     <div id="tableDiv">
       <table>
         <thead>
           <tr>
-              <th>순번</th>
+              <th @click="convertTime2Date">순번</th>
               <th>날짜</th>
               <th>내용</th>
               <th>완료</th>
@@ -30,7 +32,7 @@
         </thead>
         <button id='tableRowAddBtn' @click="addNewRow">+</button>
         <tbody>
-          <tr v-for="(row) in storeTableRow" :key="row.id" :id="row.id" :class="row.levelClass" :style="{backgroundColor: row.color}">
+          <tr v-for="(row) in filterredData" :key="row.id" :id="row.id" :class="row.levelClass" >
             <td class="level">{{row.targetLevel}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD">
@@ -40,14 +42,17 @@
                   <path d="M3,2 C2.44771525,2 2,1.55228475 2,1 C2,0.44771525 2.44771525,0 3,0 C3.55228475,0 4,0.44771525 4,1 C4,1.55228475 3.55228475,2 3,2 Z M3,6 C2.44771525,6 2,5.55228475 2,5 C2,4.44771525 2.44771525,4 3,4 C3.55228475,4 4,4.44771525 4,5 C4,5.55228475 3.55228475,6 3,6 Z M3,10 C2.44771525,10 2,9.55228475 2,9 C2,8.44771525 2.44771525,8 3,8 C3.55228475,8 4,8.44771525 4,9 C4,9.55228475 3.55228475,10 3,10 Z M7,2 C6.44771525,2 6,1.55228475 6,1 C6,0.44771525 6.44771525,0 7,0 C7.55228475,0 8,0.44771525 8,1 C8,1.55228475 7.55228475,2 7,2 Z M7,6 C6.44771525,6 6,5.55228475 6,5 C6,4.44771525 6.44771525,4 7,4 C7.55228475,4 8,4.44771525 8,5 C8,5.55228475 7.55228475,6 7,6 Z M7,10 C6.44771525,10 6,9.55228475 6,9 C6,8.44771525 6.44771525,8 7,8 C7.55228475,8 8,8.44771525 8,9 C8,9.55228475 7.55228475,10 7,10 Z">
                   </path>
                 </svg>
-                <svg viewBox="-2 -2 20 20" class="plus" style="width: 16px; height: 85%; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden;">
+                <svg class="plus" @click="controlView" viewBox="-2 -2 20 20" style="width: 20px; height: 20px; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden; display:none;">
                   <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z">
                   </path>
                 </svg>
+                <svg class="minus" @click="controlView" xmlns="http://www.w3.org/2000/svg" viewBox="1 0 24 24" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:19px; height:19px; display:block;">
+                  <line x1="5" y1="12" x2="21" y2="12"/>
+                </svg>
               </div>
             </td>
-            <td class="resgistDate" >{{row.convertedRegistDate}}</td>
-            <td class='content'>
+            <td class="registDate" :style="{backgroundColor: row.color}">{{row.convertedRegistDate}}</td>
+            <td class='content' :style="{backgroundColor: row.color}">
               <div class='contentWrapper'>
                   <div class='title'>
                       <input v-model="row.title">
@@ -60,10 +65,10 @@
                   <button class='extensionBtn' @click="controlExtensionBtn">∨</button>
               </div>
             </td>
-            <td class="finDate">
+            <td class="finDate" :style="{backgroundColor: row.color}">
               <input v-model="row.convertedFinDate">
             </td>
-            <td  class="manage">
+            <td class="manage" :style="{backgroundColor: row.color}">
               <div class='hoverHidden'>
                 <button class='saveBtn' @click="finishBtnHandler">완료</button>
                 <button class='remove' style=color:red @click="removeRow">삭제</button>
@@ -86,18 +91,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row) in storeFinTableRow" :key="row.id" :id="row.id">
+          <tr v-for="(row) in storeFinTableRow" :key="row.id" :id="row.id" :class="row.levelClass">
             <td class="level">{{row.level}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
-            <td class="numberTD"><div class="number">{{row.finNo}}</div></td>
-            <td class="resgistDate">{{row.convertedRegistDate}}</td>
+            <td class="numberTD">
+              <div class="number" >{{row.finNo}}</div>
+            </td>
+            <td class="registDate">{{row.convertedRegistDate}}</td>
             <td class='content'>
               <div class='contentWrapper'>
                   <div class='title'>
-                      <input v-model="row.title">
+                      {{ row.title }}
                   </div>
                   <div class='contents'>
-                      <input type='textarea' v-model="row.contents">
+                      {{ row.contents }}
                   </div>
               </div>
               <div class='extension hoverHidden'>
@@ -124,79 +131,64 @@ export default {
   name: 'Main',
   data: function() {
     return {
-      tableRow: [],
-      finTableRow: [],
-      hideItems:[],
       customOn: false,
+			viewLevel : 5,
       tempData:[],
     }
   },
   mounted(){
-    // this.reCallData()
 		this.$store.dispatch("init")
   },
   updated() {
     localStorage.setItem("toc", JSON.stringify(this.storeTableRow))
     localStorage.setItem("tocFin", JSON.stringify(this.storeFinTableRow))
-    this.$emit("connect", this.tableRow)
-    this.$emit("finish", this.finTableRow)
+    this.$store.dispatch("checkPeriod")
   },
   computed : {
+    filterredData(){
+      const data = this.storeTableRow.filter((item) => {
+        return item.level <= this.viewLevel;
+      }).filter((item) => {
+        return item.hide !== true;
+      })
+      return data;
+    },
 		storeTableRow(){
 			return this.$store.getters.getTableRow;
 		},
 		storeFinTableRow(){
 			return this.$store.getters.getFinTableRow;
-		},
-    totalPeriod(){
-      const fullItems = [...this.tableRow, ...this.finTableRow]
-      let allTimes = []
-      for(let item of fullItems) {
-        allTimes.push(item.registDate, item.finDate);
-      }
-			const allTimes2 = allTimes.reduce((onlyArr, item) => {
-				return onlyArr.includes(item) ? onlyArr : [...onlyArr, item]
-			}, []).filter(Boolean)//중복제거, 빈값제거
-			const term = ((basis) => {
-				switch(basis){
-					case "day" : return 86400000
-					case "hours" : return 3600000
-			}
-			})("day")
-			var minNum = parseInt(allTimes2.reduce((previous, current) => { 
-				return previous < current ? previous:current;
-      })/term)*term; 
-      var maxNum = parseInt(allTimes2.reduce((previous, current) => { 
-				return previous > current ? previous:current;
-      })/term)*term;
-      const defMaxNmin = `${(maxNum - minNum)/term} `;
-			const allTime3 = [];
-			if(defMaxNmin < 25){
-				for(let i = 0; i < 25; i++){
-					allTime3.push(minNum + i * term);
-				}
-			}
-      return allTime3;
-    }
+		}
   },
   methods: {
+		kimin(e){
+			const level = e.currentTarget.value;
+			this.viewLevel = level;
+		},
+    controlView(e){
+      const targetRow = e.currentTarget.closest("tr");
+      let location
+      if(targetRow.closest("div").id == "tableDiv"){
+        location = this.storeTableRow
+      } else location = this.storeFinTableRow
+      const children = this.findMyChildren(targetRow, location)
+      for(let item of children){
+        item.hide = !item.hide;
+        if(item.hide == true) {
+          targetRow.querySelector(".plus").style.display = "inline";
+          targetRow.querySelector(".minus").style.display = "none";
+        } else {
+          targetRow.querySelector(".plus").style.display = "none";
+          targetRow.querySelector(".minus").style.display = "inline";
+        }
+        
+      }
+    },
     issueID(){
       return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
       var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
       return 'a' + v.toString(16);
       });
-    },
-    controlLevelView(e){
-      const inputValue = Number(e.currentTarget.value);
-      for(let i = this.tableRow.length - 1; i > -1; i--){
-        if(this.tableRow[i].level > inputValue){
-          this.tableRow[i].status = false;
-          console.log(`${this.tableRow[i].no}는 숨겨졌다`)
-        } else {
-          this.tableRow[i].status = true;
-          console.log(`${this.tableRow[i].no}를 다시보여주자`)
-        }
-      }
     },
     deleteBox(){
       this.customOn = !this.customOn;
@@ -218,11 +210,6 @@ export default {
     colorPicker(e){
       const pickedColor = e.target.value;
       const targetTR = document.querySelector("#" + this.tempData);
-      const targetArea = [...targetTR.querySelectorAll("td")];
-      targetArea.push(targetTR.querySelector(".number"))
-      for(let td of targetArea){
-        td.style.backgroundColor = pickedColor;
-      }
       const targetObj = this.storeTableRow[this.findItsObjIndex(targetTR,this.storeTableRow)];//
       targetObj.color = pickedColor;
       const children = this.findMyChildren(targetTR, this.storeTableRow)
@@ -249,7 +236,8 @@ export default {
         color: color,
         registDate :  this.getTime(),
         convertedRegistDate : this.convertTime(this.getTime()),
-        status: true,
+        status: "",
+        hide: false,
         id: this.issueID() //this가 가르키는 것은??
       }
       return itemObj;
@@ -286,10 +274,12 @@ export default {
       const familyArray = [targetRow, ...children];
       const items = this.findItsObj(familyArray, this.storeTableRow);
       if(targetObj.level !== 1){
-        if(!targetRow.classList.contains("finish")) {
+        if(!targetRow.querySelector(".number").classList.contains("finish")) {
           for(let row of familyArray){
-            row.classList.add("finish")
-            row.querySelector(".number").classList.add("finish")
+            const tds = [row.querySelector(".content"), row.querySelector(".number"), row.querySelector(".registDate"), row.querySelector(".finDate"), row.querySelector(".manage")];
+            for(let td of tds){
+              td.classList.add("finish")
+            }
           }
           for(let item of items){
             item.status = "finish"
@@ -297,9 +287,11 @@ export default {
             item.convertedFinDate = this.convertTime(this.getTime());
           }
         } else {
-          for(let row of familyArray) {
-            row.classList.remove("finish")
-            row.querySelector(".number").classList.remove("finish")
+            for(let row of familyArray) {
+            const tds = [row.querySelector(".content"), row.querySelector(".number"), row.querySelector(".registDate"), row.querySelector(".finDate"), row.querySelector(".manage")];
+            for(let td of tds) {
+              td.classList.remove("finish")
+            }
           }
           for(let item of items){
             item.status = ""
@@ -348,20 +340,12 @@ export default {
         }
       }
     },
-    sortItemGroups(){
-      this.tableRow.sort((a,b) => {
-        return a["order"] - b["order"];
-      })
-      for(let i = 0; i < this.tableRow.length; i++){
-        this.tableRow[i].order = i + 1;
-      }
-    },
     findMyOrder(motherObj){
       let lastBrother;
       let myOrder = Number(motherObj.order) + 0.1;
-      for(let i = 0; i < this.tableRow.length; i++){
-        if(this.tableRow[i].motherNumber == motherObj.no){
-          lastBrother = this.tableRow[i];
+      for(let i = 0; i < this.storeTableRow.length; i++){
+        if(this.storeTableRow[i].motherNumber == motherObj.no){
+          lastBrother = this.storeTableRow[i];
           myOrder = Number(lastBrother.order) + 0.1;
         }
       }
@@ -371,7 +355,6 @@ export default {
       return myOrder;
     },
     findMyColor(myObj){
-			console.log("점검3")
       let motherObj;
       for(let obj of this.storeTableRow){
         if(obj.no == myObj.motherNumber){
@@ -392,7 +375,7 @@ export default {
       const motherIndex = this.findItsObjIndex(motherRow, this.storeTableRow)
       const motherObj = this.storeTableRow[motherIndex]
       let siblingCount = 1;
-      for(let i = 0; i < this.tableRow.length; i++){
+      for(let i = 0; i < this.storeTableRow.length; i++){
         if(this.storeTableRow[i].motherNumber == motherObj.no){
           siblingCount++
         }
@@ -410,9 +393,7 @@ export default {
       const newSubItem = this.itemClass(myLevel, motherObj.no, myNumber, myOrder, "", "", "", myLevelClass) // new가 왜 불필요한지 
       const myColor = this.findMyColor(newSubItem)
       newSubItem.color = myColor;
-			this.$store.dispatch("addRow", {item:newSubItem})
-      // this.tableRow.splice(myOrder - 0.1, 0, newSubItem)
-      // this.sortItemGroups()
+			this.$store.dispatch("addRow", {item:newSubItem, index:myOrder})
     },
     addNewRow(){
       let lastNumber = 0;
@@ -424,23 +405,9 @@ export default {
         }
       }
       const nextNumber = lastNumber + 1;
-      const newRow = this.itemClass(1, "", nextNumber, this.tableRow.length,"","","","firstLevel","rgba(0,255,0,1)")
+      const newRow = this.itemClass(1, "", nextNumber, this.storeTableRow.length,"","","","firstLevel","rgba(0,255,0,1)")
 			this.$store.dispatch("addRow", {item:newRow});
     },
-    // reCallData(){
-    //   const data = JSON.parse(localStorage.getItem("toc"))
-    //   const finData = JSON.parse(localStorage.getItem("tocFin"))
-    //   if(data){
-    //     for(let i = 0; i < data.length; i++){
-		// 			this.$store.dispatch("addRow", {item: data[i]});
-    //     }
-    //   }
-    //   if(finData){
-    //     for(let i = 0; i < finData.length; i++) {
-    //       this.$store.dispatch("addFinRow", {item: finData[i]});
-    //     }
-    //   }
-    // },
     controlExtensionBtn(e) {
       const targetBtn = e.currentTarget;
       const targetTR = targetBtn.closest("tr")
@@ -473,31 +440,10 @@ export default {
 				} else this.$store.dispatch("removeRow", {location : "finTable", index : targetIndex})
 			}
 		},
-      // const targetRow = e.currentTarget.closest("tr");
-      // let location;
-      // if(targetRow.closest("div").id == "tableDiv"){
-      //   location = this.tableRow
-      // } else location = this.finTableRow;
-      // const children = this.findMyChildren(targetRow, location)
-      // const targetArray = [targetRow,...children];
-      // const targetDiv = targetRow.closest("div"); //tableDiv거나 finTableDiv거나
-      // if(targetDiv.id == "tableDiv"){
-      //   for(let i = targetArray.length - 1; i > -1; i--){
-      //     let targetIndex = this.findItsObjIndex(targetArray[i], this.tableRow)
-      //     this.tableRow.splice(targetIndex, 1)
-      //   }
-      // } else{
-      //   for(let i = targetArray.length - 1; i > -1; i--){
-      //     let targetIndex = this.findItsObjIndex(targetArray[i], this.finTableRow)
-      //     this.finTableRow.splice(targetIndex, 1)
-      //   }
-      // }
     recoverBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
       const targetIndex = this.findItsObjIndex(targetRow, this.storeFinTableRow)
-			console.log(targetIndex)
       const targetObj = this.storeFinTableRow[targetIndex];
-			console.log(targetObj)
       targetObj.finDate = ""
       targetObj.convertedFinDate = "";
 			this.$store.dispatch("addRow", {item:targetObj})
@@ -523,13 +469,18 @@ export default {
       const minuetes = String(date.getMinutes()).padStart(2, "0");
       return `${Month}/${date2} ${hours}:${minuetes}`;
     },
-    convertTime2Date(time){
+    convertTime2Date(time, standard){
       const date = new Date(time);
       const year = date.getFullYear();
       const Month = String(date.getMonth() + 1).padStart(2,'0');
       const date2 = String(date.getDate()).padStart(2,'0');
       const hours = String(date.getHours()).padStart(2, "0");
-      return `${year}-${Month}-${date2}, ${hours}`;
+      let result;
+      switch(standard){
+        case "day" : result = `${year}-${Month}-${date2}`; break;
+        case "hours" : result = `${Month}/${date2}, ${hours}`; break;
+      }
+      return result
     }
   },
 }
@@ -546,10 +497,18 @@ main{
 
 #tableDiv{
   width: 100%;
-  min-height: 50vh;
-  margin-bottom: 5%;
+  min-height: 45vh;
+  margin-bottom: 3%;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.levelFormDiv{
+  text-align: left;
+}
+
+.levelForm{
+  display: inline;
 }
 
 table{
@@ -620,16 +579,14 @@ td{
   width: 25%;
   box-sizing: border-box;
   height: 100%;
-  border: 1px red dotted;
-  opacity: 1;
+  opacity: 0;
 }
 
 .number{
   float: right;
-  display: table-cell;
   height: 100%;
-  padding-top: 5%;
-  padding-bottom: 5%;
+  padding-top: 3%;
+  padding-bottom: 3%;
   text-align: left;
   text-indent: 15%;
   border-radius: 10px 0 0 10px;
@@ -644,8 +601,8 @@ td{
 .control svg{
   float: right;
   vertical-align: middle;
-  width: 100%;
-  height: 100%;
+  width: 16px;
+  height: 15px;
   transition: 400ms;
   border-radius: 4px;
 }
@@ -678,6 +635,8 @@ td{
 
 .title{
   width: 100%;
+  text-align: left;
+  text-indent: 1%;
 }
 
 .title > input{
@@ -754,6 +713,15 @@ tr {
   width: 28%;
 }
 
+
+.hoverHidden{
+  opacity: 0;
+}
+
+.hoverHidden:hover{
+  opacity: 1;
+}
+
 .hoverHidden > button{
   background-color: transparent;
   border: none;
@@ -776,7 +744,7 @@ tr {
   width: 100%;
 }
 
-#finTableDiv tr{
+#finTableDiv  .number, .registDate, .content, .finDate, .manage{
   background-color: rgb(190, 190, 190);
 }
 

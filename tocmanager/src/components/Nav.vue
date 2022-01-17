@@ -1,14 +1,22 @@
 <template>
     <nav>
-      <div id="hideButtonDiv"><button id="hideButton" @click="hideBtnHandler"> &lt;&lt; </button></div>
+      <div id="navHeader">
+        <div id="levelBtnDiv" @click="controlView">
+          <button>①</button>
+          <button>②</button>
+          <button>③</button>
+          <button>+</button>
+        </div>
+        <div id="hideButtonDiv"><button id="hideButton" @click="hideBtnHandler"> &lt;&lt; </button></div>
+      </div>
       <div id="tableNav">
         <ul>
-          <li v-for="item of convertedRow" :key="item" v-html="item"></li>
+          <li v-for="item of convertedRow" :key="item.id" v-html="item.subTitle"></li>
         </ul>
       </div>
       <div id="finTableNav">
         <ul>
-          <li v-for="item of convertedFinishedRow" :key="item"> {{testcount}}</li>
+          <li v-for="item of convertedFinishedRow" :key="item"> {{ item.title }}</li>
         </ul>
       </div>
     </nav>
@@ -18,47 +26,73 @@
 export default {
   name: 'Nav',
   data(){
-    return{
+    return {
+      showLevel: 1
     }
   },
-  props: ['tableRow', 'navRow'],
   computed: {
-     testcount() {
-      return this.$store.getters.getCount;
-    },
     convertedRow: function () {
-      const newData = this.tableRow.map((item) => {
+      // const datas = [...this.$store.getters.getTableRow];
+      const datas = []
+      for(let i = 0; i < this.$store.getters.getTableRow.length; i++){
+        datas.push(this.$store.getters.getTableRow[i])
+      }
+      for(let item of datas){
         const no = String(item.no)
         const countDot = no.match(/./g).length - 1;
-        let blank = '&nbsp;'
-        blank = blank.repeat(countDot)
+        const blank = '&nbsp;'.repeat(countDot)
         let title = item.title ?? "";
         if(title.length > 10){
-          title = /.{10}/.exec(title) + "..."
+          switch(countDot){
+            case 0 : title = /.{10}/.exec(title) + "..."; break
+            case 2 : title = /.{10}/.exec(title) + "..."; break
+            case 4 : title = /.{6}/.exec(title) + "..."; break
+            case 6 : title = /.{5}/.exec(title) + "..."; break
+          }
         }
-        return `${blank}${no}.${title}`;
+        item.subTitle = `${blank}${no}.${title}`;
+      }
+      datas.filter((item) => {
+        return item.hide == false
       })
-
-      return newData;
+      return datas;
     },
     convertedFinishedRow: function() {
-        const newData = this.navRow.map((item) => {
-        const no = String(item.finNo)
-        const countDot = no.match(/./g).length - 1;
-        let blank = ' '
-        blank = blank.repeat(countDot)
-        let title = item.title ?? "";
-        if(title.length > 10){
-          title = /.{10}/.exec(title) + "..."
-        }
-        return `${blank}${no}.${title}`;
-      })
-      return newData;
+        // const newData = this.navRow.map((item) => {
+        // const no = String(item.finNo)
+        // const countDot = no.match(/./g).length - 1;
+        // let blank = ' '
+        // blank = blank.repeat(countDot)
+        // let title = item.title ?? "";
+        // if(title.length > 10){
+        //   title = /.{10}/.exec(title) + "..."
+        // }
+        // return `${blank}${no}.${title}`;
+      // })
+      return 1;
     }
   },
   methods:{
     hideBtnHandler(){
       this.$emit("hide")
+    },
+    controlView(e){
+      const clickedTarget = e.target;
+      const div = document.querySelector("#levelBtnDiv")
+      const buttons = [...div.children];
+      let selectedValue;
+      for(let i = 0; i < buttons.length; i++){
+        if(clickedTarget == buttons[i]) {
+          selectedValue = i + 1;
+        }
+      }
+      if(selectedValue == 4) selectedValue = 5;
+      this.showLevel = selectedValue;
+      for(let item of this.convertedRow){
+        if(item.level > selectedValue) {
+          item.hide = true
+        } else item.hide = false
+      }
     }
   }
 }
@@ -66,15 +100,47 @@ export default {
 
 <style>
 nav{
-    background-color: rgba(157, 219, 221, 0.5);
-    border-radius: 10px;
-    margin: 0.5vw;
-    padding: 0 0 0 0.5vw;
-    overflow-y: auto;
-    text-align: left;
+  background-color: rgba(157, 219, 221, 0.5);
+  border-radius: 10px;
+  margin: 0.5vw;
+  padding: 0 0 0 0.5vw;
+  overflow-y: auto;
+  text-align: left;
 }
+
+#navHeader{
+  display: flex;
+  justify-content: space-between;
+}
+
+#levelBtnDiv{
+  padding-top: 1vw;
+  width: 8vw;
+  height: 3vw;
+}
+
+#levelBtnDiv button{
+  height: 1.5vw;
+  width: 1.5vw;
+  color: grey;
+  padding: 0px 0px 5px 0px;
+  border: none;
+  border-radius: 5px;
+  background-color: transparent;
+  transition: 100ms;
+}
+
+#levelBtnDiv button:hover{
+  background-color: rgb(187, 187, 187);
+}
+
+#levelBtnDiv button:active{
+  background-color: rgb(137, 137, 137);
+}
+
 #hideButtonDiv{
   text-align:right;
+  
 }
 
 #hideButton{

@@ -4,32 +4,30 @@
       <div id="navShowBtnDiv" v-if=navBtn>
         <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
       </div>
-      <!-- <Nav @hide="toggleNav" :tableRow="tableItems" :navRow="finTableItems"></Nav> -->
+      <Nav @hide="toggleNav"></Nav>
     </div>
     <div id="right">
       <Header></Header>
-      <Main @connect="connectTable2Nav" @finish="connectFinishedItem"></Main>
+      <Main></Main>
     </div>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-// import Nav from './components/Nav.vue'
+import Nav from './components/Nav.vue'
 import Main from './components/Main.vue'
 
 export default {
   name: 'App',
   data(){
     return{
-      tableItems:[],
-      finTableItems:[],
       navBtn: false
     }
   },
   components: {
     Header,
-    // Nav,
+    Nav,
     Main,
   },
   methods: {
