@@ -5,8 +5,6 @@ const moduleA = {
     }),
     mutations: {
       addNewRow(state, {item, index}) {
-        console.log(item)
-        console.log(index)
         state.tableRow.splice(index, 0, item)
       },
       removeRow(state, {location, index}) {

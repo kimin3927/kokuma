@@ -223,11 +223,11 @@ export default {
       for(let td of targetArea){
         td.style.backgroundColor = pickedColor;
       }
-      const targetObj = this.tableRow[this.findItsObjIndex(targetTR,this.tableRow)];
+      const targetObj = this.storeTableRow[this.findItsObjIndex(targetTR,this.storeTableRow)];//
       targetObj.color = pickedColor;
-      const children = this.findMyChildren(targetTR, this.tableRow)
+      const children = this.findMyChildren(targetTR, this.storeTableRow)
       for(let sonRow of children){
-        const sonObj = this.tableRow[this.findItsObjIndex(sonRow, this.tableRow)]
+        const sonObj = this.storeTableRow[this.findItsObjIndex(sonRow, this.storeTableRow)]
         sonObj.color = this.findMyColor(sonRow);
       }
     },
@@ -371,8 +371,9 @@ export default {
       return myOrder;
     },
     findMyColor(myObj){
+			console.log("점검3")
       let motherObj;
-      for(let obj of this.tableRow){
+      for(let obj of this.storeTableRow){
         if(obj.no == myObj.motherNumber){
           motherObj = obj;
           break;
@@ -409,8 +410,9 @@ export default {
       const newSubItem = this.itemClass(myLevel, motherObj.no, myNumber, myOrder, "", "", "", myLevelClass) // new가 왜 불필요한지 
       const myColor = this.findMyColor(newSubItem)
       newSubItem.color = myColor;
-      this.tableRow.splice(myOrder - 0.1, 0, newSubItem)
-      this.sortItemGroups()
+			this.$store.dispatch("addRow", {item:newSubItem})
+      // this.tableRow.splice(myOrder - 0.1, 0, newSubItem)
+      // this.sortItemGroups()
     },
     addNewRow(){
       let lastNumber = 0;
@@ -493,10 +495,12 @@ export default {
     recoverBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
       const targetIndex = this.findItsObjIndex(targetRow, this.storeFinTableRow)
+			console.log(targetIndex)
       const targetObj = this.storeFinTableRow[targetIndex];
+			console.log(targetObj)
       targetObj.finDate = ""
       targetObj.convertedFinDate = "";
-			this.$store.dispatch("addRow", targetObj)
+			this.$store.dispatch("addRow", {item:targetObj})
 			this.$store.dispatch("removeRow", {location : this.storeTableRow, index: targetIndex})
     },
     clockSet(){
