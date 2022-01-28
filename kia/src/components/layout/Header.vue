@@ -1,46 +1,32 @@
 <template>
   <div id='header'>
-    <app-content></app-content>
     <div id='topHeader'>
-      <div v-for="i in element.topHeader.title" :key="i" class='topHeaderItemDiv'> <!-- numbers가 아니라 i in element.topHeader.title을 사용하고 싶었으나 에러로 대체. 불필요하게 numbers를 사용함 안만들어도 됐을 것 !-->
-        <a v-for="title in i" :key="title" :href="element.topHeader.links[0]" class='topHeaderItem'>{{title}}</a>|
+      <div class="topHeaderItemDiv" v-for="(div,i) in element.topHeader" :key=i>
+        <router-link v-for="title in div" :key="title.name" :to="title.link" class='topHeaderItem'>{{ title.name }}</router-link>
       </div>
     </div>
     <div id='middleHeader'>
-      <div class='middleHeaderItemDiv'>
-        <router-link to="" @click.native="showSubmenu" v-for="title in element.middleHeader.title[0]" :key="title" class='middleHeaderItem'>{{ title }}</router-link>
-      </div>
-      <div class='middleHeaderItemDiv logoDiv'>
-        <router-link to='/'>
-          <img src="https://d3jn14jkdoqvmm.cloudfront.net/wp/wp-content/uploads/2021/09/13140152/%E1%84%80%E1%85%B5%E1%84%8B%E1%85%A1-KIA-%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-%E1%84%90%E1%85%AE%E1%84%86%E1%85%A7%E1%86%BC.png">
+      <div v-for="(div,i) in element.middleHeader" :key=i>
+        <router-link v-for="title in div" :key="title.name" :to="title.link" class='middleHeaderItem'>
+          <img v-if="title.src"  :src="element.middleHeader[i][0].src" alt="">
+          {{ title.text }}
         </router-link>
-      </div>
-      <div class='middleHeaderItemDiv'>
-        <router-link v-for="title in element.middleHeader.title[1]" :key="title" to="/" class='middleHeaderItem'>{{title}}</router-link>
       </div>
     </div>
     <div id='bottomHeader'>
-      <div id='bottomFirstDiv'>
-        <router-link id='productName' to="/">{{ this.testComputed }}</router-link>
-      </div>
-      <div id='bottomSecondDiv'>
-        <router-link to="/" class='bottomSecondDivItem'>특징</router-link>
-        <router-link to="/Gallery" class='bottomSecondDivItem'>갤러리</router-link>
-        <router-link to="/Dimension" class='bottomSecondDivItem'>제원</router-link>
-        <router-link to="/Price" class='bottomSecondDivItem'>가격</router-link>
-      </div>
-      <div v-if="element.slideMenu.carView" id="slideMenu">
-        <div v-for="id in element.slideMenu.id" :key="id" :id="id">
-          <div v-for="(img) in element.slideMenu.carImg[0]" :key="img" class='carDiv'>
-            <router-link to=""><img src="../../assets/carImg/sedan1.png"></router-link>
-          </div>
-        </div>
-      </div>
-      <div id='bottomLastDiv'>
-        <router-link id='productCategory' to="">쏘렌토</router-link>
+      <div v-for="div in element.bottomHeader" :key="div.name" :id='div.name'>
+        <router-link v-for="item in div.contents" :key="item.name" :class="item.class" :to="item.link">
+          {{ item.name }}
+        </router-link>
       </div>
     </div>
-
+    <div v-if="element.slideMenu.carView" id="slideMenu">
+      <div v-for="id in element.slideMenu.id" :key="id" :id="id">
+        <div v-for="(img) in element.slideMenu.carImg[0]" :key="img" class='carDiv'>
+          <router-link to=""><img src="../../assets/carImg/sedan1.png"></router-link>
+        </div>
+      </div>
+    </div>
   </div>
   
 </template>
@@ -48,44 +34,101 @@
 <script>
 
 export default { 
-    name: "Header",
-    props: [
-      'message',
-    ],
-    data: function () {
-      return {
-        numbers: [0,1],
-        element: {
-          topHeader: {
-            title: [["기아소식", "인재채용", "EN Brochure"], ["로그인", "회원가입", "마이기아", "SEARCH"]],
-            links: ["https://www.naver.com/", "https://www.daum.net", "wwww.youtube.com"]
+  name: "Header",
+  data: function () {
+    return {
+      element: {
+        topHeader: [
+          [
+            {name: "기아소식", link: "https://www.naver.com/"},
+            {name: "인재채용", link: "https://www.naver.com/"},
+            {name: "EN Brochure", link: "https://www.naver.com/"}
+          ],
+          [
+            {name: "로그인", link: "https://www.naver.com/"},
+            {name: "회원가입", link: "https://www.naver.com/"},
+            {name: "마이기아", link: "https://www.naver.com/"},
+            {name: "SEARCH", link: "https://www.naver.com/"}
+          ]
+        ],
+        middleHeader: [
+          [
+            {text: "차량", name: "차량", link: "https://www.naver.com/"},
+            {text: "구매정보", name: "구매정보", link: "https://www.naver.com/"},
+            {text: "체험센터", name: "체험센터", link: "https://www.naver.com/"},
+            {text: "이벤트", name: "이벤트", link: "https://www.naver.com/"},
+            {text: "고객센터", name: "고객센터", link: "https://www.naver.com/"}
+          ],
+          [
+            {name: "mainLogo", src: "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/logo.png", link: "https://www.naver.com/"},
+          ],
+          [
+            {text: "브랜드", name: "브랜드", link: "https://www.naver.com/"},
+            {text: "kia EV", name: "kia EV", link: "https://www.naver.com/"},
+            {text: "기아멤버스", name: "기아멤버스", link: "https://www.naver.com/"},
+          ]
+        ],
+        bottomHeader: [
+          {
+            name: "bottomFirstDiv", 
+            contents : [{
+              name : "쏘렌토",
+              class: "productName",
+              link : "/"
+            }]
           },
-          middleHeader: {
-            title: [["차량", "구매정보", "체험센터", "이벤트","고객센터"], ["브랜드" , "Kia EV", "기아멤버스"]]
+          {
+            name: "bottomSecondDiv", 
+            contents : [
+              {
+                name : "특징",
+                class: "bottomSecondDivItem",
+                link : "/"
+              },
+              {
+                name: "갤러리",
+                class: "bottomSecondDivItem",
+                link : "/"
+              },
+              {
+                name: "제원",
+                class: "bottomSecondDivItem",
+                link : "/"
+              },
+              {
+                name: "가격",
+                class: "bottomSecondDivItem",
+                link : "/"
+              }
+              
+            ]
           },
-          slideMenu: {
-            id : ["vehicle", "buyInfo", "testCenter", "event", "customerService"],
-            carImg : [[
-              "../../assets/carImg/sedan1.png",
-              "C:\Users\k\Desktop\Kevin\src\assets\carImg\sedan2.png",
-              "C:\Users\k\Desktop\Kevin\src\assets\carImg\sedan3.png",
-              "C:\Users\k\Desktop\Kevin\src\assets\carImg\sedan4.png",
-            ]],
-            carView : false,
-          } 
-        }
+          {
+            name: "bottomLastDiv", 
+            contents : [{
+              name : "쏘렌토",
+              class: "productCategory",
+              link : "/"
+            }]
+          }
+        ],
+        slideMenu: {
+          id : ["vehicle", "buyInfo", "testCenter", "event", "customerService"],
+          carImg : [[
+            "../../assets/carImg/sedan1.png",
+            "C:\Users\k\Desktop\Kevin\src\assets\carImg\sedan2.png",
+            "C:\Users\k\Desktop\Kevin\src\assets\carImg\sedan3.png",
+            "C:\Users\k\Desktop\Kevin\src\assets\carImg\sedan4.png",
+          ]],
+          carView : false,
+        } ,
+        carView: false
       }
-    },
-    computed: {
-      // 계산된 getter
-      testComputed: function () {
-        let result;
-        console.log(this.message.message);
-        if(this.message.message === "1") { result = "숫자로들어왔네"}
-        else {result=  "문자네" ;}
-        return result;
-      }
-    },
+    }
+  },
+  mounted(){
+    
+  },
     methods:{
       showSubmenu(e){
         console.log(this.element.slideMenu.carView)
@@ -112,7 +155,7 @@ export default {
 }
 
 .carDiv img {
-  width: 15vw
+  width: 15vw;
 }
 
 #vehicle{
@@ -185,83 +228,87 @@ export default {
     text-decoration: underline !important;
   }
 
-    #middleHeader{
-      background-color: rgba(255, 255, 255, 0.744);
-      height: 9vh;
-      display: flex;
-      justify-content: space-evenly;
-      align-items: center;
-    }
+  #middleHeader{
+    background-color: rgba(255, 255, 255, 0.744);
+    height: 9vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
 
-    .middleHeaderItem:hover{
-      color: black !important;
-      text-decoration: underline !important;
-    }
+  .middleHeaderItem:hover{
+    color: black !important;
+    text-decoration: underline !important;
+  }
 
-    .middleHeaderItemDiv > a > img {
-      width: 120px;
-    }
+  #middleHeader img {
+    width: 120px;
+  }
 
-    .logoDiv{
-      margin-left: 30px;
-      margin-right: 240px;
-    }
+  .logoDiv{
+    margin-left: 30px;
+    margin-right: 240px;
+  }
 
-    .middleHeaderItem{
-      font-size: 120%;
-      color: black !important;
-      padding-left: 25px;
-      padding-right: 25px;
-      font-weight: bolder;
-    }
+  .middleHeaderItem{
+    font-size: 120%;
+    color: black !important;
+    padding-left: 25px;
+    padding-right: 25px;
+    font-weight: bolder;
+  }
 
-   #bottomHeader{
-     background-color: black;
-     border-bottom: grey 1px solid;
-     height: 6vh;
-     padding-top: 5px;
-   }
+  #bottomHeader{
+    background-color: black;
+    border-bottom: grey 1px solid;
+    height: 6vh;
+    padding-top: 5px;
+  }
 
-   #productName{
-     color: white;
-     font-size: 170%;
-   }
+  .productName{
+    color: white;
+    font-size: 170%;
+  }
 
-    #productName:hover{
-     color: white;
-     text-decoration: underline !important;
-   }
+  .productName:hover{
+    color: white;
+    text-decoration: underline !important;
+  }
 
-   #bottomFirstDiv{
-     float:left;
-     margin-left: 10.7%;
-     margin-right: 4%;
-   }
+  #bottomFirstDiv{
+    float:left;
+    margin-left: 10.7%;
+    margin-right: 4%;
+  }
 
-   #bottomSecondDiv{
-     float:left;
-     padding-top: 10px;
-   }
-   
-   .bottomSecondDivItem{
-     color: rgb(179, 177, 177) !important;
-     font-size: 120%;
-     padding-right: 18px;
-   }
+  #bottomSecondDiv{
+    float:left;
+    padding-top: 10px;
+  }
+  
+  .bottomSecondDivItem{
+    color: rgb(179, 177, 177) !important;
+    font-size: 120%;
+    padding-right: 18px;
+  }
 
-   #bottomLastDiv{
-     float:right;
-     margin-right: 500px;;
-     padding-top: 10px;
+  .bottomSecondDivItem:hover{
+    text-decoration-line: underline !important;
+  }
 
-   }
+  #bottomLastDiv{
+    float:right;
+    margin-right: 500px;;
+    padding-top: 10px;
 
-   #productCategory{
-     color: white;
-     font-size: 110%;
-   }
+  }
 
-   #productCategory:hover{
-     text-decoration: underline !important;
-   }
+  .productCategory{
+    color: white;
+    font-size: 110%;
+  }
+
+  .productCategory:hover{
+    text-decoration: underline !important;
+  }
 </style>

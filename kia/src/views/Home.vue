@@ -23,7 +23,6 @@
 export default {
   name: 'home',
   components: {
-    
   },
   data() {
     return {
@@ -84,7 +83,7 @@ export default {
 
   .basicInfoItem{
     display: flex;
-    width: 220px;
+    width: 13%;
     height: 18vh;
     text-align: center;
     flex-direction: column;
@@ -112,13 +111,15 @@ export default {
 
   .basicInfoSpanOne{
     font-size: 2vh;
-    height: 20px;
   }
 
   .basicInfoSpanTwo{
     font-size: 3vh;
     font-weight: 800;
-    height: 23px;
+  }
+
+  .basicInfoSpanThree{
+    margin-top: 2%;
   }
 
   .outsideDetailImg{

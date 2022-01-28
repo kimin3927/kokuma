@@ -1,23 +1,26 @@
 <template>
     <nav>
+          <v-alert
+  type="success"
+  :value=false></v-alert>
       <div id="navHeader">
         <div id="levelBtnDiv" @click="controlView">
           <button>①</button>
           <button>②</button>
           <button>③</button>
-          <button>+</button>
+          <button>all</button>
         </div>
         <div id="hideButtonDiv"><button id="hideButton" @click="hideBtnHandler"> &lt;&lt; </button></div>
       </div>
       <div id="tableNav">
         <ul>
-          <li v-for="item of convertedRow" :key="item.id" v-html="item.subTitle"></li>
+          <li v-for="(item) of convertedRow" :key="item.id" v-html="item.subTitle" :class="item.status"></li>
         </ul>
       </div>
       <div id="finTableNav">
-        <ul>
-          <li v-for="item of convertedFinishedRow" :key="item"> {{ item.title }}</li>
-        </ul>
+        <!-- <ul>
+          <li v-for="item of NavItems" :key="item"> {{ item.title }}</li>
+        </ul> -->
       </div>
     </nav>
 </template>
@@ -27,35 +30,36 @@ export default {
   name: 'Nav',
   data(){
     return {
-      showLevel: 1
+      showLevel: 2,
+      NavItems: this.convertedRow
     }
   },
   computed: {
     convertedRow: function () {
-      // const datas = [...this.$store.getters.getTableRow];
       const datas = []
       for(let i = 0; i < this.$store.getters.getTableRow.length; i++){
-        datas.push(this.$store.getters.getTableRow[i])
+        const data = {...this.$store.getters.getTableRow[i]};
+        datas.push(data);
       }
       for(let item of datas){
         const no = String(item.no)
         const countDot = no.match(/./g).length - 1;
-        const blank = '&nbsp;'.repeat(countDot)
+        const blank = '&nbsp;'.repeat(2 * countDot)
         let title = item.title ?? "";
         if(title.length > 10){
           switch(countDot){
             case 0 : title = /.{10}/.exec(title) + "..."; break
             case 2 : title = /.{10}/.exec(title) + "..."; break
-            case 4 : title = /.{6}/.exec(title) + "..."; break
+            case 4 : title = /.{7}/.exec(title) + "..."; break
             case 6 : title = /.{5}/.exec(title) + "..."; break
           }
         }
         item.subTitle = `${blank}${no}.${title}`;
       }
-      datas.filter((item) => {
-        return item.hide == false
+      const result = datas.filter((item) => {
+        return item.level <= this.showLevel
       })
-      return datas;
+      return result;
     },
     convertedFinishedRow: function() {
         // const newData = this.navRow.map((item) => {
@@ -87,12 +91,8 @@ export default {
         }
       }
       if(selectedValue == 4) selectedValue = 5;
+      if(selectedValue == undefined) selectedValue = 5;
       this.showLevel = selectedValue;
-      for(let item of this.convertedRow){
-        if(item.level > selectedValue) {
-          item.hide = true
-        } else item.hide = false
-      }
     }
   }
 }
@@ -167,7 +167,12 @@ ul{
 }
 
 li{
-    list-style: none;
+  list-style: none;
+  font-size: 2vh;
+}
+
+.finish{
+  text-decoration-line: line-through;
 }
 
 

@@ -1,16 +1,18 @@
-<template>
-  <div id="app">
-    <div id="left">
-      <div id="navShowBtnDiv" v-if=navBtn>
-        <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
+<template>   
+  <!-- <v-app > -->
+    <div id="app">
+      <div id="left">
+        <div id="navShowBtnDiv" v-if=navBtn>
+          <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
+        </div>
+        <Nav @hide="toggleNav"></Nav>
       </div>
-      <Nav @hide="toggleNav"></Nav>
+      <div id="right">
+        <Header></Header>
+        <Main></Main>
+      </div>
     </div>
-    <div id="right">
-      <Header></Header>
-      <Main></Main>
-    </div>
-  </div>
+  <!-- </v-app> -->
 </template>
 
 <script>
@@ -129,5 +131,4 @@ Nav {
 
 
 </style>
-
 

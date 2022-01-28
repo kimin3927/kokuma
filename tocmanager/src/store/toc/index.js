@@ -2,7 +2,15 @@ const moduleA = {
     state: () => ({ 
       tableRow : [],
       finTableRow : [],
-      totalPeriod : []
+      totalPeriod : [
+        "2022-01-20",
+        "2022-01-21",
+        "2022-01-22",
+        "2022-01-23",
+        "2022-01-24",
+      ],
+      registDates:[],
+      finDates:[1]
     }),
     mutations: {
       addNewRow(state, {item, index}) {
@@ -10,9 +18,9 @@ const moduleA = {
       },
       removeRow(state, {location, index}) {
         if(location == "table"){
+          console.log(`뮤테이션${index}`)
           state.tableRow.splice(index, 1)
         } else {
-          console.log(location, index)
           state.finTableRow.splice(index, 1)
         }
       },
@@ -29,9 +37,13 @@ const moduleA = {
       },
       checkPeriod(state){
         const fullItems = [...state.tableRow, ...state.finTableRow]
-        let allTimes1 = []
+        const allTimes1 = []
+        const registDates = []
+        const finDates= [];
         for(let item of fullItems) {
           allTimes1.push(item.registDate, item.finDate);
+          registDates.push(item.registDate)
+          finDates.push(item.finDate)
         }
         const allTimes2 = allTimes1.reduce((onlyArr, item) => {
           return onlyArr.includes(item) ? onlyArr : [...onlyArr, item]
@@ -69,15 +81,19 @@ const moduleA = {
           }
           return result
         }
-        const allTimes4 = allTime3.map((time) => {
-          return convertTime2Date(time, "day")
+        state.totalPeriod = allTime3.map((time) => {
+          return convertTime2Date(time, basis)
         })
-        state.totalPeriod = allTimes4;
+        state.finDates = finDates.filter(Boolean).map((time => {
+          return convertTime2Date(time, basis)
+        }));
+        state.registDates = registDates.filter(Boolean).map((time => {
+          return convertTime2Date(time, basis)
+        }));
       }
     },
     actions: { // 혹시 API연동이 필요하다면 여기서
-      init({ commit, state }) {
-        console.log(state);
+      init({commit}) {
         const data = JSON.parse(localStorage.getItem("toc"))
         const finData = JSON.parse(localStorage.getItem("tocFin"))
         data.sort((a,b) => {
@@ -116,13 +132,20 @@ const moduleA = {
     },
     getters: {
       getTableRow : (state) => {
-        return state.tableRow
+        const data = [...state.tableRow];
+        return data;
       },
       getFinTableRow : (state) => {
-        return state.finTableRow
+        return state.finTableRow;
       },
       getPeriod(state){
-        return state.totalPeriod
+        return state.totalPeriod;
+      },
+      getRegistDates(state){
+        return state.registDates;
+      },
+      getFinDates(state){
+        return state.finDates;
       }
     }
   }

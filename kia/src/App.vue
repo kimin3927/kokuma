@@ -1,7 +1,6 @@
 <template>
-  <div id="app">
-    <!-- <button @click="kimin"> {{ kkkk.message }}</button> -->
-    <Header :message="this.kkkk"/>
+  <div id="app" @click="bodyClick">
+    <Header/>
     <div>
       <router-view></router-view>
       <Footer />
@@ -24,19 +23,11 @@ export default {
         person: {
           koko: 'kimin'
         },
-        kkkk: {
-          message: "최초의",
-        }
       }
     },
-
-
     methods:{
-      kimin(){
-        if(this.kkkk.message === "1"){
-          this.kkkk.message = "학교"  
-        } else this.kkkk.message = "1";
-        console.log(this.$el)
+      bodyClick(){
+        return false
       }
     }
 };
