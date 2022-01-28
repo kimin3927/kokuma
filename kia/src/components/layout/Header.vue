@@ -156,7 +156,6 @@ export default {
 
 .carDiv img {
   width: 15vw;
-  display: 
 }
 
 #vehicle{

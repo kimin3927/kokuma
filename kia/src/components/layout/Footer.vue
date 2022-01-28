@@ -2,16 +2,16 @@
 	<div id='footerDiv'>
 		<div id='footerWrapperFirst'>
 			<div class="footeridChild" id='footerFirst'>
-				<router-link v-for="title in element.first.first" :key="title.name" :to="title.link">{{ title.name }}</router-link>
+				<a v-for="title in element.first.first" :key="title.name" :href="title.link">{{ title.name }}</a>
 			</div>
 			<div class="footeridChild" id='footerSecond'>EV
-				<router-link v-for="title in element.first.second" :key="title.name" :to="title.link">{{ title.name }}</router-link>
+				<a v-for="title in element.first.second" :key="title.name" :href="title.link">{{ title.name }}</a>
 			</div>
 			<div class="footeridChild" id='footerThird'>승용
-				<router-link v-for="title in element.first.third" :key="title.name" :to="title.link">{{ title.name }}</router-link>
+				<a v-for="title in element.first.third" :key="title.name" :href="title.link">{{ title.name }}</a>
 			</div>
 			<div class="footeridChild" id='footerFourth'>RV
-				<router-link v-for="title in element.first.fourth" :key="title.name" :to="title.link">{{ title.name }}</router-link>
+				<a v-for="title in element.first.fourth" :key="title.name" :href="title.link">{{ title.name }}</a>
 			</div>
 			<div class="footeridChild" id='footerFifth'>
 				Award
@@ -20,21 +20,41 @@
 						<img :src="div.imgSrc" alt="">
 					</div>
 					<div>
-						{{div.text1}}</br>
-						{{div.text2}}</br>
-						{{div.text3}}</br>
+						<span v-for="(text,i) in div.text" :key="i">{{text}}</br></span>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div id='footerWrapperSecond'>
-			<div>
-				<a v-for="title in element.second" :key="title.name" :href="title.link" :class="title.class" target="_blank"></a>
+			<div class="familyLink2">
+				<a v-for="title in element.second.familyLink1" :key="title.name" :href="title.link" :class="title.class" target="_blank"></a>
 			</div>
 			<div class="familyLink">
-				<a class="nationFlag" href="https://www.kia.com/kr/util/Kia-Motors-Global.html"></a>
-				<a href="https://www.kia.com/kr/util/Kia-Motors-Global.html">한국</a>
-			</div>	
+				<div>
+					<a class="nationFlag" href="https://www.kia.com/kr/util/Kia-Motors-Global.html"></a>
+					<a href="https://www.kia.com/kr/util/Kia-Motors-Global.html">한국</a>
+				</div>
+				<div @click="familyLink2Handler" class="dropDownLink reverseTriangle">
+					<span>Family Site</span>
+					<div id="familyList" v-if="settings.familyLink2Open">
+						<ul>
+							<li v-for="text in element.second.familyLink2" :key="text.name"> 
+								<a :href="text.href" target="_blank">{{text.name}}</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id='footerWrapperThird'>
+			<div>
+				<a v-for="link in element.third" :key="link.title" :href="link.href"><span :class="link.class"> {{link.title}}</span></a>
+			</div>
+			<span class="address">사업자 기아㈜ 대표 송호성, 최준영 사업자등록번호 119-81-02316 06797 서울특별시 서초구 헌릉로 12 (양재동)</span>
+		</div>
+		<div id='footerWrapperFourth'>
+			<div style="margin-left:16px;"><a class="home" href="/"><span>홈</span></a></div>
+			<div>Ⓒ Kia CORP. ALL RIGHTS RESERVED</div>
 		</div>
 	</div>
 </template>
@@ -93,103 +113,134 @@ export default {
 					fifth : [
 						{
 							imgSrc : "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/new/f_mark05.jpg",
-							text1 : "21년 국가고객만족도(NCSI)",
-							text2 : "RV(6년 연속), 경형(7년 연속),",
-							text3 : "중형(2년 연속), 대형승용부문 1위"
+							text : ["21년 국가고객만족도(NCSI)","RV(6년 연속), 경형(7년 연속),","중형(2년 연속), 대형승용부문 1위"]
 						},
 						{
 							imgSrc : "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/new/f_mark01.jpg",
-							text1 : "21년 한국 산업의 서비스 품질지수",
-							text2 : "우수 콜센터 선정 (18년 연속)",
-							text3 : ""
+							text : ["21년 한국 산업의 서비스 품질지수","우수 콜센터 선정 (18년 연속)"]
 						},
 						{
 							imgSrc : "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/new/f_mark02.jpg",
-							text1 : "20년 한국산업의 서비스 품질지수",
-							text2 : "자동차 A/S부문 1위(7년 연속)",
-							text3 : ""
+							text : ["20년 한국산업의 서비스 품질지수", "자동차 A/S부문 1위(7년 연속)", ""]
 						},
 						{
 							imgSrc : "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/new/f_mark03.jpg",
-							text1 : "21년 대한민국 국가브랜드 대상",
-							text2 : "자동차 멤버십 부문 1위(10년 연속)",
-							text3 : ""
+							text : ["21년 대한민국 국가브랜드 대상", "자동차 멤버십 부문 1위(10년 연속)", ""]
 						},
 						{
 							imgSrc : "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/new/f_mark07.jpg",
-							text1 : "21년 한국서비스품질지수(KS-SQI)",
-							text2 : "자동차 판매서비스 부문 1위",
-							text3 : ""
+							text : ["21년 한국서비스품질지수(KS-SQI)", "자동차 판매서비스 부문 1위", ""]
 						},
 						{
 							imgSrc : "https://www.kia.com/content/dam/kwcms/kr/ko/images/common/new/f_mark06.png",
-							text1 : "웹 접근성 품질인증",
-							text2 : "",
-							text3 : ""
+							text : ["웹 접근성 품질인증", "", ""]
 						},
 					]
 				},
-				second : [
-					{link: "https://members.kia.com/kr/view/kindex.do?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_redmembers", name: "기아멤스", class: "helpLink kiared"},
-					{link: "https://play.kia.com/main.do?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_playkia", name: "기아공식블로그", class: "helpLink playkia"},
-					{link: "https://m.post.naver.com/my.nhn?memberNo=40524516&navigationType=push?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_footer_naverpost", name: "카피엔스", class: "helpLink naver"},
-					{link: "https://www.facebook.com/kia.co.kr?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_footer_facebook", name: "facebook", class: "helpLink facebook"},
-					{link: "https://www.instagram.com/kia.kor", name: "instagram", class: "helpLink instagram"},
-					{link: "https://www.youtube.com/c/KiaKorea", name: "youtube", class: "helpLink youtube"},
+				second : {
+					familyLink1 :
+					[
+						{link: "https://members.kia.com/kr/view/kindex.do?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_redmembers", name: "기아멤스", class: "helpLink kiared"},
+						{link: "https://play.kia.com/main.do?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_playkia", name: "기아공식블로그", class: "helpLink playkia"},
+						{link: "https://m.post.naver.com/my.nhn?memberNo=40524516&navigationType=push?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_footer_naverpost", name: "카피엔스", class: "helpLink naver"},
+						{link: "https://www.facebook.com/kia.co.kr?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_footer_facebook", name: "facebook", class: "helpLink facebook"},
+						{link: "https://www.instagram.com/kia.kor", name: "instagram", class: "helpLink instagram"},
+						{link: "https://www.youtube.com/c/KiaKorea", name: "youtube", class: "helpLink youtube"},
+					], familyLink2 : [
+						{name:"현대자동차그룹", href:"http://www.hyundai.co.kr/?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_footer_hyundai"},
+						{name:"브랜드", href:"http://www.kia.com/worldwide/?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_worldwide"},
+						{name:"기아블로그 'PLAY Kia' ", href:"http://play.kia.com/?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_footer_playkiablog"},
+						{name:"기아 드라이빙 아카데미", href:"https://drivingexperience.kia.com"},
+						{name:"인재 채용", href:"http://career.kia.com/kfront/main.do?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_recruit"},
+						{name:"IR", href:"https://worldwide.kia.com/kr/company/ir"},
+						{name:"동반성장", href:"http://winwin.hyundai.com/?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_footer_winwin"},
+						{name:"지속가능경영", href:"https://worldwide.kia.com/kr/company/sustainability/csr/how-it-works"},
+						{name:"글로벌경영연구소", href:"http://gbic.hyundai.com/?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_footer_gbic"},
+						{name:"기아 타이거즈", href:"http://www.tigers.co.kr/?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_footer_tigers"},
+						{name:"기아군용", href:"http://military.kia.com/kr/main.do?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_footer_military"},
+						{name:"Kia Connect", href:"http://uvo.kia.com/main/index.html?utm_source=kmc_kr&amp;utm_medium=website&amp;utm_campaign=kia_uvo"}
+					]
+				},
+				third : [
+					{title:"개인정보 처리방침", href: "https://www.kia.com/kr/legal/privacy/all-account.html", class:"terms verticalLine"},
+					{title:"이용약관", href: "https://www.kia.com/kr/terms/website.html", class:"terms verticalLine"},
+					{title:"윤리경영 사이버감사실", href: "http://audit.hyundai.com/?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_pr_audit", class:"terms verticalLine"},
+					{title:"전자공고", href: "http://pr.kia.com/ko/company/ir/electronic-notices-and-disclosures/electronic-notice.do?utm_source=kmc_kr&utm_medium=website&utm_campaign=kia_footer_e_notices", class:"terms verticalLine"},
+					{title:"사이트맵", href: "https://www.kia.com/kr/sitemap.html", class:"terms"},
 				]
+			},
+			settings:{
+				familyLink2Open: false
 			}
-		}	
+		}
 	},
 	mounted(){
 		console.log(typeof this.element.first.first[0].link)
+	},
+	methods:{
+		familyLink2Handler(){
+			this.settings.familyLink2Open = !this.settings.familyLink2Open;
+		}
 	}
 }
 </script>
 
 <style>
+
 	#footerDiv{
+		display: flex;
+		flex-direction: column;
 		background-color: #05141f;
-		height: 820px;
-		padding-top: 6%;
-		padding-left:17%;
-		padding-right:17%;
-		line-height: 30px;
+		height: 86vh;
+		padding-top: 8vh;
+		padding-left:15%;
+		padding-right:15%;
+		line-height: 3vh;
 		text-align: left;
+		font-size: 1.5vh;
+	}
+
+	#footerWrapperFirst{
+		font-size: 1.8vh;
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.footeridChild{
 		display: inline-flex;
+		flex-grow: 1;
 		flex-direction: column;
-		width: 150px;
-		height: 500px;
-		margin-right: 60px;
+		height: 50vh;
 		color: white;
-		font-size: 14px;
+		font-size: 1em;
 		text-align: left;
 	}
 
 	.footeridChild a{
 		color: rgba(255,255,255, 0.6);
-		font-size: 14px;
+		font-size: 0.8em;
 		font-weight: 500;
+	}
+
+	#footerFifth{
+		flex-grow: 0.1;
 	}
 
 	.footeridChild a:hover{
 		color: white;
-		text-decoration: green wavy underline;
-		font-size: 14px;
+		text-decoration-line: underline !important;
 		font-weight: 500;
 	}
 
 	#footerFirst{
-		margin-right: 270px;
-		line-height: 40px;
+		line-height: 4vh;
+		flex-grow: 2;
 	}
 
 	#footerFirst a{
 		color: white;
 		font-weight: 600;	
-		font-size: 17px;
+		font-size: 1em;
 	}
 
 	#footerFifth{
@@ -201,33 +252,42 @@ export default {
 	.awardDiv{
 		display: flex;
 		justify-content:left;
-		width: 280px;
-		margin-bottom: 20px;
-		font-size: 12px;
+		width: 35vh;
+		margin-bottom: 2em;
+		font-size: 0.7em;
 		font-weight: 500;
-		line-height: 160%;
+		line-height: 1.5em;
 		color:rgba(255,255,255, 0.6);
 	}
 
 	.awardDiv div{
-		margin-right: 10px;
+		margin-right: 1em;
 	}
 
 	.awardDiv img{
-	width: 50px;
-	height: 30px;
+	width: 5em;
+	height: 3em;
 	}
 	
 	#footerWrapperSecond{
 		display: flex;
+		margin-top: 5vh;
 		justify-content: space-between;
 	}
 
+	.familyLink2{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
 	.familyLink{
-		display: table-cell;
-		vertical-align: middle;
-		border: 1px solid yellow;
-		width: 400px;
+		display: flex;
+		position: absolute;
+		right: 15%;
+		justify-content: space-between;
+		align-items: flex-start;
+		width: 40vh;
 	}
 
 	.familyLink .nationFlag{
@@ -248,7 +308,44 @@ export default {
 		text-decoration-line: underline !important;
 	}
 	
+	.dropDownLink{
+		display: inline-block;
+		text-align: left;
+		text-indent: 10px;
+		cursor: pointer;
+		width: 60%;
+		border: 1px solid rgba(63, 65, 68, 0.411);
+		color: rgb(223, 223, 223);
+	}
 
+	.dropDownLink:active{
+		background-color: rgba(46, 45, 45, 0.562);
+		color: rgb(160, 160, 160);
+	}
+
+	#familyList{
+		background-color: white;
+		height: 150px;
+		overflow-y: auto;
+	}
+
+	#familyList ul{
+		list-style-type: none;
+		padding: 0;
+	}
+
+	#familyList li{
+		margin: 5px;
+	}
+
+	#familyList li:hover{
+		background-color: rgba(201, 199, 199, 0.548);
+	}
+
+	#familyList a{
+		color: black;
+	}
+	
 	.helpLink {
 		height: 50px;
 		display:inline-block;
@@ -261,8 +358,8 @@ export default {
 	}
 
 	.kiared{
-		width: 120px;
-		background-position: 10px 11px;
+		width: 110px;
+		background-position: 0px 11px;
 	}
 
 	.playkia{
@@ -289,6 +386,90 @@ export default {
 		width: 50px;
 		background-position: -350px 11px;
 	}
+
+	.reverseTriangle::before{
+    position: absolute;
+		top: 14px;
+    left: 95%;
+    width: 7px;
+    height: 2px;
+    background: #f8fafc;
+    transform: rotate(45deg);
+    transition-duration: 300ms;
+    content: '';
+	}
+
+	.reverseTriangle::after{
+    position: absolute;
+		top: 14px;
+    right: 2.5%;
+    width: 7px;
+    height: 2px;
+    background: #f8fafc;
+    transform: rotate(130deg);
+    transition-duration: 300ms;
+    content: '';
+	}
+
+	#footerWrapperThird{
+		margin: 3vh 0 2vh 0;
+		line-height: 120%;
+	}
+
+	.terms{
+		color: rgba(255,255,255, 0.6);
+		font-size: 0.7em;
+	}
+
+	.terms:hover{
+		color:white;
+		text-decoration-line: underline;
+	}
+
+	.verticalLine{
+		padding-right: 1.5em;
+		margin-right: 1em;
+		border-right: 1px solid white;
+	}
+
+	.address{
+		color: rgba(255,255,255, 0.6);
+		font-size: 0.6em;
+	}
+	#footerWrapperFourth{
+		display: flex;
+		justify-content: space-between;
+		line-height: 0;
+	}
+
+	#footerWrapperFourth span{
+		color: rgba(255,255,255, 0.6) !important;
+		font-size: 1em;
+	}
+
+	.home:after {
+    content: '';
+    height: 0;
+    width: 0;
+    display: block;
+    position: relative;
+    top: -0.5em;
+    left: -18px;
+    border: 9px solid transparent;
+    border-bottom-color: rgba(255,255,255,0.6);
+    border-width: 0 6px 7px 6px;
+	}
+
+	.home:before {
+    content: '';
+    height: 5px;
+    width: 10px;
+    display: block;
+    position: relative;
+    top: 0.3em;
+    left: -17.2px;
+    background: rgba(255,255,255,0.6);
+}
 
 @media screen and (max-width: 1000px) { 
 	#footerDiv{
@@ -324,6 +505,8 @@ export default {
 		color:white
 	}
 
+	
+	
 }
 
 </style>

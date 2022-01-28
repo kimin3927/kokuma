@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <header>김기민의 반응형 테스트(헤더)
+        <div style="border:1px solid yellow; width: 150%">1</div>
+    </header>
+    <main>메인
+        <div class="mainChild0">
+            <a class="link" href="https://www.naver.com"></a>
+            <a class="link" href="https://www.naver.com">a태그</a>
+            <a class="link" href="https://www.naver.com">a태그</a>
+        </div>
+        <div class="mainChild1">
+            <span style="font-size: 15px;">스팬입니다15.</span></br>
+            <span style="font-size: 12px;">스팬입니다12.</span></br>
+            <span style="font-size: 9px;">스팬입니다9.</span></br>
+            <span style="font-size: 7px;">스팬입니다7.</span></br>
+            <span>스팬입니다.</span>
+        </div>
+        <div class="mainChild2">mainChild2
+            <div style="display: inline-block; width: 50%; margin: 3%; border: dotted 1px saddlebrown">또다른 div</div>
+            <div style="display: inline-block; width: 10%; margin: 3%;border: dotted 1px cadetblue">또다른 div2</div>
+        </div>
+    </main>
+    <footer>
+        <span>스팬입니다.</span></br>
+            <span>스팬입니다.</span></br>
+    </footer>
+
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        html{
+            border: 3px solid red;
+            height: 100vh;
+            overflow: auto;
+        }
+
+        body{
+            border: 1px solid brown;
+            height: 100%;
+            margin:0;
+            box-sizing: border-box;
+            font-size: 5vh;
+        }
+        header{
+            border: 1px solid green;
+            height: 20%;
+            display: block;
+            font-size: 0.5em;
+        }
+        footer{
+            width: 50%;
+            height: 9%;
+            border: 1px solid green;
+        }
+        main{
+            display: flex;
+            justify-content: space-between;
+            border: 1px solid red;
+            height: 70%;
+            font-size: 50%;
+        }
+
+        .mainChild0{
+            border: 1px solid palegreen;
+            border-radius: 10px;
+            white-space: nowrap;
+        }
+
+        .mainChild1{
+            border: 1px solid black;
+            border-radius: 10px;
+        }
+
+        .mainChild2{
+            border: 1px dashed blue;
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .link{
+            display: inline-block;
+            border: none;
+            background-color: blanchedalmond;
+            width: 10vh;
+        }
+
+
+
+    </style>
+</body>
+</html>

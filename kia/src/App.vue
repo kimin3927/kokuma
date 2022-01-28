@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="bodyClick">
     <Header/>
     <div>
       <router-view></router-view>
@@ -26,7 +26,9 @@ export default {
       }
     },
     methods:{
-
+      bodyClick(){
+        return false
+      }
     }
 };
 </script>

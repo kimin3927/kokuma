@@ -1,7 +1,6 @@
 
 <template>
   <main>
-    <div style="width:100px; height:100px; border: 1px solid red">1</div>
     <div v-if='customOn' id='customBoard'>
       <div class="closeBtnWrapper"><button class="closeBtn" @click="deleteBox">x</button></div>
       <div @click="colorPicker">
@@ -15,7 +14,7 @@
     </div>
     <div class="levelFormDiv">
       <form class="levelForm" oninput = "result.value=parseInt(a.value)">
-        <input @input="kimin" type="range" id="a" name="a" min="1" max="5" step="1">
+        <input @input="viewControler" type="range" id="a" name="a" min="1" max="5" step="1">
         <output name="result" for="a"></output>
       </form>
     </div>
@@ -23,16 +22,12 @@
       <table>
         <thead>
           <tr>
-              <th @click="convertTime2Date">순번</th>
-              <th>날짜</th>
-              <th>내용</th>
-              <th>완료</th>
-              <th>관리</th>
+            <th v-for="text in thText" :key=text>{{text}}</th>
           </tr>
         </thead>
         <button id='tableRowAddBtn' @click="addNewRow">+</button>
         <tbody>
-          <tr v-for="(row) in filterredData" :key="row.id" :id="row.id" :class="row.levelClass" >
+          <tr v-for="(row) in filterredData" :key="row.id" :id="row.id" :class="row.levelClass +' '+ row.status" >
             <td class="level">{{row.targetLevel}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD">
@@ -79,23 +74,29 @@
         </tbody>
       </table>
     </div>
-    <div id="finTableDiv">
-      <table v-if="storeFinTableRow[0]" id="finTable">
+    <div v-if="storeFinTableRow[0]" id="finTableDiv">
+      <button v-for="text in buttonExample" :key="text" @click="viewControler" class="finTableViewButton">{{text}}</button>
+      <table id="finTable">
         <thead>
           <tr>
-              <th>순번</th>
-              <th>날짜</th>
-              <th>내용</th>
-              <th>완료</th>
-              <th>관리</th>
+            <th v-for="text in thText" :key=text>{{text}}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(row) in storeFinTableRow" :key="row.id" :id="row.id" :class="row.levelClass">
+          <tr v-for="(row) in filterredFinData" :key="row.id" :id="row.id" :class="row.levelClass">
             <td class="level">{{row.level}}</td>
             <td class="motherNumber">{{row.motherNumber}}</td>
             <td class="numberTD">
               <div class="number" >{{row.finNo}}</div>
+              <div class="control">
+                <svg class="plus" @click="controlView" viewBox="-2 -2 20 20" style="width: 20px; height: 20px; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden; display:none;">
+                  <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z">
+                  </path>
+                </svg>
+                <svg class="minus" @click="controlView" xmlns="http://www.w3.org/2000/svg" viewBox="1 0 24 24" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:19px; height:19px; display:block;">
+                  <line x1="5" y1="12" x2="21" y2="12"/>
+                </svg>
+              </div>
             </td>
             <td class="registDate">{{row.convertedRegistDate}}</td>
             <td class='content'>
@@ -134,6 +135,9 @@ export default {
       customOn: false,
 			viewLevel : 5,
       tempData:[],
+      thText: ["순번","날짜","내용","완료","관리"],
+      buttonExample :["①", "②", "all"],
+      finTableViewLevel : 1
     }
   },
   mounted(){
@@ -145,6 +149,12 @@ export default {
     this.$store.dispatch("checkPeriod")
   },
   computed : {
+		storeTableRow(){
+			return this.$store.getters.getTableRow;
+		},
+		storeFinTableRow(){
+			return this.$store.getters.getFinTableRow;
+		},
     filterredData(){
       const data = this.storeTableRow.filter((item) => {
         return item.level <= this.viewLevel;
@@ -153,17 +163,43 @@ export default {
       })
       return data;
     },
-		storeTableRow(){
-			return this.$store.getters.getTableRow;
-		},
-		storeFinTableRow(){
-			return this.$store.getters.getFinTableRow;
-		}
+    filterredFinData(){
+      const data = this.storeFinTableRow.filter((item) => {
+        return item.level <= this.finTableViewLevel;
+      }).filter((item) => {
+        return item.hide !== true;
+      })
+      return data;
+    }
   },
   methods: {
-		kimin(e){
-			const level = e.currentTarget.value;
-			this.viewLevel = level;
+		viewControler(e){
+      const targetDiv = e.currentTarget.closest("div").id
+      if(targetDiv !== "finTableDiv"){
+        const level = e.currentTarget.value;
+        this.viewLevel = level;  
+        for(let item of this.storeTableRow){
+          if(item.level <= this.viewLevel){
+            item.hide = false;
+          }
+        }
+      } else {
+        const level = e.currentTarget
+        const finLevelButtons = document.querySelectorAll(".finTableViewButton")
+        for(let i = 0; i < finLevelButtons.length; i++){
+          if(level == finLevelButtons[i]){
+            this.finTableViewLevel = i + 1;
+            break;
+          }
+        }
+        if(this.finTableViewLevel == 3) this.finTableViewLevel = 5;
+        for(let item of this.storeFinTableRow){
+          if(item.level <= this.finTableViewLevel){
+            item.hide = false;
+          }
+        }
+      }
+			
 		},
     controlView(e){
       const targetRow = e.currentTarget.closest("tr");
@@ -256,13 +292,23 @@ export default {
       }
     },
     findChildrenRow(row, divID){
-      const rows = [...document.querySelector(divID).querySelector("tbody").querySelectorAll("tr")];
       const children = [];
-      const rowNo = row.querySelector(".number").textContent;
-      for(let i = 0; i < rows.length; i++){
-        if(rows[i].querySelector(".motherNumber").textContent == rowNo) {
-          children.push(rows[i])
-          children.push(this.findChildrenRow(rows[i], divID))
+      if(divID !== "#finTableDiv"){
+        const rows = [...document.querySelector(divID).querySelector("tbody").querySelectorAll("tr")];
+        const rowNo = row.querySelector(".number").textContent;
+        for(let i = 0; i < rows.length; i++){
+          if(rows[i].querySelector(".motherNumber").textContent == rowNo) {
+            children.push(rows[i])
+            children.push(this.findChildrenRow(rows[i], divID))
+          }
+        }
+      } else {
+        const rowIndex = this.findItsObjIndex(row, this.storeFinTableRow);
+        for(let i = rowIndex + 1; i < this.storeFinTableRow.length; i++){
+          children.push(this.storeFinTableRow[i])
+          if(this.storeFinTableRow[i].level == 1){
+            break;
+          }
         }
       }
       return children.flat(1);
@@ -274,43 +320,34 @@ export default {
       const familyArray = [targetRow, ...children];
       const items = this.findItsObj(familyArray, this.storeTableRow);
       if(targetObj.level !== 1){
-        if(!targetRow.querySelector(".number").classList.contains("finish")) {
-          for(let row of familyArray){
-            const tds = [row.querySelector(".content"), row.querySelector(".number"), row.querySelector(".registDate"), row.querySelector(".finDate"), row.querySelector(".manage")];
-            for(let td of tds){
-              td.classList.add("finish")
-            }
-          }
+        if(!targetRow.classList.contains("finish")) {
+          targetRow.classList.add("finish")
           for(let item of items){
             item.status = "finish"
+            item.color = "rgba(125,125,125,0.5)"
             item.finDate = this.getTime();
             item.convertedFinDate = this.convertTime(this.getTime());
           }
         } else {
-            for(let row of familyArray) {
-            const tds = [row.querySelector(".content"), row.querySelector(".number"), row.querySelector(".registDate"), row.querySelector(".finDate"), row.querySelector(".manage")];
-            for(let td of tds) {
-              td.classList.remove("finish")
-            }
-          }
+          targetRow.classList.remove("finish")
           for(let item of items){
             item.status = ""
             item.finDate = "";
             item.convertedFinDate = "";
+            item.color = this.findMyColor(item)
           }
         }
       } else if(targetObj.level == 1) {
-          for(let i = 0 ; i < items.length; i++) {
-            const idNo = this.storeFinTableRow.length + 1;
-            const finNo = String(new Date().getFullYear()).slice(2,4) + String(new Date().getMonth() + 1).padStart(2,'0') + "-" +String(idNo).padStart(2,'0');
-						const index = this.findItsObjIndex(items[i], this.storeTableRow)
-            items[i].finNo = finNo;
-            items[i].finDate = this.getTime();
-            items[i].convertedFinDate = this.convertTime(this.getTime());
-            items[i].status = "finish";
-						this.$store.dispatch("finishItem", {item:items[i], index:index});
-          }
-          this.$emit("finish", this.finTableRow);
+        for(let i = 0 ; i < items.length; i++) {
+          const idNo = this.storeFinTableRow.length + 1;
+          const finNo = String(new Date().getFullYear()).slice(2,4) + String(new Date().getMonth() + 1).padStart(2,'0') + "-" +String(idNo).padStart(2,'0');
+          const index = this.findItsObjIndex(items[i], this.storeTableRow)
+          items[i].finNo = finNo;
+          items[i].finDate = this.getTime();
+          items[i].convertedFinDate = this.convertTime(this.getTime());
+          items[i].status = "finish";
+          this.$store.dispatch("finishItem", {item:items[i], index:index});
+        }
       }
     },
     findItsObjIndex(row, location){
@@ -407,6 +444,7 @@ export default {
       const nextNumber = lastNumber + 1;
       const newRow = this.itemClass(1, "", nextNumber, this.storeTableRow.length,"","","","firstLevel","rgba(0,255,0,1)")
 			this.$store.dispatch("addRow", {item:newRow});
+      this.$store.dispatch("checkPeriod")
     },
     controlExtensionBtn(e) {
       const targetBtn = e.currentTarget;
@@ -428,26 +466,31 @@ export default {
     removeRow(e){
 			const targetRow = e.currentTarget.closest("tr");
       let location;
-      if(targetRow.closest("div").id == "tableDiv"){
+      const divID =  "#" + targetRow.closest("div").id;
+      if(divID == "#tableDiv"){
         location = this.storeTableRow;
       } else location = this.storeFinTableRow;
-      const children = this.findMyChildren(targetRow, location)
-      const targetArray = [targetRow,...children];
+      const childrenRow = this.findChildrenRow(targetRow, divID)
+      const targetArray = [targetRow,...childrenRow];
 			for(let i = targetArray.length - 1; i > -1; i--){
 				const targetIndex = this.findItsObjIndex(targetArray[i], location)
-				if(location == this.storeTableRow){
+				if(divID == "#tableDiv"){
 					this.$store.dispatch("removeRow", {location : "table", index : targetIndex})
 				} else this.$store.dispatch("removeRow", {location : "finTable", index : targetIndex})
 			}
 		},
     recoverBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
-      const targetIndex = this.findItsObjIndex(targetRow, this.storeFinTableRow)
-      const targetObj = this.storeFinTableRow[targetIndex];
-      targetObj.finDate = ""
-      targetObj.convertedFinDate = "";
-			this.$store.dispatch("addRow", {item:targetObj})
-			this.$store.dispatch("removeRow", {location : this.storeTableRow, index: targetIndex})
+      const childrenRows = this.findChildrenRow(targetRow,"#finTableDiv")
+      for(let row of [targetRow,...childrenRows]){
+        const rowIndex = this.findItsObjIndex(row, this.storeFinTableRow)
+        const rowObj = this.storeFinTableRow[rowIndex];
+        rowObj.status = "";
+        rowObj.finDate = "";
+        rowObj.convertedFinDate = "";
+        this.$store.dispatch("addRow", {item:rowObj})
+        this.$store.dispatch("removeRow", {location : "finTable", index: rowIndex})
+      }
     },
     clockSet(){
       const date = new Date();
@@ -493,6 +536,7 @@ main{
   min-height: 80%;
   margin: 0.5vw;
   padding-top: 0;
+  text-align:left;
 }
 
 #tableDiv{
@@ -515,6 +559,7 @@ table{
   width: 100%;
   border-collapse: collapse;
   color: black;
+  text-align:center;
 }
 
 th{
@@ -536,6 +581,7 @@ th:nth-child(4){
 
 th:nth-child(5){
   width: 12%;
+  white-space: nowrap;
   border-radius: 0 10px 10px 0;
 }
 
@@ -643,6 +689,18 @@ td{
   background-color: transparent;
   border: none;
   width: 100%;
+  cursor:text;
+}
+
+.title {
+  cursor:text;
+}
+
+.title > input:focus{
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  outline-style: none;
 }
 
 .contents > textarea{
@@ -690,6 +748,7 @@ h1{
   width: 100%;
   height: 0;
   transition: all 300ms;
+  cursor: text;
 }
 
 tr {
@@ -715,7 +774,11 @@ tr {
 
 
 .hoverHidden{
+  display: flex;
+  justify-content: center;
+  align-items:center;
   opacity: 0;
+  height: 100%;
 }
 
 .hoverHidden:hover{
@@ -732,10 +795,6 @@ tr {
   border-radius: 5px;
 }
 
-.finish{
-  background-color: rgb(185, 185, 185) !important;
-}
-
 .finish *{
   text-decoration: line-through;
 }
@@ -746,6 +805,21 @@ tr {
 
 #finTableDiv  .number, .registDate, .content, .finDate, .manage{
   background-color: rgb(190, 190, 190);
+}
+
+.registDate, .finDate{
+  white-space: nowrap;
+}
+
+.manage{
+  height: inherit;
+  
+}
+
+.manage button {
+  font-size: 1vh;
+  height: 70%;
+  padding: 0 0.5vw 0 0.5vw ;
 }
 
 #customBoard{
@@ -771,6 +845,15 @@ tr {
   color: grey;
   background-color: transparent;
   border:0;
+}
+
+.finTableViewButton{
+  border-radius: 10px;
+  border:none;
+}
+
+.finTableViewButton:active{
+  background-color: rgb(187, 187, 187);
 }
 
 </style>
