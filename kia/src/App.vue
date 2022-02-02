@@ -34,6 +34,19 @@ export default {
 </script>
 
 <style>
+
+* {
+  box-sizing: content-box !important;
+}
+
+header{
+  position:fixed;
+}
+
+router-view{
+  position: relative;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

@@ -1,18 +1,16 @@
 <template>   
-  <!-- <v-app > -->
-    <div id="app">
-      <div id="left">
-        <div id="navShowBtnDiv" v-if=navBtn>
-          <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
-        </div>
-        <Nav @hide="toggleNav"></Nav>
+  <div id="app" @click="clickBody">
+    <div id="left">
+      <div id="navShowBtnDiv" v-if=navBtn>
+        <button id="navShowBtn" @click="toggleNav">&gt;&gt;</button>
       </div>
-      <div id="right">
-        <Header></Header>
-        <Main></Main>
-      </div>
+      <Nav @hide="toggleNav"></Nav>
     </div>
-  <!-- </v-app> -->
+    <div id="right">
+      <Header></Header>
+      <Main :bodyClicked="bodyClick"></Main>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -24,7 +22,8 @@ export default {
   name: 'App',
   data(){
     return{
-      navBtn: false
+      navBtn: false,
+      bodyClick : 1
     }
   },
   components: {
@@ -33,6 +32,9 @@ export default {
     Main,
   },
   methods: {
+    clickBody(){
+      this.bodyClick++
+    },
     connectTable2Nav(data){
       this.tableItems = [...data];
     },

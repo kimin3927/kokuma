@@ -98,7 +98,7 @@ export default {
               {
                 name: "가격",
                 class: "bottomSecondDivItem",
-                link : "/"
+                link : "/Price"
               }
               
             ]
@@ -143,6 +143,10 @@ export default {
 </script>
 
 <style>
+
+*{
+  box-sizing:content-box !important;
+}
 
 #slideMenu{
   text-align: center;
@@ -196,7 +200,6 @@ export default {
   display: none;
 }
   #header{
-    position: fixed;
     z-index: 1;
     width: 100%;
   }
@@ -260,14 +263,16 @@ export default {
 
   #bottomHeader{
     background-color: black;
-    border-bottom: grey 1px solid;
     height: 6vh;
-    padding-top: 5px;
+    line-height: 0;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
   }
 
   .productName{
     color: white;
-    font-size: 170%;
+    font-size: 1.5em;
   }
 
   .productName:hover{
@@ -276,7 +281,8 @@ export default {
   }
 
   #bottomFirstDiv{
-    float:left;
+    display: flex;
+    align-items: center;
     margin-left: 10.7%;
     margin-right: 4%;
   }
@@ -288,7 +294,7 @@ export default {
   
   .bottomSecondDivItem{
     color: rgb(179, 177, 177) !important;
-    font-size: 120%;
+    font-size: 100%;
     padding-right: 18px;
   }
 
@@ -305,7 +311,7 @@ export default {
 
   .productCategory{
     color: white;
-    font-size: 110%;
+    font-size: 100%;
   }
 
   .productCategory:hover{

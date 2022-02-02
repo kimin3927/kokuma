@@ -1,128 +1,105 @@
 
 <template>
   <main>
-    <div v-if='customOn' id='customBoard'>
-      <div class="closeBtnWrapper"><button class="closeBtn" @click="deleteBox">x</button></div>
-      <div @click="colorPicker">
-          <input type="radio" id="red" value="rgba(255,0,0,1)">
-          <label for="red" style="color:red">■</label>
-          <input type="radio" id="green" value="rgba(0,255,0,1)">
-          <label for="green" style="color:green">■</label>
-          <input type="radio" id="yellow" value="rgba(255,255,0,1)">
-          <label for="yellow" style="color:yellow">■</label>
-      </div>
+    <div id="tableViewDiv">
+      <router-link to="/">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 490 490" style="width:25px; height:25px;" xml:space="preserve">
+        <g>
+          <path d="M16.822,284.968h39.667v158.667c0,9.35,7.65,17,17,17h116.167c9.35,0,17-7.65,17-17V327.468h70.833v116.167    c0,9.35,7.65,17,17,17h110.5c9.35,0,17-7.65,17-17V284.968h48.167c6.8,0,13.033-4.25,15.583-10.483    c2.55-6.233,1.133-13.6-3.683-18.417L260.489,31.385c-6.517-6.517-17.283-6.8-23.8-0.283L5.206,255.785    c-5.1,4.817-6.517,12.183-3.967,18.7C3.789,281.001,10.022,284.968,16.822,284.968z M248.022,67.368l181.333,183.6h-24.367    c-9.35,0-17,7.65-17,17v158.667h-76.5V310.468c0-9.35-7.65-17-17-17H189.656c-9.35,0-17,7.65-17,17v116.167H90.489V267.968    c0-9.35-7.65-17-17-17H58.756L248.022,67.368z"/>
+        </g>
+      </svg>
+      </router-link>
+      <router-link to="/Garbage">
+        <svg  id="garbageBin" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 800 800" style="width:25px; height:25px;" xml:space="preserve">
+          <g>
+            <path d="M648.587,99.881H509.156C500.276,43.486,452.761,0,394.444,0S287.696,43.486,279.731,99.881H142.315   c-26.733,0-48.43,21.789-48.43,48.43v49.437c0,24.719,17.761,44.493,41.564,47.423V727.64c0,35.613,28.655,64.268,64.268,64.268   h392.475c35.613,0,64.268-28.655,64.268-64.268V246.087c23.711-3.937,41.564-23.711,41.564-47.423v-49.437   C697.017,121.67,675.228,99.881,648.587,99.881z M394.444,36.62c38.543,0,70.219,26.733,77.085,63.261H316.351   C324.225,64.268,355.901,36.62,394.444,36.62z M618.924,728.739c0,14.831-11.901,27.648-27.648,27.648H198.71   c-14.831,0-27.648-11.901-27.648-27.648V247.185h446.948v481.554H618.924z M660.397,197.748c0,6.958-4.944,11.902-11.902,11.902   H142.223c-6.958,0-11.902-4.944-11.902-11.902v-49.437c0-6.958,4.944-11.902,11.902-11.902h505.265   c6.958,0,11.901,4.944,11.901,11.902v49.437H660.397z M253.09,661.45V349.081c0-9.887,7.873-17.761,17.761-17.761   s17.761,7.873,17.761,17.761V661.45c0,9.887-7.873,17.761-17.761,17.761C260.964,680.309,253.09,671.337,253.09,661.45z    M378.606,661.45V349.081c0-9.887,7.873-17.761,17.761-17.761c9.887,0,17.761,7.873,17.761,17.761V661.45   c0,9.887-7.873,17.761-17.761,17.761C386.57,680.309,378.606,671.337,378.606,661.45z M504.212,661.45V349.081   c0-9.887,7.873-17.761,17.761-17.761s17.761,7.873,17.761,17.761V661.45c0,9.887-7.873,17.761-17.761,17.761   C513.093,680.309,504.212,671.337,504.212,661.45z"/>
+          </g>
+        </svg>
+      </router-link>
+      <router-link to="/FinTable">
+        <svg width="25" height="25" viewBox="0 0 490 490" id="svg2"  xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" inkscape:version="0.91 r" sodipodi:docname="anydo.svg" inkscape:export-filename="/home/alecive/Scrivania/firefoxTest1.png" inkscape:export-xdpi="100" inkscape:export-ydpi="100">
+          <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="0.6485915" inkscape:cx="314.02181" inkscape:cy="169.95964" inkscape:document-units="px" inkscape:current-layer="svg2" showgrid="false" inkscape:window-width="1366" inkscape:window-height="744" inkscape:window-x="0" inkscape:window-y="24" inkscape:window-maximized="1" inkscape:object-paths="false" inkscape:snap-intersection-paths="false" inkscape:object-nodes="true" inkscape:snap-smooth-nodes="true" inkscape:snap-nodes="true"/>
+          <defs id="defs4">
+            <linearGradient x1="19.244999" y1="21.030804" x2="19.360001" gradientUnits="userSpaceOnUse" y2="44.984001" id="linearGradient2460">
+              <stop offset="0" style="stop-color:#00bdf0;stop-opacity:1;" id="stop3602"/>
+              <stop offset="1" style="stop-color:#0093dc;stop-opacity:1;" id="stop3604"/>
+            </linearGradient>
+            <linearGradient inkscape:collect="always" xlink:href="#ButtonShadow-0-1-1-5-9" id="linearGradient4114-2-6" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.0317796,0,0,1.0317796,-830.86406,592.67791)" x1="1012.5133" y1="484.41721" x2="1006.8082" y2="20.625916"/>
+            <linearGradient x1="45.447727" y1="92.539597" x2="45.447727" y2="7.0165396" id="ButtonShadow-0-1-1-5-9" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.0058652,0,0,0.994169,100,0)">
+              <stop id="stop3750-8-9-3-6-4" style="stop-color:#000000;stop-opacity:1" offset="0"/>
+              <stop id="stop3752-5-6-4-2-9" style="stop-color:#000000;stop-opacity:0.58823532" offset="1"/>
+            </linearGradient>
+            <linearGradient inkscape:collect="always" xlink:href="#ButtonShadow-0-1-1-5-9" id="linearGradient4112-2-6" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.0402541,0,0,1.0402541,-837.95116,592.51825)" x1="1012.5133" y1="484.41721" x2="1006.8082" y2="20.625916"/>
+            <linearGradient inkscape:collect="always" xlink:href="#ButtonShadow-0-1-1-5-9" id="linearGradient4110-6-7" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.023305,0,0,1.023305,-823.77704,592.83757)" x1="1012.5133" y1="484.41721" x2="1006.8082" y2="20.625916"/>
+            <linearGradient inkscape:collect="always" xlink:href="#ButtonShadow-0-1-1-5-9" id="linearGradient4116-6-3" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.0148305,0,0,1.0148305,-816.68996,592.99723)" x1="1012.5133" y1="484.41721" x2="1006.8082" y2="20.625916"/>
+            <linearGradient y2="20.625916" x2="1006.8082" y1="484.41721" x1="1012.5133" gradientTransform="matrix(1.0074153,0,0,1.0074153,-810.48879,593.1369)" gradientUnits="userSpaceOnUse" id="linearGradient5342-3" xlink:href="#ButtonShadow-0-1-1-5-9" inkscape:collect="always"/>
+            <linearGradient inkscape:collect="always" xlink:href="#linearGradient3737-9" id="linearGradient4084-8" gradientUnits="userSpaceOnUse" gradientTransform="translate(778.59979,-360.55963)" x1="993.43896" y1="51.511765" x2="988.78552" y2="363.73825"/>
+            <linearGradient id="linearGradient3737-9">
+              <stop id="stop3739-7" style="stop-color:#ffffff;stop-opacity:1" offset="0"/>
+              <stop id="stop3741-4" style="stop-color:#ffffff;stop-opacity:0" offset="1"/>
+            </linearGradient>
+            <linearGradient inkscape:collect="always" xlink:href="#linearGradient4046-3" id="linearGradient4086-12" gradientUnits="userSpaceOnUse" x1="1764.6487" y1="155.59685" x2="1763.6903" y2="-55.941216"/>
+            <linearGradient id="linearGradient4046-3">
+              <stop id="stop4048-7" style="stop-color:#000000;stop-opacity:1;" offset="0"/>
+              <stop id="stop4050-73" style="stop-color:#ffffff;stop-opacity:0.2" offset="1"/>
+            </linearGradient>
+            <linearGradient y2="32" x2="272" y1="288" x1="272" gradientTransform="translate(0,-4)" gradientUnits="userSpaceOnUse" id="linearGradient3876" xlink:href="#outerBackgroundGradient" inkscape:collect="always"/>
+            <linearGradient id="outerBackgroundGradient">
+              <stop id="stop3864-8-6" offset="0" style="stop-color:#007dbb;stop-opacity:1;"/>
+              <stop id="stop3866-9-1" offset="1" style="stop-color:#00abd7;stop-opacity:1;"/>
+            </linearGradient>
+            <linearGradient inkscape:collect="always" xlink:href="#outerBackgroundGradient" id="linearGradient5589" gradientUnits="userSpaceOnUse" gradientTransform="translate(571.12383,-178.05409)" x1="272" y1="288" x2="272" y2="32"/>
+            <linearGradient y2="32" x2="272" y1="288" x1="272" gradientTransform="translate(571.12383,-178.05409)" gradientUnits="userSpaceOnUse" id="linearGradient5614" xlink:href="#outerBackgroundGradient" inkscape:collect="always"/>
+            <radialGradient gradientUnits="userSpaceOnUse" r="236" fy="151.78598" fx="256" cy="151.78598" cx="256" id="radialGradient6124" xlink:href="#linearGradient2460" inkscape:collect="always"/>
+            <linearGradient inkscape:collect="always" xlink:href="#linearGradient3737-9" id="linearGradient7749" gradientUnits="userSpaceOnUse" gradientTransform="translate(778.59979,-360.55963)" x1="993.43896" y1="51.511765" x2="988.78552" y2="363.73825"/>
+            <linearGradient inkscape:collect="always" xlink:href="#linearGradient4046-3" id="linearGradient7751" gradientUnits="userSpaceOnUse" x1="1764.6487" y1="155.59685" x2="1763.6903" y2="-55.941216"/>
+            <linearGradient inkscape:collect="always" xlink:href="#linearGradient2460-9" id="linearGradient3157" gradientUnits="userSpaceOnUse" gradientTransform="matrix(12.102564,0,0,12.102564,-34.468255,-46.187105)" x1="18.930269" y1="6.2951212" x2="19.360001" y2="36.643665"/>
+            <linearGradient id="linearGradient2460-9" y2="44.984001" gradientUnits="userSpaceOnUse" x2="19.360001" y1="21.030804" x1="19.244999">
+              <stop id="stop3602-6" style="stop-color:#fafafa;stop-opacity:1;" offset="0"/>
+              <stop id="stop3604-4" style="stop-color:#f0f0f0;stop-opacity:1;" offset="1"/>
+            </linearGradient>
+            <radialGradient gradientUnits="userSpaceOnUse" r="236" fy="151.78598" fx="256" cy="151.78598" cx="256" id="radialGradient6124-5" xlink:href="#linearGradient2460-7" inkscape:collect="always"/>
+            <linearGradient x1="19.244999" y1="21.030804" x2="19.360001" gradientUnits="userSpaceOnUse" y2="44.984001" id="linearGradient2460-7">
+              <stop offset="0" style="stop-color:#00bdf0;stop-opacity:1;" id="stop3602-2"/>
+              <stop offset="1" style="stop-color:#0093dc;stop-opacity:1;" id="stop3604-5"/>
+            </linearGradient>
+            <radialGradient gradientTransform="translate(-20,-20)" r="236" fy="151.78598" fx="256" cy="151.78598" cx="256" gradientUnits="userSpaceOnUse" id="radialGradient8295" xlink:href="#linearGradient2460-7" inkscape:collect="always"/>
+            <linearGradient y2="363.73825" x2="988.78552" y1="51.511765" x1="993.43896" gradientTransform="translate(778.59979,-360.55963)" gradientUnits="userSpaceOnUse" id="linearGradient4084-8-0" xlink:href="#linearGradient3737-9-9" inkscape:collect="always"/>
+            <linearGradient id="linearGradient3737-9-9">
+              <stop offset="0" style="stop-color:#ffffff;stop-opacity:1" id="stop3739-7-4"/>
+              <stop offset="1" style="stop-color:#ffffff;stop-opacity:0" id="stop3741-4-1"/>
+            </linearGradient>
+            <linearGradient y2="-55.941216" x2="1763.6903" y1="155.59685" x1="1764.6487" gradientUnits="userSpaceOnUse" id="linearGradient4086-12-7" xlink:href="#linearGradient4046-3-0" inkscape:collect="always"/>
+            <linearGradient id="linearGradient4046-3-0">
+              <stop offset="0" style="stop-color:#000000;stop-opacity:1;" id="stop4048-7-4"/>
+              <stop offset="1" style="stop-color:#ffffff;stop-opacity:0.2" id="stop4050-73-8"/>
+            </linearGradient>
+          </defs>
+          <metadata id="metadata7">
+            <rdf:RDF>
+              <cc:Work rdf:about="">
+                <dc:format>image/svg+xml</dc:format>
+                <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+                <dc:title/>
+              </cc:Work>
+            </rdf:RDF>
+          </metadata>
+          <g id="layer1" inkscape:groupmode="layer" inkscape:label="Livello 1" transform="translate(0,-540.36218)"/>
+          <g id="g2036" transform="matrix(1.1,0,0,0.44444,95.081063,256.39254)">
+            <g id="g3712" style="opacity:0.4" transform="matrix(1.0526,0,0,1.2857,-1.2632,-13.429)"/>
+          </g>
+          <g transform="translate(97.481063,231.28154)" id="g3541"/>
+          <g transform="translate(97.481063,231.28154)" id="g3536"/>
+          <g id="g4103" transform="translate(-11.985071,-592.11719)"/>
+          <g id="g4076" transform="translate(-605.51932,-353.96833)">
+            <g transform="translate(-926.66758,684.38448)" id="g4038"/>
+          </g>
+          <rect style="fill:#55d400;fill-opacity:1;stroke:none" id="rect3069" width="444.03912" height="434.14014" x="35.461464" y="38.39838" ry="45.859875"/>
+          <path style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:Sans;-inkscape-font-specification:Sans;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;display:inline;overflow:visible;visibility:visible;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:17.73212814;marker:none;enable-background:new" d="m 347.51713,165.87342 -120.28026,120.21711 -54.0472,-53.73149 -25.2557,25.38197 c 26.4783,26.30612 52.9052,52.66399 79.42917,78.92405 48.49095,-48.49094 96.98188,-96.98187 145.47282,-145.47281 z" id="path3851" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccccc"/>
+        </svg>
+      </router-link>
     </div>
-    <div class="levelFormDiv">
-      <form class="levelForm" oninput = "result.value=parseInt(a.value)">
-        <input @input="viewControler" type="range" id="a" name="a" min="1" max="5" step="1">
-        <output name="result" for="a"></output>
-      </form>
-    </div>
-    <div id="tableDiv">
-      <table>
-        <thead>
-          <tr>
-            <th v-for="text in thText" :key=text>{{text}}</th>
-          </tr>
-        </thead>
-        <button id='tableRowAddBtn' @click="addNewRow">+</button>
-        <tbody>
-          <tr v-for="(row) in filterredData" :key="row.id" :id="row.id" :class="row.levelClass +' '+ row.status" >
-            <td class="level">{{row.targetLevel}}</td>
-            <td class="motherNumber">{{row.motherNumber}}</td>
-            <td class="numberTD">
-              <div class="number" :style="{backgroundColor: row.color}">{{row.no}}</div>
-              <div class="control">
-                <svg @click="tableRowStyler" viewBox="-1 -2 12 12" class="dragHandle" style="width: 15px; height: 20px; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden;">
-                  <path d="M3,2 C2.44771525,2 2,1.55228475 2,1 C2,0.44771525 2.44771525,0 3,0 C3.55228475,0 4,0.44771525 4,1 C4,1.55228475 3.55228475,2 3,2 Z M3,6 C2.44771525,6 2,5.55228475 2,5 C2,4.44771525 2.44771525,4 3,4 C3.55228475,4 4,4.44771525 4,5 C4,5.55228475 3.55228475,6 3,6 Z M3,10 C2.44771525,10 2,9.55228475 2,9 C2,8.44771525 2.44771525,8 3,8 C3.55228475,8 4,8.44771525 4,9 C4,9.55228475 3.55228475,10 3,10 Z M7,2 C6.44771525,2 6,1.55228475 6,1 C6,0.44771525 6.44771525,0 7,0 C7.55228475,0 8,0.44771525 8,1 C8,1.55228475 7.55228475,2 7,2 Z M7,6 C6.44771525,6 6,5.55228475 6,5 C6,4.44771525 6.44771525,4 7,4 C7.55228475,4 8,4.44771525 8,5 C8,5.55228475 7.55228475,6 7,6 Z M7,10 C6.44771525,10 6,9.55228475 6,9 C6,8.44771525 6.44771525,8 7,8 C7.55228475,8 8,8.44771525 8,9 C8,9.55228475 7.55228475,10 7,10 Z">
-                  </path>
-                </svg>
-                <svg class="plus" @click="controlView" viewBox="-2 -2 20 20" style="width: 20px; height: 20px; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden; display:none;">
-                  <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z">
-                  </path>
-                </svg>
-                <svg class="minus" @click="controlView" xmlns="http://www.w3.org/2000/svg" viewBox="1 0 24 24" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:19px; height:19px; display:block;">
-                  <line x1="5" y1="12" x2="21" y2="12"/>
-                </svg>
-              </div>
-            </td>
-            <td class="registDate" :style="{backgroundColor: row.color}">{{row.convertedRegistDate}}</td>
-            <td class='content' :style="{backgroundColor: row.color}">
-              <div class='contentWrapper'>
-                  <div class='title'>
-                      <input v-model="row.title">
-                  </div>
-                  <div class='contents'>
-                      <textarea v-model="row.contents"></textarea>
-                  </div>
-              </div>
-              <div  class='extension hoverHidden'>
-                  <button class='extensionBtn' @click="controlExtensionBtn">∨</button>
-              </div>
-            </td>
-            <td class="finDate" :style="{backgroundColor: row.color}">
-              <input v-model="row.convertedFinDate">
-            </td>
-            <td class="manage" :style="{backgroundColor: row.color}">
-              <div class='hoverHidden'>
-                <button class='saveBtn' @click="finishBtnHandler">완료</button>
-                <button class='remove' style=color:red @click="removeRow">삭제</button>
-                <button class='makeSub' @click="makeSub">추가</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div v-if="storeFinTableRow[0]" id="finTableDiv">
-      <button v-for="text in buttonExample" :key="text" @click="viewControler" class="finTableViewButton">{{text}}</button>
-      <table id="finTable">
-        <thead>
-          <tr>
-            <th v-for="text in thText" :key=text>{{text}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(row) in filterredFinData" :key="row.id" :id="row.id" :class="row.levelClass">
-            <td class="level">{{row.level}}</td>
-            <td class="motherNumber">{{row.motherNumber}}</td>
-            <td class="numberTD">
-              <div class="number" >{{row.finNo}}</div>
-              <div class="control">
-                <svg class="plus" @click="controlView" viewBox="-2 -2 20 20" style="width: 20px; height: 20px; display: block; fill: inherit; flex-shrink: 0; backface-visibility: hidden; display:none;">
-                  <path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z">
-                  </path>
-                </svg>
-                <svg class="minus" @click="controlView" xmlns="http://www.w3.org/2000/svg" viewBox="1 0 24 24" stroke="grey" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:19px; height:19px; display:block;">
-                  <line x1="5" y1="12" x2="21" y2="12"/>
-                </svg>
-              </div>
-            </td>
-            <td class="registDate">{{row.convertedRegistDate}}</td>
-            <td class='content'>
-              <div class='contentWrapper'>
-                  <div class='title'>
-                      {{ row.title }}
-                  </div>
-                  <div class='contents'>
-                      {{ row.contents }}
-                  </div>
-              </div>
-              <div class='extension hoverHidden'>
-                  <button class='extensionBtn' @click="controlExtensionBtn">∨</button>
-              </div>
-            </td>
-            <td class="finDate">{{row.convertedFinDate}}</td>
-            <td  class="manage">
-              <div class='hoverHidden'>
-                <button class='saveBtn' @click="recoverBtnHandler">복귀</button>
-                <button class='remove' style=color:red @click="removeRow">삭제</button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <router-view :bodyClicked="bodyClicked"></router-view>
   </main>
 </template>
 
@@ -132,398 +109,23 @@ export default {
   name: 'Main',
   data: function() {
     return {
-      customOn: false,
-			viewLevel : 5,
-      tempData:[],
-      thText: ["순번","날짜","내용","완료","관리"],
       buttonExample :["①", "②", "all"],
-      finTableViewLevel : 1
+      tempData: null
     }
   },
-  mounted(){
-		this.$store.dispatch("init")
+  props:{
+    bodyClicked : null
   },
-  updated() {
-    localStorage.setItem("toc", JSON.stringify(this.storeTableRow))
-    localStorage.setItem("tocFin", JSON.stringify(this.storeFinTableRow))
-    this.$store.dispatch("checkPeriod")
-  },
-  computed : {
-		storeTableRow(){
-			return this.$store.getters.getTableRow;
-		},
-		storeFinTableRow(){
-			return this.$store.getters.getFinTableRow;
-		},
-    filterredData(){
-      const data = this.storeTableRow.filter((item) => {
-        return item.level <= this.viewLevel;
-      }).filter((item) => {
-        return item.hide !== true;
-      })
-      return data;
-    },
-    filterredFinData(){
-      const data = this.storeFinTableRow.filter((item) => {
-        return item.level <= this.finTableViewLevel;
-      }).filter((item) => {
-        return item.hide !== true;
-      })
-      return data;
-    }
-  },
-  methods: {
-		viewControler(e){
-      const targetDiv = e.currentTarget.closest("div").id
-      if(targetDiv !== "finTableDiv"){
-        const level = e.currentTarget.value;
-        this.viewLevel = level;  
-        for(let item of this.storeTableRow){
-          if(item.level <= this.viewLevel){
-            item.hide = false;
-          }
-        }
-      } else {
-        const level = e.currentTarget
-        const finLevelButtons = document.querySelectorAll(".finTableViewButton")
-        for(let i = 0; i < finLevelButtons.length; i++){
-          if(level == finLevelButtons[i]){
-            this.finTableViewLevel = i + 1;
-            break;
-          }
-        }
-        if(this.finTableViewLevel == 3) this.finTableViewLevel = 5;
-        for(let item of this.storeFinTableRow){
-          if(item.level <= this.finTableViewLevel){
-            item.hide = false;
-          }
-        }
+  watch : {
+    bodyClicked(){
+      const selectedTD = this.tempData
+      if(selectedTD){
+        const targetRegiDiv = selectedTD.querySelector(".showDiv")
+        const targetRegiInputDiv = selectedTD.querySelector(".inputDiv")
+        targetRegiInputDiv.style.display="none";
+        targetRegiDiv.style.display="block";
+        this.tempData = null;
       }
-			
-		},
-    controlView(e){
-      const targetRow = e.currentTarget.closest("tr");
-      let location
-      if(targetRow.closest("div").id == "tableDiv"){
-        location = this.storeTableRow
-      } else location = this.storeFinTableRow
-      const children = this.findMyChildren(targetRow, location)
-      for(let item of children){
-        item.hide = !item.hide;
-        if(item.hide == true) {
-          targetRow.querySelector(".plus").style.display = "inline";
-          targetRow.querySelector(".minus").style.display = "none";
-        } else {
-          targetRow.querySelector(".plus").style.display = "none";
-          targetRow.querySelector(".minus").style.display = "inline";
-        }
-        
-      }
-    },
-    issueID(){
-      return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
-      return 'a' + v.toString(16);
-      });
-    },
-    deleteBox(){
-      this.customOn = !this.customOn;
-    },
-    findMyChildren(myRow, location){
-      const children = [];
-      const myObj = this.findItsObj(myRow, location)
-      for(let obj of location){
-        if(obj.motherNumber == myObj.no){
-          children.push(obj);
-          children.push(this.findMyChildren(obj, location))
-        }
-      }
-      function flatDeep(arr, d = 1) {
-        return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), []) : arr.slice();
-      }
-      return flatDeep(children,Infinity);
-    },
-    colorPicker(e){
-      const pickedColor = e.target.value;
-      const targetTR = document.querySelector("#" + this.tempData);
-      const targetObj = this.storeTableRow[this.findItsObjIndex(targetTR,this.storeTableRow)];//
-      targetObj.color = pickedColor;
-      const children = this.findMyChildren(targetTR, this.storeTableRow)
-      for(let sonRow of children){
-        const sonObj = this.storeTableRow[this.findItsObjIndex(sonRow, this.storeTableRow)]
-        sonObj.color = this.findMyColor(sonRow);
-      }
-    },
-    tableRowStyler(e){
-      this.customOn = !this.customOn;
-      const targetTR = e.currentTarget.closest("tr")
-      this.tempData = targetTR.id;
-    },
-    itemClass(level, motherNumber, no, order, finDate, title, contents, levelClass, color){
-      const itemObj = {
-        level : level,
-        motherNumber : motherNumber,
-        no :  no,
-        levelClass : levelClass,
-        order : order,
-        finDate :  finDate,
-        title :  title,
-        contents :  contents,
-        color: color,
-        registDate :  this.getTime(),
-        convertedRegistDate : this.convertTime(this.getTime()),
-        status: "",
-        hide: false,
-        id: this.issueID() //this가 가르키는 것은??
-      }
-      return itemObj;
-    },
-    findItsObj(row, location){
-      if(Array.isArray(row)){
-        const result = [];
-        for(let item of row) {
-          const itemObj = location[this.findItsObjIndex(item, location)]
-          result.push(itemObj)
-        }
-        return result;
-      } else {
-        const itemObj = location[this.findItsObjIndex(row, location)];
-        return itemObj;
-      }
-    },
-    findChildrenRow(row, divID){
-      const children = [];
-      if(divID !== "#finTableDiv"){
-        const rows = [...document.querySelector(divID).querySelector("tbody").querySelectorAll("tr")];
-        const rowNo = row.querySelector(".number").textContent;
-        for(let i = 0; i < rows.length; i++){
-          if(rows[i].querySelector(".motherNumber").textContent == rowNo) {
-            children.push(rows[i])
-            children.push(this.findChildrenRow(rows[i], divID))
-          }
-        }
-      } else {
-        const rowIndex = this.findItsObjIndex(row, this.storeFinTableRow);
-        for(let i = rowIndex + 1; i < this.storeFinTableRow.length; i++){
-          children.push(this.storeFinTableRow[i])
-          if(this.storeFinTableRow[i].level == 1){
-            break;
-          }
-        }
-      }
-      return children.flat(1);
-    },
-    finishBtnHandler(e){
-      const targetRow = e.currentTarget.closest("tr");
-      const targetObj = this.findItsObj(targetRow, this.storeTableRow)
-      const children = this.findChildrenRow(targetRow, '#tableDiv')
-      const familyArray = [targetRow, ...children];
-      const items = this.findItsObj(familyArray, this.storeTableRow);
-      if(targetObj.level !== 1){
-        if(!targetRow.classList.contains("finish")) {
-          targetRow.classList.add("finish")
-          for(let item of items){
-            item.status = "finish"
-            item.color = "rgba(125,125,125,0.5)"
-            item.finDate = this.getTime();
-            item.convertedFinDate = this.convertTime(this.getTime());
-          }
-        } else {
-          targetRow.classList.remove("finish")
-          for(let item of items){
-            item.status = ""
-            item.finDate = "";
-            item.convertedFinDate = "";
-            item.color = this.findMyColor(item)
-          }
-        }
-      } else if(targetObj.level == 1) {
-        for(let i = 0 ; i < items.length; i++) {
-          const idNo = this.storeFinTableRow.length + 1;
-          const finNo = String(new Date().getFullYear()).slice(2,4) + String(new Date().getMonth() + 1).padStart(2,'0') + "-" +String(idNo).padStart(2,'0');
-          const index = this.findItsObjIndex(items[i], this.storeTableRow)
-          items[i].finNo = finNo;
-          items[i].finDate = this.getTime();
-          items[i].convertedFinDate = this.convertTime(this.getTime());
-          items[i].status = "finish";
-          this.$store.dispatch("finishItem", {item:items[i], index:index});
-        }
-      }
-    },
-    findItsObjIndex(row, location){
-			if(row.id){
-				for(let i = 0; i < location.length; i++) {
-					if(location[i].id == row.id){
-						return i
-					}
-				}
-			}
-      if(Array.isArray(row)){
-        const result = [];
-        for(let i = 0; i < row.length; i++){
-          for(let j = 0; j < location.length; i++) {
-            if(row[i].id == location[i].id) {
-              result.push(i);
-              break;
-            }
-          }
-        }
-        return result;
-      } else {
-        for(let i = 0; i < location.length; i++){
-          if(location[i].id == row.id){
-            return i;
-          }
-        }
-      }
-    },
-    findMyOrder(motherObj){
-      let lastBrother;
-      let myOrder = Number(motherObj.order) + 0.1;
-      for(let i = 0; i < this.storeTableRow.length; i++){
-        if(this.storeTableRow[i].motherNumber == motherObj.no){
-          lastBrother = this.storeTableRow[i];
-          myOrder = Number(lastBrother.order) + 0.1;
-        }
-      }
-      if(lastBrother){
-        myOrder = this.findMyOrder(lastBrother)
-      }
-      return myOrder;
-    },
-    findMyColor(myObj){
-      let motherObj;
-      for(let obj of this.storeTableRow){
-        if(obj.no == myObj.motherNumber){
-          motherObj = obj;
-          break;
-        }
-      }
-      const motherColor = motherObj.color.replace("rgba(","").replace(")","").split(",");
-      let motherR = Number(motherColor[0])
-      let motherG = Number(motherColor[1])
-      let motherB = Number(motherColor[2])
-      let motherA = Number(motherColor[3])
-      const myColor = `rgba(${motherR + 55},${motherG + 55},${motherB + 55},${(motherA - 0.25).toFixed(1)})`
-      return myColor;
-    },
-    makeSub(e){
-      const motherRow = e.currentTarget.closest("tr");
-      const motherIndex = this.findItsObjIndex(motherRow, this.storeTableRow)
-      const motherObj = this.storeTableRow[motherIndex]
-      let siblingCount = 1;
-      for(let i = 0; i < this.storeTableRow.length; i++){
-        if(this.storeTableRow[i].motherNumber == motherObj.no){
-          siblingCount++
-        }
-      }
-      const myNumber = motherObj.no + "." + siblingCount;
-      const myOrder = this.findMyOrder(motherObj);
-      const classMatch = {
-        1 : "firstLevel",
-        2 : "secondLevel",
-        3 : "thirdLevel",
-        4 : "fourthLevel"
-      }
-      const myLevel = motherObj.level + 1
-      const myLevelClass = classMatch[myLevel + ''];
-      const newSubItem = this.itemClass(myLevel, motherObj.no, myNumber, myOrder, "", "", "", myLevelClass) // new가 왜 불필요한지 
-      const myColor = this.findMyColor(newSubItem)
-      newSubItem.color = myColor;
-			this.$store.dispatch("addRow", {item:newSubItem, index:myOrder})
-    },
-    addNewRow(){
-      let lastNumber = 0;
-      if(this.storeTableRow.length !== 0){
-        for(let i = 0; i < this.storeTableRow.length; i++) {
-          if(this.storeTableRow[i].level == 1){
-            lastNumber++
-          }
-        }
-      }
-      const nextNumber = lastNumber + 1;
-      const newRow = this.itemClass(1, "", nextNumber, this.storeTableRow.length,"","","","firstLevel","rgba(0,255,0,1)")
-			this.$store.dispatch("addRow", {item:newRow});
-      this.$store.dispatch("checkPeriod")
-    },
-    controlExtensionBtn(e) {
-      const targetBtn = e.currentTarget;
-      const targetTR = targetBtn.closest("tr")
-      const targetContents = targetTR.querySelector(".contents");
-      const trSize = Number(window.getComputedStyle(targetTR).height.replace("px",""));
-      if(targetBtn.textContent == "∨"){
-        targetBtn.textContent = "∧";
-        targetContents.style.height =  "28px";
-        targetTR.querySelector(".number").style.height = trSize + 15 + "px"
-        targetContents.querySelector("textarea").style.display = "block"
-      } else {
-        targetBtn.textContent = "∨";
-        targetContents.style.height = "0";
-        targetTR.querySelector(".number").style.height = "2vh";
-        targetContents.querySelector("textarea").style.display = "none"
-      }
-    },
-    removeRow(e){
-			const targetRow = e.currentTarget.closest("tr");
-      let location;
-      const divID =  "#" + targetRow.closest("div").id;
-      if(divID == "#tableDiv"){
-        location = this.storeTableRow;
-      } else location = this.storeFinTableRow;
-      const childrenRow = this.findChildrenRow(targetRow, divID)
-      const targetArray = [targetRow,...childrenRow];
-			for(let i = targetArray.length - 1; i > -1; i--){
-				const targetIndex = this.findItsObjIndex(targetArray[i], location)
-				if(divID == "#tableDiv"){
-					this.$store.dispatch("removeRow", {location : "table", index : targetIndex})
-				} else this.$store.dispatch("removeRow", {location : "finTable", index : targetIndex})
-			}
-		},
-    recoverBtnHandler(e){
-      const targetRow = e.currentTarget.closest("tr");
-      const childrenRows = this.findChildrenRow(targetRow,"#finTableDiv")
-      for(let row of [targetRow,...childrenRows]){
-        const rowIndex = this.findItsObjIndex(row, this.storeFinTableRow)
-        const rowObj = this.storeFinTableRow[rowIndex];
-        rowObj.status = "";
-        rowObj.finDate = "";
-        rowObj.convertedFinDate = "";
-        this.$store.dispatch("addRow", {item:rowObj})
-        this.$store.dispatch("removeRow", {location : "finTable", index: rowIndex})
-      }
-    },
-    clockSet(){
-      const date = new Date();
-      const Month = String(date.getMonth() + 1).padStart(2,'0');
-      const date2 = String(date.getDate()).padStart(2,'0');
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minuetes = String(date.getMinutes()).padStart(2, "0");
-      return `${Month}/${date2} ${hours}:${minuetes}`;
-    },
-    getTime(){
-      const time = Date.now(new Date);
-      return time;
-    },
-    convertTime(time){
-      const date = new Date(time);
-      const Month = String(date.getMonth() + 1).padStart(2,'0');
-      const date2 = String(date.getDate()).padStart(2,'0');
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minuetes = String(date.getMinutes()).padStart(2, "0");
-      return `${Month}/${date2} ${hours}:${minuetes}`;
-    },
-    convertTime2Date(time, standard){
-      const date = new Date(time);
-      const year = date.getFullYear();
-      const Month = String(date.getMonth() + 1).padStart(2,'0');
-      const date2 = String(date.getDate()).padStart(2,'0');
-      const hours = String(date.getHours()).padStart(2, "0");
-      let result;
-      switch(standard){
-        case "day" : result = `${year}-${Month}-${date2}`; break;
-        case "hours" : result = `${Month}/${date2}, ${hours}`; break;
-      }
-      return result
     }
   },
 }
@@ -539,321 +141,10 @@ main{
   text-align:left;
 }
 
-#tableDiv{
-  width: 100%;
-  min-height: 45vh;
-  margin-bottom: 3%;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 .levelFormDiv{
-  text-align: left;
-}
-
-.levelForm{
-  display: inline;
-}
-
-table{
-  width: 100%;
-  border-collapse: collapse;
-  color: black;
-  text-align:center;
-}
-
-th{
-  background-color: rgb(131, 221, 243);
-}
-
-th:nth-child(1){
-  width: 15%;
-  border-radius: 10px 0 0 10px;
-}
-
-th:nth-child(2){
-  width: 8%;
-}
-
-th:nth-child(4){
-  width: 8%;
-}
-
-th:nth-child(5){
-  width: 12%;
-  white-space: nowrap;
-  border-radius: 0 10px 10px 0;
-}
-
-#tableRowAddBtn{
-  width: 1425%;
-  height: 1.5vw;
-  border-radius: 10px;
-  font-size: 1vw;
-  background-color: transparent;
-  border: 0.1px dashed rgba(128, 128, 128, 0.527);
-}
-
-#tableRowAddBtn:active{
-  width: 1425%;
-  height: 1.5vw;
-  border-radius: 10px;
-  font-size: 1vw;
-  background-color: rgba(128, 128, 128, 0.3);
-  border: 0.1px dashed rgba(128, 128, 128, 0.527);
-}
-
-td{
-  vertical-align: middle;
-  border: 0.5px solid rgb(129, 129, 129);
-  border-bottom: none;
-  border-top: none;
-  font-size: 0.8vw;
-}
-
-.numberTD{
-  border:none;
-  border-radius: 10px 0 0 10px;
-  text-align: right;
-  padding: 0;
-  background-color: white !important;
-}
-
-.control{
-  float: right;
-  text-align: right;
-  width: 25%;
-  box-sizing: border-box;
-  height: 100%;
-  opacity: 0;
-}
-
-.number{
-  float: right;
-  height: 100%;
-  padding-top: 3%;
-  padding-bottom: 3%;
-  text-align: left;
-  text-indent: 15%;
-  border-radius: 10px 0 0 10px;
-  transition: 200ms;
-}
-
-
-.control:hover{
-  opacity: 1;
-}
-
-.control svg{
-  float: right;
-  vertical-align: middle;
-  width: 16px;
-  height: 15px;
-  transition: 400ms;
-  border-radius: 4px;
-}
-
-.control svg:hover{
-  background-color: rgba(210, 210, 210, 1);
-  transition: 200ms;
-}
-
-.control svg:active{
-  background-color: rgba(150, 150, 150, 1);
-}
-
-.control svg path{
-  fill: rgba(128, 128, 128, 0.808)
-}
-
-.level{
-  display: none;
-}
-
-.motherNumber{
-  display: none;
-}
-
-.contentWrapper{
-  float: left;
-  width: 90%;
-}
-
-.title{
-  width: 100%;
-  text-align: left;
-  text-indent: 1%;
-}
-
-.title > input{
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  cursor:text;
-}
-
-.title {
-  cursor:text;
-}
-
-.title > input:focus{
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  outline-style: none;
-}
-
-.contents > textarea{
-  background-color: transparent;
-  border: none;
-  margin-top: 10px;
-  margin-bottom: 0;
-  overflow: hidden;
-  width: 107%;
-  height: auto;
-  display: none;
-  font-family: inherit;
-  resize:none;
-}
-
-
-.finDate > input{
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  text-align: center;
-}
-
-.extension{
-  float: left;
-  width: 10%;
-  margin:0;
-  text-align: right;
-}
-
-.extensionBtn{
-  border: none;
-  width: 100%;
-  font-weight: bolder;
-  padding-right: 20%;
-  text-align: right;
-  background-color: transparent;
-}
-
-h1{
-  color:red;
-}
-
-.contents{
-  width: 100%;
-  height: 0;
-  transition: all 300ms;
-  cursor: text;
-}
-
-tr {
-  height: 20px;
-  border-top: white 2px solid;
-}
-
-.firstLevel > .numberTD > .number {
-  width: 70%;
-}
-
-.secondLevel > .numberTD > .number {
-  width: 55%;
-}
-
-.thirdLevel > .numberTD > .number {
-  width: 40%;
-}
-
-.fourthLevel > .numberTD > .number {
-  width: 28%;
-}
-
-
-.hoverHidden{
   display: flex;
-  justify-content: center;
-  align-items:center;
-  opacity: 0;
-  height: 100%;
-}
-
-.hoverHidden:hover{
-  opacity: 1;
-}
-
-.hoverHidden > button{
-  background-color: transparent;
-  border: none;
-}
-
-.hoverHidden > button:active{
-  background-color: rgba(207, 204, 204, 0.603);
-  border-radius: 5px;
-}
-
-.finish *{
-  text-decoration: line-through;
-}
-
-#finTableDiv{
-  width: 100%;
-}
-
-#finTableDiv  .number, .registDate, .content, .finDate, .manage{
-  background-color: rgb(190, 190, 190);
-}
-
-.registDate, .finDate{
-  white-space: nowrap;
-}
-
-.manage{
-  height: inherit;
-  
-}
-
-.manage button {
-  font-size: 1vh;
-  height: 70%;
-  padding: 0 0.5vw 0 0.5vw ;
-}
-
-#customBoard{
-  position: absolute;
-  left: 41vh;
-  width: 20vh;
-  height: 40vh;
-  border: 1px solid grey;
-  background-color: rgba(255, 255, 255, 0.95);
-  box-shadow: 2px 2px 5px grey;
-  font-size: 4vh;
-}
-
-.closeBtnWrapper{
-  width: 100%;
-  padding: 2% 3% 0 0;
-  text-align: right;
-  box-sizing: border-box;
-}
-
-.closeBtn{
-  font-size: 3vh;
-  color: grey;
-  background-color: transparent;
-  border:0;
-}
-
-.finTableViewButton{
-  border-radius: 10px;
-  border:none;
-}
-
-.finTableViewButton:active{
-  background-color: rgb(187, 187, 187);
+  padding:0 20px 0 10px;
+  justify-content: space-between;
 }
 
 </style>

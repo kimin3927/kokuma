@@ -1,19 +1,44 @@
 <template>
-  <div class="home">
-    <img :src='element.bigImg[0]'>
+  <div class="sorentoHybrid">
+    <div class="firstDiv" style="display:relative">
+      <!-- <img :src='element.bigImg[0]'> -->
+      <div class="comment1">
+        <h1>
+          새로운 시대의 플레이</br>
+          The 2022 쏘렌토 하이브리드
+        </h1>
+      </div>
+      <div class="comment1_5">
+      <span>※ 상기 차량 이미지와 사양 구성은 트림, 인승 모델별, 엔진, 선택 사양에 따라 다르게 적용되며 색상은 실제 색상과 차이가 있을 수 있습니다.</span>
+    </div>
+    </div>
     <div id='basicInfo'>
       <div v-for="(text, i) in element.basicInfo.text" :key="text" class='basicInfoItem'>
         <div class='basicInfoImgDiv'>
-          <img :src="element.basicInfo.imgSrc[i]"> <!--이런식으로 말고, 반복문의 i를 사용해서 methods 또는 computed를 활용해서 넣을 수는 없는지?? !-->
+          <img :src="element.basicInfo.imgSrc[i]"> 
         </div>
         <span v-for="(number, j) in element.basicInfo.classForSpan" :key="j" :class='element.basicInfo.classForSpan[j]'>{{element.basicInfo.text[i][j]}}</span>
       </div>
     </div>
     <img :src='element.bigImg[1]'>
+    <div>
+      <h3>외장</h3>
+      <h2>Refined Boldness</h2>
+      <h3>혁신으로 완성된 정제된 강렬함, SUV의 새로운 디자인을 제시하다.</h3>
+    </div>
     <div id='outsideDetail'>
       <img v-for="imgSrc in element.outSideImgSrc" :key="imgSrc" class='outsideDetailImg' :src="imgSrc">
+      <h2>프로젝션 LED 헤드램프</h2>
+      <h2>LED 리어 콤비네이션램프</h2>
+      <h2>히든 리어와이프</h2>
+      <h2>19인치 전면가공휠</h2>
     </div>
     <img :src='element.bigImg[2]'>
+    <div>
+      <h3>그래비티</h3>
+      <h2>존재감 있는 블랙포인트로 강인함을 더하다</h2>
+      <h3>*라디에이터 그릴 상단 몰딩, 루프랙, 서라운드 몰딩, 1열 도어 사이드 가니쉬</h3>
+    </div>
   </div>
 </template>
 
@@ -21,7 +46,7 @@
 
 
 export default {
-  name: 'home',
+  name: 'sorentoHybrid',
   components: {
   },
   data() {
@@ -31,7 +56,7 @@ export default {
           text: [["FROM 차량기본가격", "₩37,260,000", "(개별소비세 5%기준)"], ["UP TO 복합연비", "15.3km/ℓ"], ["UP TO 배기량", "1,598cc"], ["UP TO 최고출력(ps/rpm)", "180/5,500"], ["HEV 전용 부품", "10년/20만km"]],
           classForSpan: ["basicInfoSpanOne", "basicInfoSpanTwo", "basicInfoSpanThree"],
           imgSrc: [
-            "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_1.png", 
+          "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_1.png", 
           "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_2.png",
           "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_3.png",
           "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_4.png",
@@ -60,10 +85,51 @@ export default {
 }
 </script>
 <style>
-  .home{
-    width:100%;
+
+  * {
+    box-sizing: content-box !important;
   }
 
+  template{
+    position: relative;    
+  }
+
+  .sorentoHybrid{
+    height:100%;
+    position: relative;
+  }
+
+  .comment1{
+    position: relative;
+    top : 10vh;
+    left : 25vh; 
+  }
+  .firstDiv{
+    position: relative;
+    width: 100vw;
+    height: 102vh;
+    background-size: 100vw 100vh;
+    background-image: url(https://files.porsche.com/filestore/image/multimedia/none/992-carrera-360-exterior-001/normal/f244be45-796a-11ea-80c9-005056bbdc38;sK;twebp;c1350;gc/porsche-normal.webp);
+  }
+
+  .comment1 h1 {
+    text-align: left;
+    font-size: 7vh;
+    letter-spacing: -0.05em;
+    color: white;
+    text-shadow: rgb(80 80 80) 0 0 5px !important;
+  }
+
+  .comment1_5{
+    position: absolute;
+    bottom : 2vh;
+    left : 10vh;
+  }
+
+  .comment1_5 span{
+    color: white;
+    font-size: 2vh;
+  }
   img{
     width: 100%;
   }
@@ -84,17 +150,22 @@ export default {
   .basicInfoItem{
     display: flex;
     width: 13%;
-    height: 18vh;
+    height: 19vh;
     text-align: center;
     flex-direction: column;
-    line-height: 30px;
-    border-left: 1px solid grey;
+    line-height: 3vh;
+    border-left: 1px solid grey;    
+    border-collapse: collapse;
+  }
+
+  .basicInfoItem:last-child{
+    border-right: 1px solid grey;
   }
 
   .basicInfoImgDiv{
     height: 45%;
     display: flex;
-    padding-bottom: 6px;
+    padding-bottom: 1vh;
     justify-content: center;
     align-items: flex-end;
   }
@@ -114,12 +185,12 @@ export default {
   }
 
   .basicInfoSpanTwo{
-    font-size: 3vh;
+    font-size: 3.5vh;
     font-weight: 800;
   }
 
   .basicInfoSpanThree{
-    margin-top: 2%;
+    font-size: 1vh;
   }
 
   .outsideDetailImg{
