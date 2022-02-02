@@ -116,6 +116,7 @@ const moduleA = {
         commit('removeRow', {location:"table", index})
       },
       addRow({ commit, state }, {item, index = state.tableRow.length}){
+        console.log("복구")
         commit('addNewRow', {item, index})
         commit("sortItemGroups")
       },

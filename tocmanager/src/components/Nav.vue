@@ -168,7 +168,7 @@ ul{
 
 li{
   list-style: none;
-  font-size: 2vh;
+  font-size: 1.7vh;
 }
 
 .finish{

@@ -1,4 +1,4 @@
-import Home from '../../views/Home.vue'
+import sorentoHybrid from '../../views/sorentoHybrid.vue'
 import About from '../../views/About.vue';
 import Tester from '../../views/Tester.vue'
 import Gallery from '../../views/Gallery.vue'
@@ -8,8 +8,8 @@ import Price from '../../views/Price.vue'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'sorentoHybrid',
+    component: sorentoHybrid
   },
   {
     path: '/about',
