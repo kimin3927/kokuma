@@ -82,6 +82,8 @@
 
 <script>
 
+import myMixin from "../mixins/mixins"
+
 export default {
   name: 'Table',
   data: function() {
@@ -93,11 +95,9 @@ export default {
       buttonExample :["①", "②", "all"],
     }
   },
+  mixins: [myMixin],
   props:{
     bodyClicked : null
-  },
-  mounted(){
-    this.$store.dispatch("init")
   },
   updated() {
     localStorage.setItem("toc", JSON.stringify(this.storeTableRow))
@@ -208,7 +208,6 @@ export default {
           targetRow.querySelector(".plus").style.display = "none";
           targetRow.querySelector(".minus").style.display = "inline";
         }
-        
       }
     },
     issueID(){
@@ -454,22 +453,6 @@ export default {
         targetContents.querySelector("textarea").style.display = "none"
       }
     },
-    removeRow(e){
-			const targetRow = e.currentTarget.closest("tr");
-      let location;
-      const divID =  "#" + targetRow.closest("div").id;
-      if(divID == "#tableDiv"){
-        location = this.storeTableRow;
-      } else location = this.storeFinTableRow;
-      const childrenRow = this.findChildrenRow(targetRow, divID)
-      const targetArray = [targetRow,...childrenRow];
-			for(let i = targetArray.length - 1; i > -1; i--){
-				const targetIndex = this.findItsObjIndex(targetArray[i], location)
-				if(divID == "#tableDiv"){
-					this.$store.dispatch("removeRow", {location : "table", index : targetIndex})
-				} else this.$store.dispatch("removeRow", {location : "finTable", index : targetIndex})
-			}
-		},
     recoverBtnHandler(e){
       const targetRow = e.currentTarget.closest("tr");
       const childrenRows = this.findChildrenRow(targetRow,"#finTableDiv")
@@ -483,39 +466,6 @@ export default {
         this.$store.dispatch("removeRow", {location : "finTable", index: rowIndex})
       }
     },
-    clockSet(){
-      const date = new Date();
-      const Month = String(date.getMonth() + 1).padStart(2,'0');
-      const date2 = String(date.getDate()).padStart(2,'0');
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minuetes = String(date.getMinutes()).padStart(2, "0");
-      return `${Month}/${date2} ${hours}:${minuetes}`;
-    },
-    getTime(){
-      const time = Date.now(new Date);
-      return time;
-    },
-    convertTime(time){
-      const date = new Date(time);
-      const Month = String(date.getMonth() + 1).padStart(2,'0');
-      const date2 = String(date.getDate()).padStart(2,'0');
-      const hours = String(date.getHours()).padStart(2, "0");
-      const minuetes = String(date.getMinutes()).padStart(2, "0");
-      return `${Month}/${date2} ${hours}:${minuetes}`;
-    },
-    convertTime2Date(time, standard){
-      const date = new Date(time);
-      const year = date.getFullYear();
-      const Month = String(date.getMonth() + 1).padStart(2,'0');
-      const date2 = String(date.getDate()).padStart(2,'0');
-      const hours = String(date.getHours()).padStart(2, "0");
-      let result;
-      switch(standard){
-        case "day" : result = `${year}-${Month}-${date2}`; break;
-        case "hours" : result = `${Month}/${date2}, ${hours}`; break;
-      }
-      return result
-    }
   },
 }
 

@@ -13,7 +13,7 @@
     </div>
     </div>
     <div id='basicInfo'>
-      <div v-for="(text, i) in element.basicInfo.text" :key="text" class='basicInfoItem'>
+      <div v-for="(text, i) in element.basicInfo.text" :key="i" class='basicInfoItem'>
         <div class='basicInfoImgDiv'>
           <img :src="element.basicInfo.imgSrc[i]"> 
         </div>
@@ -28,7 +28,7 @@
       </div>
     </div>    
     <div id='outsideDetail'>
-      <div v-for="div in element.outSideImg" :key="div.src" :style="{backgroundImage:'url('+ div.src +')'}" class='outsideDetailImg' :src="imgSrc">
+      <div v-for="div in element.outSideImg" :key="div.src" :style="{backgroundImage:'url('+ div.src +')'}" class='outsideDetailImg' :src="div.src">
       <h3>{{div.comment}}</h3>
       </div>
     </div>
