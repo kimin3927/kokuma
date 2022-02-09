@@ -1,9 +1,10 @@
 <template>
   <div class="card">
-    <h1>This is an about page</h1>
+    <h1>This is an CardCardCardCard page</h1>
   </div>
 </template>
 
+<script>
 export default {
   name: 'Card',
   data(){
@@ -16,7 +17,7 @@ export default {
 </script>
 
 <style>
-  @import './resetting.css';
+  @import '../resetting.css';
 
 
 </style>

@@ -1,11 +1,11 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="forecasting">
+    <h1>This is an forecasting page</h1>
   </div>
 </template>
-
+<script>
 export default {
-  name: 'App',
+  name: 'forecasting',
   data(){
 		return {
 
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style>
-  @import './resetting.css';
+  @import '../resetting.css';
 
 
 </style>
