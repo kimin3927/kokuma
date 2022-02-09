@@ -86,7 +86,7 @@
               v-bind="attrs"
               v-on="on"
               @click="selectSeller"
-            >
+            >   
             <v-icon v-if="btn.icon">{{ `${btn.icon}` }}</v-icon>
               {{ btn.show }}
             </v-btn>
