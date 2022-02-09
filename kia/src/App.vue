@@ -1,6 +1,6 @@
 <template>
   <div id="app" @click="bodyClick">
-    <Header/>
+    <Header />
     <div>
       <router-view></router-view>
       <Footer />
@@ -19,25 +19,26 @@ export default {
   },
    data: function () {
       return {
-        Header: document.querySelector("#header"),
-        person: {
-          koko: 'kimin'
-        },
+        kimin: null,
+      }
+    },
+    computed : {
+      clickedBody(){
+        return this.$store.getters.getBodyClicked;
+      },
+      onItems(){
+        // return this.$store.getters.getOnItems;
       }
     },
     methods:{
-      bodyClick(){
-        return false
+      bodyClick(e){
+        // const onItems = document.querySelectorAll(".on")
       }
     }
 };
 </script>
 
 <style>
-
-* {
-  box-sizing: content-box !important;
-}
 
 header{
   position:fixed;

@@ -32,9 +32,12 @@ body {
 	line-height: 1;
 }
 
-ol, ul {
+ol, ul, li {
 	list-style: none;
+	padding-left: 0;
+	margin-bottom: 0;
 }
+
 blockquote, q {
 	quotes: none;
 }
@@ -49,5 +52,10 @@ table {
 }
 
 a{
-	color: black
+	color: black;
+	display: inline-block;
+}
+
+a:hover{
+	text-decoration-line: underline;
 }

@@ -2,6 +2,7 @@ const moduleA = {
     state: () => ({ 
       tableRow : [],
       finTableRow : [],
+      removedTable : [],
       totalPeriod : [
         "2022-01-20",
         "2022-01-21",
@@ -16,12 +17,19 @@ const moduleA = {
       addNewRow(state, {item, index}) {
         state.tableRow.splice(index, 0, item)
       },
+      addRemovedItem(state, item) {
+        state.removedTable.push(item)
+      },
       removeRow(state, {location, index}) {
+        console.log("삭제 뮤테이션 시도")
+        console.log(location)
+        console.log(index)
         if(location == "table"){
-          console.log(`뮤테이션${index}`)
           state.tableRow.splice(index, 1)
-        } else {
+        } else if(location == "finTable"){
           state.finTableRow.splice(index, 1)
+        } else if(location == "removedTable"){
+          state.removedTable.splice(index, 1)
         }
       },
       addFinRow(state, item){
@@ -124,8 +132,16 @@ const moduleA = {
         console.log(state)
         commit('addFinRow', item)
       },
+      addRow2({commit, state}, {item, location}){
+        console.log(state)
+        if(location == "tableRow") commit("addNewRow", {item, location: state.tableRow.length})
+        if(location == "finTableRow") commit("addFinRow", {item, location: state.finTableRow.length})
+        if(location == "removedTableRow") commit("addRemovedItem", {item, location: state.removedTable.length})
+      },
       removeRow({ commit }, {location, index}){
+        console.log("삭제 액션 시도")
         commit('removeRow', {"location": location, "index": index})
+        console.log(`액션 인덱스${index}`)
       },
       checkPeriod({commit}){
         commit('checkPeriod');
@@ -147,6 +163,9 @@ const moduleA = {
       },
       getFinDates(state){
         return state.finDates;
+      },
+      getRemovedTable(state){
+        return state.removedTable;
       }
     }
   }

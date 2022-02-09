@@ -13,31 +13,31 @@
     </div>
     </div>
     <div id='basicInfo'>
-      <div v-for="(text, i) in element.basicInfo.text" :key="text" class='basicInfoItem'>
+      <div v-for="(text, i) in element.basicInfo.text" :key="i" class='basicInfoItem'>
         <div class='basicInfoImgDiv'>
           <img :src="element.basicInfo.imgSrc[i]"> 
         </div>
         <span v-for="(number, j) in element.basicInfo.classForSpan" :key="j" :class='element.basicInfo.classForSpan[j]'>{{element.basicInfo.text[i][j]}}</span>
       </div>
     </div>
-    <img :src='element.bigImg[1]'>
-    <div>
-      <h3>외장</h3>
-      <h2>Refined Boldness</h2>
-      <h3>혁신으로 완성된 정제된 강렬함, SUV의 새로운 디자인을 제시하다.</h3>
-    </div>
+    <div id="secondDiv" :style="{backgroundImage:'url(' + element.bigImg[1] + ')'}">
+      <div class="comment1">
+        <h2>외장</h2>
+        <h1>Refined Boldness</h1>
+        <h2>혁신으로 완성된 정제된 강렬함, SUV의 새로운 디자인을 제시하다.</h2>
+      </div>
+    </div>    
     <div id='outsideDetail'>
-      <img v-for="imgSrc in element.outSideImgSrc" :key="imgSrc" class='outsideDetailImg' :src="imgSrc">
-      <h2>프로젝션 LED 헤드램프</h2>
-      <h2>LED 리어 콤비네이션램프</h2>
-      <h2>히든 리어와이프</h2>
-      <h2>19인치 전면가공휠</h2>
+      <div v-for="div in element.outSideImg" :key="div.src" :style="{backgroundImage:'url('+ div.src +')'}" class='outsideDetailImg' :src="div.src">
+      <h3>{{div.comment}}</h3>
+      </div>
     </div>
-    <img :src='element.bigImg[2]'>
-    <div>
-      <h3>그래비티</h3>
-      <h2>존재감 있는 블랙포인트로 강인함을 더하다</h2>
-      <h3>*라디에이터 그릴 상단 몰딩, 루프랙, 서라운드 몰딩, 1열 도어 사이드 가니쉬</h3>
+    <div id="thirdDiv" :style="{backgroundImage:'url(' + element.bigImg[2] + ')'}">
+      <div class="comment1">
+        <h3>그래비티</h3>
+        <h2>존재감 있는 블랙포인트로 강인함을 더하다</h2>
+        <h3>*라디에이터 그릴 상단 몰딩, 루프랙, 서라운드 몰딩, 1열 도어 사이드 가니쉬</h3>
+      </div>
     </div>
   </div>
 </template>
@@ -62,11 +62,11 @@ export default {
           "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_4.png",
           "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/icon_kv_spec_5.png"]
         },
-        outSideImgSrc : [
-          "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_full_led_headlamps_w.jpg",
-          "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_led_rear_combination-lamp_w.jpg",
-          "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_hidden_rear_wiper_w.jpg",
-          "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_exterior_detail_04.jpg"
+        outSideImg : [
+          {src:"https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_full_led_headlamps_w.jpg", comment:"프로젝션 LED 헤드램프"},
+          {src:"https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_led_rear_combination-lamp_w.jpg", comment:"LED 리어 콤비네이션램프"},
+          {src:"https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20200706/20200706/4thsorento-hev_exterior_hidden_rear_wiper_w.jpg", comment:"히든 리어와이프"},
+          {src:"https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/4thsorento-hybrid/features/20210708/sorento-hev_pe_exterior_detail_04.jpg", comment:"19인치 전면가공휠"},
         ],
         bigImg : [
           "https://files.porsche.com/filestore/image/multimedia/none/992-carrera-360-exterior-001/normal/f244be45-796a-11ea-80c9-005056bbdc38;sK;twebp;c1350;gc/porsche-normal.webp",
@@ -101,20 +101,58 @@ export default {
 
   .comment1{
     position: relative;
+    display: inline-block;
     top : 10vh;
-    left : 25vh; 
+    left : 30vh; 
   }
+
   .firstDiv{
     position: relative;
-    width: 100vw;
+    text-align: left;
+    width: 100%;
     height: 102vh;
     background-size: 100vw 100vh;
     background-image: url(https://files.porsche.com/filestore/image/multimedia/none/992-carrera-360-exterior-001/normal/f244be45-796a-11ea-80c9-005056bbdc38;sK;twebp;c1350;gc/porsche-normal.webp);
   }
 
+  #secondDiv {
+    position: relative;
+    text-align: left;
+    width: auto;
+    height: 102vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  #thirdDiv{
+    position: relative;
+    text-align: left;
+    width: auto;
+    height: 102vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
   .comment1 h1 {
     text-align: left;
-    font-size: 7vh;
+    font-size: 5vh;
+    letter-spacing: -0.05em;
+    font-weight: 600;
+    color: white;
+    text-shadow: rgb(80 80 80) 0 0 5px !important;
+  }
+
+  .comment1 h2{
+    text-align: left;
+    font-size: 3vh;
+    letter-spacing: -0.05em;
+    color: white;
+    text-shadow: rgb(80 80 80) 0 0 5px !important;
+  }
+
+  .comment1 h3{
+    text-align: left;
+    font-size: 2vh;
     letter-spacing: -0.05em;
     color: white;
     text-shadow: rgb(80 80 80) 0 0 5px !important;
@@ -134,12 +172,13 @@ export default {
     width: 100%;
   }
 
-  h1{
+  h1, h2, h3{
     text-align: left;
   }
 
   #outsideDetail{
     width:100%;
+    display: flex;
   }
 
   #basicInfo{
@@ -197,5 +236,25 @@ export default {
     width:25%;
     height: 300px;
     border: 1px solid white;
-}
+    text-align: left;
+  }
+
+  .outsideDetailImg h3{
+    display: inline-block;
+    position: relative;
+    font-size: 1.5em;
+    top: 3vh;
+    left: 3vh;
+    color: white;
+  }
+
+  .outsideDetailImg:nth-child(4) h3{
+    display: inline-block;
+    position: relative;
+    font-size: 1.5em;
+    top: 3vh;
+    left: 3vh;
+    color: black;
+  }
+
 </style>
