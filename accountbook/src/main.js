@@ -6,6 +6,8 @@ import vuetify from './plugins/vuetify'
 
 Vue.config.productionTip = false
 
+console.log(process.env.VUE_APP_KAKAO_HOST)
+
 new Vue({
   router,
   store,

@@ -83,14 +83,15 @@
   }
   .naveItemDivWrapper{
     width:100%;
+    padding-left:3px;
     display: flex;
     justify-content: space-between !important;
     margin-bottom: 8px;
   }
   .navItemDiv{
     display:flex;
-    padding:0 10px 0 10px; 
     width: 12vh; 
+    min-width: 100px;
     border-radius: 9px;
   }
 

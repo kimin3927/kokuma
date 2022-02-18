@@ -1,10 +1,12 @@
 <template>
   <v-app>
+    <div id="left">
       <appHeader></appHeader>
-      <appNav @makeIncome="makeIncome = true" @makeSpending="makeSpending = true"></appNav>
       <router-view></router-view>
-      <v-dialog v-model="makeIncome" scrollable max-width="100vh" transition="dialog-bottom-transition">
-      <ModalEarning></ModalEarning>
+    </div>
+      <appNav @makeIncome="makeIncome = true" @makeSpending="makeSpending = true"></appNav>
+      <v-dialog v-model="makeIncome" scrollable max-width="100vh" transition="dialog-top-transition">
+      <ModalEarning @close="makeIncome = false"></ModalEarning>
       </v-dialog>
       <v-dialog v-model="makeSpending" scrollable max-width="100vh" transition="dialog-top-transition">
       <ModalSpending></ModalSpending>
@@ -40,6 +42,9 @@ export default {
 </script>
 
 <style>
+#left{
+  width: 85%;
+}
 
 
 
