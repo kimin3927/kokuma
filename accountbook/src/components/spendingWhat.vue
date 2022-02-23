@@ -105,20 +105,20 @@ export default {
 			item:{
 				id:1,
 				name: "",
-				price: "10,000",
+				price: " ",
 				quantity:1,
 				category: "기타",
 				status: true
 			},
 			tempData: "",
 			numberSamples:[1,2,3,4,5,6,7],
-			priceSamples: ["10,000","20,000","30,000","40,000"],
+			priceSamples: [" ", "10,000","20,000","30,000","40,000"],
 			items:[],
 			totalAmount: "",
 			representativeItem: null,
 			numberItems: 0,
 			comment: "",
-			result: {}
+			result: {},
 		}
 	},
 	watch:{
@@ -166,7 +166,7 @@ export default {
 			} else return [];	
 		},
 	},
-	props:["seller"],
+	props:["what"],
 	methods:{
 		addItem(){
 			const newItem = JSON.parse(JSON.stringify(this.item))
@@ -191,10 +191,10 @@ export default {
 			selects[3].textContent = info.category;
 		},
 		issueID(){
-      return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
-      return 'a' + v.toString(16);
-      });
+			return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8);
+			return 'a' + v.toString(16);
+		});
     },
 	}
 }

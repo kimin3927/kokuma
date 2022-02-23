@@ -21,7 +21,7 @@
                   v-else
                   key="1"
                 >
-                  {{ who }}
+                  {{ myName }}
                 </span>
               </v-fade-transition>
             </v-col>
@@ -29,7 +29,7 @@
         </template>
       </v-expansion-panel-header>
       <v-expansion-panel-content>
-        <v-radio-group v-model="who" row>
+        <v-radio-group v-model="myName" row>
           <v-radio value="Kimin">
             <template v-slot:label>
               <div><strong class="success--text">Kimin</strong></div>
@@ -50,9 +50,17 @@ export default {
 	data(){
 		return{
 			date: null,
+      myName: null
 		}
 	},
-  props:["who"]
+  props:["who"],
+  computed:{
+    name(){
+      if(this.myName){
+        return this.myName
+      } else return this.who
+    }
+  }
 }
 </script>
 

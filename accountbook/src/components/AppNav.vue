@@ -76,6 +76,11 @@
 </script>
 
 <style>
+
+  .v-navigation-drawer{
+    width: 15% !important;
+  }
+
   #rlals{
     width: 100%;
     height: 100%;

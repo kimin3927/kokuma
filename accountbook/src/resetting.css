@@ -54,8 +54,9 @@ table {
 a{
 	color: black;
 	display: inline-block;
+	text-decoration-line: none;
 }
 
 a:hover{
-	text-decoration-line: underline;
+	text-decoration-line: none;
 }

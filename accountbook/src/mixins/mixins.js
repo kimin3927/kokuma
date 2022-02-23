@@ -1,22 +1,91 @@
-```
-
-필요 메서드 : 
-
--) 지출객체만들기 : 
-	지출 공통 인풋 : seller, time, paymentName, creditMethod, creditTerm,
-	computed input : user, id, creditOrDebit
-	computed input from 개별 : 총 금액, 대표 카테고리, 대표 물품
-
-	개별 물품 인풋 : 
-	물품별 단가/수량(or 생략+금액), 카테고리, 물품명, 
-	computed input : 금액, id
-	computed input from 공통 : user, time, 
 
 
-1) 지출 건별 합계금액은 속한 지출 개별아이템 객체의 합계금액 의 합. "findItsTotalAmount" 
-2) 지출 건별 카테고리는 속한 지출 개별아이템 객체배열내의 각 카테고리별 금액을 합해서 가장 큰 카테고리를 골라서.. "ㅇㅇㅇ 외" 로 작업하게 끔한다.
-"findItsRepresentCategory"
-3) 지출 건별 이름은 속한 지출 개별아이템 객체배열내의 아이템중 금액이 가장 큰 카테고리의 아이템중 가장 큰 금액을 골라서 "ㅇㅇ마트, ㅇㅇ물품 외"로한다.
-4) id는 uuid를 빌리되, 발생년월일 6자리로 시작하게끔. 
 
-```
+  
+export default {
+	methods:{
+		close(){
+			this.$emit("close")
+		},
+		creatSpending(){
+			const result = {};
+			result.when = this.when;
+			result.where = this.where;
+			result.who = this.who;
+			result.what = JSON.parse(JSON.stringify(this.what));
+			result.how = JSON.parse(JSON.stringify(this.how));
+			result.why = this.why;
+			result.name = `${this.where} ${this.what.amount} 지출 건`;
+			return result;
+		},
+		save(){
+			const spending= this.creatSpending()
+			this.$store.dispatch("addItems", {item: spending, kind: "spending"});
+			this.close();
+		},
+		selectMain(e){
+			console.log("셀렉트메인")
+			const selectedPanel = e.target.closest(".spendingItems")
+			const panelNumber = this.findPanelNumber(selectedPanel)
+			this.panel = [panelNumber];
+			const panels = document.querySelector("#spendingGroup");
+			const panelLocation = selectedPanel.parentElement;
+			panelLocation.appendChild(panels.querySelector("#body").childNodes[0]);//바디에 있던거를 옮겨주고
+			panels.querySelector("#body").appendChild(selectedPanel); //고른걸 바디로 이동
+		},
+		findPanelNumber(item){
+			const itsID = item.id
+			const numberingObj = {
+				"spendingWhen" : 0,
+				"spendingWhere" : 1,
+				"spendingWho" : 2,
+				"spendingWhat" : 3,
+				"spendingHow" : 4,
+				"spendingWhy" : 5,
+			}
+			return numberingObj[itsID]
+		},
+		takeSeller(seller){
+			this.where = seller
+		},
+		takeCategory(category){
+			this.why = category;
+		},
+		takeHow(payment){
+			this.how = payment;
+		},
+		takeWhat(items){
+			this.what = items;
+		},
+		takeWhen(date){
+			this.when = date
+		},
+		timeSet(date){
+			const convertedDate = new Date(date.replaceAll("-",","));
+			const dayObj = {
+				0 : "일요일",
+				1 : "월요일",
+				2 : "화요일",
+				3 : "수요일",
+				4 : "목요일",
+				5 : "금요일",
+				6 : "토요일",
+			}
+			const result = {
+				time: convertedDate.getTime(),
+				fullYear: convertedDate.getFullYear(),
+				dateObj (){
+					return convertedDate;
+				}, 
+				shortYear(){
+					return String(this.fullYear).substr(2,2);
+				},
+				month: String(convertedDate.getMonth()+1).padStart(2,0),
+				date: String(convertedDate.getDate()).padStart(2,0),
+				day: dayObj[String(convertedDate.getDay())],
+			}
+			return result;			
+		}
+	},
+}
+

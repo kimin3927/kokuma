@@ -47,12 +47,20 @@ export default {
 </script>
 
 <style>
+@import '../resetting.css';
+
 .v-slide-group__content {
 	justify-content: space-around;
 }
 
-.v-tab{
-  height: 35px;
+.v-tab {
+  height: 100%;
+  font-weight: 600 !important;
 }
+
+.v-tabs-slider-wrapper{
+  height: 3px !important;
+}
+
 </style>
 
