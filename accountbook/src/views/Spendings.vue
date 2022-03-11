@@ -187,7 +187,7 @@
                               <v-col cols="5">
                                 <v-select
                                   v-model="item.name"
-                                  :items="itemSamples"
+                                  :items="itemSamples" bhv
                                   solo
                                   class="name"
                                 ></v-select>
@@ -245,7 +245,7 @@
                                 outlined
                                 :data-id="spend.id"
                                 @click ="showItem"
-                                @click:close="spend.status = false"
+                                @click:close="kimin"
                               >
                                 {{ spend.name }}
                               </v-chip>
@@ -410,6 +410,9 @@ import myMixin from "../mixins/mixins"
       },
     },
     methods: {
+      kimin(e){
+        console.log(e)
+      },
       filterOnlyCapsText (value, search) {
         return value != null &&
           search != null &&
@@ -523,6 +526,7 @@ import myMixin from "../mixins/mixins"
 
   th:nth-child(3){
     width: 15vh;
+    min-width: 100px;
   }
 
   th:nth-child(4){
@@ -531,21 +535,32 @@ import myMixin from "../mixins/mixins"
   }
 
   th:nth-child(5){
-    width: 150px;
+    width: 10vh;
+    min-width: 130px;
   }
 
   th:nth-child(6){
     width: 20vh;
-    min-width: 180px;
+    min-width: 120px;
   }
 
   th:nth-child(7){
-    width: 18vh;
+    width: 21vh;
     min-width: 150px;
   }
 
   th:nth-child(8){
-    width: 12vh;
-    min-width: 200px;
+    width: 15vh;
+    min-width: 130px;
+  }
+
+  th:nth-child(9){
+    width: 18vh;
+    min-width: 140px;
+  }
+
+  th:nth-child(10){
+    width: 18vh;
+    min-width: 100px;
   }
 </style>

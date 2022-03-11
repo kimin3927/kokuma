@@ -1,0 +1,179 @@
+@font-face {
+	font-family: 'LAB디지털';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/LAB디지털.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+h1{
+  color: white;
+}
+
+body{
+	width: 100vw;
+	height: 100vh;
+	background-color: black;
+	margin: 0;
+	color:white;
+}
+
+div{
+	box-sizing: border-box;
+}
+
+#machine{
+	width: 30%;
+	min-width: 380px;
+	height: 70%;
+	padding: 10px;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	border: 1px solid white;
+}
+
+#showWindow{
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	height: 40%;
+	border: 1px solid green;
+}
+
+.drinks{
+	width: 30%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.drinks div{
+	width: 80%;
+	height: 80%;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.drinks span{
+	font-family: LAB디지털;
+	text-shadow: 
+	0 0 7px #fff, 
+	0 0 10px #fff, 
+	0 0 21px #fff, 
+	0 0 42px #0fa,
+	0 0 82px #0fa,
+	0 0 92px #0fa
+}
+
+#coffee{
+	background-image: url( "asset/canCoffee1.PNG" );
+	background-position: 0 20px;
+}
+
+#fureWater{
+	background-image: url( "asset/fureWater.png" );
+	background-size: 90% !important;
+	background-position: 50% -30%;
+}
+
+#coke{
+	background-image: url( "asset/coke.png" );
+	background-position: 0 30px;
+}
+
+#display{
+	border: 1px solid red;
+	width: 50%;
+}
+
+#displayComment{
+	border: 1px solid yellow;
+	margin: 0;
+}
+
+#amountDisplayCover{
+	display: flex;
+	height: 79%;
+}
+
+#rest{
+	width: 10%;
+	text-align: center;
+	border: 1px solid green;
+}
+
+#restMoney{
+	width: 80%;
+	border: 1px solid brown;
+	text-align: center;
+	font-size: 2rem;
+	font-family: LAB디지털;
+	color: rgb(191, 236, 191);
+  text-shadow: 
+	0 0 7px #fff, 
+	0 0 10px #fff, 
+	0 0 21px #fff, 
+	0 0 42px #0fa,
+	0 0 82px #0fa,
+	0 0 92px #0fa
+}
+
+#amountDisplayCover{
+	display: flex;
+}
+
+#moneyEntry{
+	border: 1px solid brown;
+	width:50%;
+}
+
+#bodyWrap{
+	width: 100%;
+	height: 20%;
+	display: flex;
+	justify-content: flex-end;
+}
+
+#productExit{
+	border: 1px solid blue;
+	width: 100%;
+	margin-top: 20%;
+	height: 20%;
+}
+
+#coinPaperCover{
+	width: 100%;
+	height: 50%;
+	display: flex;	
+}
+
+#cover{
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	height: 100%;
+}
+
+#paperSlot{
+	width: 100%;
+	height: 50%;
+	border: 1px solid white;
+}
+
+#returnLever{
+	width: 100%;
+	height: 50%;
+	border: 1px solid white;
+}
+
+#coinSlot{
+	width: 50%;
+	border: 1px solid white;
+}
+
+#cardSlot{
+	border: 1px solid white;
+	height: 50%;
+}
+

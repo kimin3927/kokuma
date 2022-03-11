@@ -82,14 +82,14 @@
 			</v-card-actions>
 			<div id="collective">
 				<v-chip
-					v-for="spend in computedItems" :key="spend.name"
+					v-for="(spend, i) in items" :key="spend.id"
 					class="ma-2"
 					close
 					color="green"
+					:ref= spend.id
 					outlined
-					:data-id="spend.id"
 					@click ="showItem"
-					@click:close="spend.status = false"
+					@click:close="kimin(i)"
 				>
 					{{ spend.name }}
 				</v-chip>
@@ -168,6 +168,13 @@ export default {
 	},
 	props:["what"],
 	methods:{
+		kimin(i){
+			console.log(i)
+			console.log(this.items);
+			this.items.splice(i, 1);
+			console.log(this.items);
+			console.log(Object.keys(this.$refs)[0])
+		},
 		addItem(){
 			const newItem = JSON.parse(JSON.stringify(this.item))
 			newItem.id = this.issueID();
