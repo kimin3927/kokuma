@@ -165,7 +165,7 @@
           sortable: false,
           value: 'no',
         },
-        { text: 'Name', value: 'name', align:"center" },
+        { text: 'Name', value: 'name', align:"center", class:"assetName" },
         { text: 'User', value: 'who' },
         { text: 'Location', value: 'where' },
         { text: 'Amount', value: 'amount', align: "right" },
@@ -341,5 +341,10 @@
 </script>
 
 <style>
+
+.assetName{
+  width: 10vh;
+  min-width: 130px !important;
+}
 
 </style>

@@ -22,7 +22,289 @@
           v-model="dialog"
           max-width="800px"
         >
-        <modal-earning @close="dialog=false"></modal-earning>
+        <div class="ModalEarning">
+          <v-card>
+            <v-card-title> 수입입력 </v-card-title>
+            <v-card-text>
+              <v-expansion-panels
+                id="earningGroup"
+                :value = panel
+                multiple
+                >
+                <v-expansion-panel class="spendingItems" id="spendingWhen">
+                  <v-expansion-panel-header v-slot="{ open }">
+                    <v-row no-gutters>
+                      <v-col cols="4">
+                      When
+                      </v-col>
+                      <v-col
+                      cols="8"
+                      class="text--secondary"
+                      >
+                        <v-fade-transition leave-absolute>
+                        <span v-if="open">When was that day?</span>
+                          <v-row
+                          v-else
+                          no-gutters
+                          style="width: 100%"
+                          >
+                            <v-col cols="6">
+                            {{ editedItem.when || 'Not set' }}
+                            </v-col>
+                          </v-row>
+                        </v-fade-transition>
+                      </v-col>
+                    </v-row>
+                  </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                      <v-row
+                      justify="space-around"
+                      no-gutters
+                      >
+                      <v-col cols="3">
+                        <v-menu
+                        ref="startMenu"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.when"
+                        offset-y
+                        min-width="290px"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                        v-model="editedItem.when"
+                        label="Start date"
+                        prepend-icon="mdi-calendar"
+                        readonly
+                        v-bind="attrs"
+                        v-on="on"
+                        ></v-text-field>
+                        </template>
+                      <v-date-picker
+                      v-model="editedItem.when"
+                      no-title
+                      scrollable
+                      >
+                      <v-spacer></v-spacer>
+                      <v-btn
+                      text
+                      color="primary"
+                      @click="$refs.startMenu.isActive = false"
+                      >
+                      Cancel
+                      </v-btn>
+                      <v-btn
+                      text
+                      color="primary"
+                      @click="selectDate"
+                      >
+                      OK
+                      </v-btn>
+                      </v-date-picker>
+                      </v-menu>
+                      </v-col>
+                      </v-row>
+                    </v-expansion-panel-content>
+                  </v-expansion-panel>
+                  <v-expansion-panel class="spendingItems" id="spendingWhere">
+                    <v-expansion-panel-header>
+                      <template v-slot:default="{ open }">
+                        
+                        <v-row no-gutters>
+                          <v-col cols="4">
+                            From
+                          </v-col>
+                          <v-col
+                            cols="8"
+                            class="text--secondary"
+                          >
+                            <v-fade-transition leave-absolute>
+                              <span
+                                v-if="open"
+                                key="0"
+                              >
+                                Enter a name for the spending
+                              </span>
+                              <span
+                                v-else
+                                key="1"
+                              >
+                                {{ editedItem.where }}
+                              </span>
+                            </v-fade-transition>
+                          </v-col>
+                        </v-row>
+                      </template>
+                    </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <div class="sellerGroup">
+                    <v-tooltip top v-for="btn in moneyGivers" :key="btn.name" >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          :color="btn.color"
+                          light
+                          v-bind="attrs"
+                          v-on="on"
+                          @click="selectGiver"
+                        >  
+                          {{ btn.name }}
+                        </v-btn>
+                      </template>
+                      <span>{{ btn.name }}</span>
+                    </v-tooltip>
+                    </div>
+                    <v-text-field
+                      v-model="editedItem.where"
+                      placeholder="Caribbean Cruise"
+                    ></v-text-field>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+                <v-expansion-panel class="spendingItems" id="spendingWho">
+                  <v-expansion-panel-header>
+                    <template v-slot:default="{ open }">
+                      <v-row no-gutters>
+                        <v-col cols="4">
+                        Who
+                        </v-col>
+                        <v-col
+                        cols="8"
+                        class="text--secondary"
+                        >
+                        <v-fade-transition leave-absolute>
+                          <span
+                          v-if="open"
+                          key="0"
+                          >
+                            select person who pay
+                          </span>
+                          <span
+                          v-else
+                          key="1"
+                          >
+                            {{ editedItem.who }}
+                          </span>
+                        </v-fade-transition>
+                        </v-col>
+                      </v-row>
+                    </template>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <v-radio-group v-model="editedItem.who" row>
+                      <v-radio value="Kimin">
+                        <template v-slot:label>
+                          <div><strong class="success--text">Kimin</strong></div>
+                        </template>
+                        </v-radio>
+                        <v-radio value="Eunjin">
+                        <template v-slot:label>
+                          <div><strong class="primary--text">EJ.Choi</strong></div>
+                        </template>
+                      </v-radio>
+                    </v-radio-group>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+                <v-expansion-panel class="spendingItems main" id="spendingWhat">
+                <v-expansion-panel-header v-slot="{ open }">
+                  <v-row no-gutters>
+                    <v-col cols="4">
+                      What
+                    </v-col>
+                    <v-col
+                      cols="8"
+                      class="text--secondary"
+                    >
+                      <v-fade-transition leave-absolute>
+                        <span
+                          v-if="open"
+                          key="0"
+                        >
+                          Add items you earned
+                        </span>
+                        <span
+                          v-else
+                          key="1"
+                        >
+                          {{ editedItem.comment }}
+                        </span>
+                      </v-fade-transition>
+                    </v-col>
+                  </v-row>
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-row no-gutters>
+                    <v-col cols="5">
+                      <v-select
+                        v-model="item.name"
+                        :items="itemSamples"
+                        solo
+                        class="name"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="5">
+                      <v-select
+                        v-model="item.amount"
+                        :items="priceSamples"
+                        solo
+                        class="price"
+                      ></v-select>
+                    </v-col>
+                    <v-col cols="5">
+                      <v-select
+                        v-model="item.to"
+                        :items="deposits"
+                        :hint="`${item.to.where}, ${item.to.depositNo}`"
+                        item-text="name"
+                        item-value="name"
+                        label="Select"
+                        persistent-hint
+                        return-object
+                        single-line
+                      ></v-select>
+                    </v-col>
+                    
+                    <v-divider
+                      vertical
+                      class="mx-4"
+                    ></v-divider>
+                    <v-col cols="3">
+                      {{ `${editedItem.comment}`}}
+                    </v-col>				
+                  </v-row>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="addItem"
+                    >
+                      Add
+                    </v-btn>
+                  </v-card-actions>
+                  <div id="collective">
+                    <v-chip
+                      v-for="earning in editedItem.what.items" :key="earning.id"
+                      class="ma-2"
+                      close
+                      color="green"
+                      outlined
+                      :data-id="earning.id"
+                      @click ="showItem"
+                      @click:close="earning.status = false"
+                    >
+                      {{ earning.name }}
+                    </v-chip>
+                  </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>  
+              </v-expansion-panels>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" text @click="close">Close</v-btn>
+              <v-btn color="primary" text @click="save">Save</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
+        <!-- <modal-earning @close="dialog=false"></modal-earning> -->
         </v-dialog>
         <v-dialog 
         v-model="dialogDelete" 
@@ -62,14 +344,11 @@
 <script>
 
 
-import ModalEarning from "./ModalEarning.vue"
+
 import myMixin from "../mixins/mixins"
 
   export default {
     name: "Earnings",
-    components: {
-      ModalEarning: ModalEarning
-    },
     mixins: [myMixin],
     data () {
       return {
@@ -82,7 +361,7 @@ import myMixin from "../mixins/mixins"
           where: '',
           who: '',
           what: {
-            items: [0]
+            items: [""]
           },
           how: '',
           why: '',
@@ -95,13 +374,17 @@ import myMixin from "../mixins/mixins"
           protein: 0,
         },
         panel: [3],
+        items: [],
         item:{
           id:1,
           name: " ",
           price: " ",
           quantity: " ",
           category: " ",
-          status: true
+          status: true,
+          to: {
+            where: ""
+          }
         },
         numberSamples:[" ", 1,2,3,4,5,6,7],
         priceSamples: [" ","10,000","20,000","30,000","40,000"],
@@ -133,7 +416,7 @@ import myMixin from "../mixins/mixins"
           { text: 'Category', align:"center", value: 'why', class:"category"},
           { text: 'Name', align:"start", value: 'name' },
           { text: '입금계좌', align:"center", value: 'deposit' },
-          { text: '수입구분', align:"center", value: 'earningCategory2' },
+          { text: '수입구분', align:"center", value: 'earningCategory2', class:'earningCategory' },
           { text: 'Actions', align:"center", value: 'actions', sortable: false },
         ]
       },
@@ -153,6 +436,21 @@ import myMixin from "../mixins/mixins"
       categories() {	
         return this.$store.getters.getSpendingCategories;
       },
+          moneyGivers(){
+      return this.$store.getters.getMoneyGiver;
+      },
+      computedItems(){
+        if(this.items[0]){
+          const result = this.items.filter((x) => {
+          return x.status == true
+          })
+          return result
+        } else return [];	
+      },
+      deposits(){
+        const rawData = this.$store.getters.getAssets;
+        return rawData;
+      }
     },
     methods: {
       filterOnlyCapsText (value, search) {
@@ -160,6 +458,11 @@ import myMixin from "../mixins/mixins"
           search != null &&
           typeof value === 'string' &&
           value.toString().toLocaleUpperCase().indexOf(search) !== -1
+      },
+      selectGiver(e){
+        const targetSpan = e.currentTarget.querySelector("span")
+        this.editedItem.where = targetSpan.textContent.trim();
+        this.$emit("giveSeller", this.editedItem.where)
       },
       selectDate(){
         this.$refs.startMenu.save(this.editedItem.when)
@@ -214,24 +517,15 @@ import myMixin from "../mixins/mixins"
         this.close()
       },
       editItem (item) {
+        console.log(item)
         this.editedIndex = this.data.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
-        let targetObj
-        for(let i of this.data){
-          if(i.id == item.id){
-            targetObj = i;
-          }
-        }
-        console.log(targetObj)
       },
       deleteItem (item) {
         this.editedIndex = this.data.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
-      },
-      takeSeller(seller){
-        this.editedItem.where = seller;
       },
       selectMain(e){
         if(e.currentTarget.closest("#body")) return
@@ -261,13 +555,20 @@ import myMixin from "../mixins/mixins"
 
   .where{
     width: 22vh !important;
+    min-width: 170px !important;;
   }
 
   .amount{
-    width: 200px !important;
+    width: 15vh !important;
+    min-width: 140px !important;
   }
 
   .category{
     width: 300px !important;
+  }
+
+  .earningCategory{
+    width: 22vh !important;
+    min-width: 130px !important;;
   }
 </style>
