@@ -691,6 +691,7 @@ hr{
   transition: 700ms;
 }
 
+
 .insertCoin{
   position: absolute;
   left: 353px;

@@ -13,15 +13,15 @@
 			<div id="showWindow">
 				<div class="drinks">
 					<div class="coke"></div>
-					<span>&#8361;1,100</span>
+					<span onclick="selectDrink(event)">&#8361;1,100</span>
 				</div>
 				<div class="drinks">
 					<div class="fureWater"></div>
-					<span>&#8361;600</span>
+					<span onclick="selectDrink(event)">&#8361;600</span>
 				</div>
 				<div class="drinks">
 					<div class="coffee"></div>
-					<span>&#8361;700</span>
+					<span onclick="selectDrink(event)">&#8361;700</span>
 				</div>
 			</div>
 			<div id="bodyWrap">
@@ -47,18 +47,24 @@
 							<div id="paper"
 							ondragover="moneyOvered(event)"
 							ondragleave="moneyLeaved(event)"
-							ondrop="insertMoney(event)"
+							ondrop="insertPaper(event)"
 							>
 							<hr>
 							</div>
 						</div>
 						<div id="cover">
-							<div id="returnLever">
+							<div id="returnLever"
+							onclick="returnCoin(event)"
+							>
 								<svg width="55px" viewBox="2 2 20 20">
 									<path fill="currentColor" d="M2 12A10 10 0 1 0 12 2A10 10 0 0 0 2 12M15.6 13.72A4 4 0 0 0 16 12A4 4 0 0 0 12 8V10L8.88 7L12 4V6A6 6 0 0 1 18 12A5.9 5.9 0 0 1 17.07 15.19M6 12A5.9 5.9 0 0 1 6.93 8.81L8.4 10.28A4 4 0 0 0 8 12A4 4 0 0 0 12 16V14L15 17L12 20V18A6 6 0 0 1 6 12Z" />
 								</svg>
 							</div>
-							<div id="coinSlot">
+							<div id="coinSlot"
+							ondragover="moneyOvered(event)"
+							ondragleave="moneyLeaved(event)"
+							ondrop="insertCoin(event)"
+							>
 									<svg viewBox="2 2 20 20">
 										<path fill="currentColor" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M14,7H10V9H11V15H10V17H14V15H13V9H14V7Z" />
 									</svg>
@@ -66,7 +72,11 @@
 						</div>
 					</div>
 					<div id="cardSlot">카드투입구
-						<div id="cardCover">
+						<div id="cardCover"
+						ondragover="moneyOvered(event)"
+						ondragleave="moneyLeaved(event)"
+						ondrop="insertCard(event)"
+						>
 							<div id="cardSlotLeft"></div>
 							<div id="cardSlotRight"></div>
 						</div>
@@ -74,7 +84,6 @@
 				</div>
 			</div>
 			<div id="productExit">
-				배출구
 			</div>
 		</div>
 	</div>
@@ -84,32 +93,217 @@
 			<div id="a2" draggable="true" class="cheonWon money"> 1000 </div>
 			<div id="a3" draggable="true" class="oBaekWon money"> 500 </div>
 			<div id="a4" draggable="true" class="oBaekWon money"> 500 </div>
-			<div id="a5" draggable="true" class="beakWon money"> 100 </div>
-			<div id="a6" draggable="true" class="beakWon money"> 100 </div>
-			<div id="a7" draggable="true" class="card money"> 10000 </div>
+			<div id="a5" draggable="true" class="baekWon money"> 100 </div>
+			<div id="a6" draggable="true" class="baekWon money"> 100 </div>
+			<div id="a7" draggable="true" class="card money"> 3000 </div>
 		</div>
 	</div>
 	<script>
+		const beverageStorage = {
+			coke : {
+				quantity :1,
+				price: 1100},
+			fureWater: {
+				quantity :3,
+				price: 600
+			},
+			coffee: {
+				quantity :3,
+				price: 700
+			},
+		};
+		const moneyForRefund = {
+			baekWon : 4,
+			oBaekWon : 3
+		}
+		let moneyAmount = 0;
+		let cardStatus = false;
 		const moveMoney = () => {
 			console.warn("drag Start")
 			event.dataTransfer.setData('moneyId',event.target.id);
-		}
-		const insertMoney = () => {
+		};
+		const checkStatus = () => {
+			const presentRestMoney = document.querySelector("#restMoney").textContent.replaceAll(",","") * 1;
+			const drinks = document.querySelectorAll(".drinks");
+			for(drink of drinks){
+				const drinkName = drink.querySelector("div").className;
+				const drinkPrice = drink.querySelector("span");
+				const priceValue = drinkPrice.textContent.replaceAll(/,|₩/g, "") * 1;
+				const drinkStock = beverageStorage[`${drinkName}`].quantity;
+				if((priceValue <= presentRestMoney) && drinkStock) {
+					drinkPrice.classList.add("on");
+				} else if(!drinkStock){
+					drinkPrice.textContent = "품절"
+					drinkPrice.classList.remove("on");
+					drinkPrice.classList.add("soldOut")
+				} else {
+					drinkPrice.classList.remove("on");
+				}
+			}
+		};
+		const insertPaper = () => {
 			const taker = event.currentTarget;
 			const moneyId = event.dataTransfer.getData('moneyId');
 			const movedMoney = document.querySelector(`#${moneyId}`)
-			console.warn(`dropped`)
 			taker.style.border="none";
-		}
+			if(!movedMoney.classList.contains("cheonWon")) return;
+			const moneySize = movedMoney.textContent * 1;
+			movedMoney.classList.add("rotate")
+			taker.appendChild(movedMoney)
+			setTimeout(()=>{
+				movedMoney.classList.add("insertPaper")
+			}, 250)
+			setTimeout(()=>{
+				taker.removeChild(movedMoney);
+				inputMoney(moneySize)
+			}, 1000)
+		};
+		const insertCoin = () => {
+			const taker = event.currentTarget;
+			const moneyId = event.dataTransfer.getData('moneyId');
+			const movedMoney = document.querySelector(`#${moneyId}`)
+			taker.style.border="none";
+			if(!movedMoney.classList.contains("baekWon") && !movedMoney.classList.contains("oBaekWon")) return;
+			const moneySize = movedMoney.textContent * 1;
+			taker.appendChild(movedMoney)
+			movedMoney.classList.add("coinPosition")
+			setTimeout(()=>{
+				movedMoney.classList.add("insertCoin")
+			}, 250);
+			setTimeout(()=>{
+				taker.removeChild(movedMoney);
+				inputMoney(moneySize)
+			}, 1000);
+		};
 		const moneyOvered = () => {
 			event.preventDefault();
 			event.currentTarget.style.border="3px solid red";
-		}
+		};
 		const moneyLeaved = () => {
       event.currentTarget.style.border="none";
+		};
+		const inputMoney = (money) => {
+			moneyAmount += money;
+			console.log(moneyAmount);
+			const presentRestMoney = moneyAmount;
+			const computedMoney = String(presentRestMoney).replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
+			document.querySelector("#restMoney").textContent = computedMoney;
+			checkStatus();
+		};
+		const insertCard = () => {
+			const taker = event.currentTarget;
+			const moneyId = event.dataTransfer.getData('moneyId');
+			const movedMoney = document.querySelector(`#${moneyId}`)
+			taker.style.border="none";
+			if(!movedMoney.classList.contains("card")) return;
+			cardStatus = true;
+			const cardValue = movedMoney.textContent;
+			document.querySelector("#restMoney").textContent = String(cardValue).replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
+			taker.appendChild(movedMoney);
+			movedMoney.classList.add("cardPosition")
+			checkStatus();
+		};
+		const takeBackCard = () => {
+			const card = document.querySelector(".card");
+			const wallet = document.querySelector("#wallet");
+			card.classList.remove("cardPosition");
+			card.classList.add("cardSlide");
+			setTimeout(()=> {
+				card.classList.add("cardPostionWallet");
+			}, 600)
+			setTimeout(()=> {
+				wallet.appendChild(card);
+				card.classList.remove("cardSlide");
+				card.classList.remove("cardPostionWallet");
+				document.querySelector("#restMoney").textContent = String(moneyAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				checkStatus();
+				cardStatus = false;
+			}, 1200)
 		}
-
-		
+		const releaseProduct = (drinkName, payment) => {
+			const productExit = document.querySelector("#productExit");
+			const newBeverage = document.createElement("div");
+			let drinkStock = beverageStorage[`${drinkName}`].quantity;
+			const drinkPrice = beverageStorage[`${drinkName}`].price;
+			if(!drinkStock) {
+				console.log("재고가?")
+				return;
+			}
+			newBeverage.classList.add(drinkName);
+			beverageStorage[`${drinkName}`].quantity = drinkStock - 1;
+			productExit.appendChild(newBeverage);
+			newBeverage.classList.add("drop");
+			if(payment){
+				const cardValue = document.querySelector(".card").textContent;
+				document.querySelector(".card").textContent = cardValue - drinkPrice;
+			} else {
+				moneyAmount = moneyAmount - drinkPrice;
+				document.querySelector("#restMoney").textContent = String(moneyAmount).replace(/\B(?=(\d{3})+(?!\d))/g, ","); ;
+			}
+			checkStatus();
+		}
+		const selectDrink = () => {
+			const target = event.currentTarget
+			const targetDrink = target.closest(".drinks").querySelector("div").className;
+			const targetPrice = target.textContent.replaceAll(/,|₩/g, "") * 1;
+			if(cardStatus){
+				const cardValue = document.querySelector(".card").textContent;
+				if(targetPrice > cardValue) return;
+				releaseProduct(`${targetDrink}`, "card");
+				takeBackCard();
+			} else {
+				if(targetPrice > moneyAmount) return;
+				releaseProduct(`${targetDrink}`)
+			}
+		}
+		const takeBackDrink = () => {
+			console.log(111)
+		}
+		const returnCoin = () =>{
+			if(cardStatus) {
+				takeBackCard();
+				return;
+			}
+			const presentRestMoney = document.querySelector("#restMoney").textContent.replaceAll(",","") * 1;
+			const productExit = document.querySelector("#productExit");
+			if( presentRestMoney >= 500) {
+				const number500 = parseInt(presentRestMoney / 500);
+				if(moneyForRefund.oBaekWon < number500){
+					const displayComment = document.querySelector("marquee");
+					displayComment.textContent = "coin has been exhausted, Please call the service center"
+					displayComment.classList.add("warning")
+					return
+				}
+				for(let i = 0; i < number500; i++){
+					moneyForRefund.oBaekWon--;
+					const oBaekWon = document.createElement("div")
+					oBaekWon.classList.add("oBaekWon")
+					oBaekWon.classList.add("money")
+					productExit.appendChild(oBaekWon);
+				}
+				const number100 = (presentRestMoney % 500) / 100;
+				for(let i = 0; i < number100; i++){
+					moneyForRefund.baekWon--
+					const baekWon = document.createElement("div")
+					baekWon.classList.add("baekWon")
+					baekWon.classList.add("money")
+					productExit.appendChild(baekWon);
+				}
+			} else {
+				const number100 = (presentRestMoney % 500) / 100;
+				for(let i = 0; i < number100; i++){
+					moneyForRefund.baekWon--
+					const baekWon = document.createElement("div")
+					baekWon.classList.add("baekWon")
+					baekWon.classList.add("money")
+					productExit.appendChild(baekWon);
+				}
+			}
+			moneyAmount = 0;
+			document.querySelector("#restMoney").textContent = moneyAmount;
+			console.log(moneyForRefund)
+			checkStatus();
+		}
 	</script>
 	
 <style>
@@ -217,12 +411,19 @@
 		cursor: pointer;
 	}
 	
+	.on {
+		color : white !important;
+    background-color : rgb(25,100,20) !important;
+    border : 1px solid #55c855;
+	}
+
 	.coffee{
 		width: 80px;
 		height: 120px;
 		background-image: url("./assets/canCoffee1.png");
 		background-position: 3px 10px;
 		background-size: contain;
+		background-repeat: no-repeat;
 	}
 	
 	.fureWater{
@@ -231,6 +432,7 @@
 		background-image: url( "./assets/fureWater.png" );
 		background-size: 153%;
 		background-position: -23px -10px;
+		background-repeat: no-repeat;
 	}
 	
 	.coke{
@@ -239,6 +441,7 @@
 		background-image: url( "./assets/coke.png" );
 		background-position: -5px 10px;
 		background-size: 110%;
+		background-repeat: no-repeat;
 	}
 	
 	#display{
@@ -393,6 +596,7 @@
 		height: 100%;
 		background-color: black;
 		border-radius:  3px 15px 15px 3px;
+		z-index: 1;
 	}
 	
 	#cardSlotRight{
@@ -446,6 +650,11 @@
 		margin: 0;
 	}
 	
+	.soldOut{
+		color: #d11d1d !important;
+		text-shadow: none !important;
+		font-size: 17px !important;
+	}
 	
 	#wallet{
 		width: 500px;
@@ -454,11 +663,34 @@
 		border: 3px solid brown;
 		border-radius: 10px;
 	}
+
+	.cardSlide{
+		position: absolute;
+		transform: rotate(90deg);
+		top: 507px;
+    left: 484px;
+		z-index: 0 !important;
+	}
+
+	.cardPostionWallet{
+		position: absolute;
+		top: 507px;
+    left: 484px;
+		transform: translate(451px, -16px);
+	}
 	
+	.money{
+		cursor:grab;
+	}
+	.warning{
+    color: red;
+    text-shadow: 0 0 7px #fff;
+    font-weight: 700;
+	}
+
 	.money:active{
 		cursor:grabbing;
 	}
-	
 	
 	.oBaekWon{
 		display: inline-block;
@@ -491,6 +723,7 @@
 		color: transparent;
 		border: 1px solid grey;
 		border-style: inset;
+		transition: 500ms;
 	}
 	
 	.cheonWon{
@@ -511,7 +744,7 @@
 		color: transparent;
 	}
 	
-	.beakWon{
+	.baekWon{
 		display: inline-block;
 		background-color: #d4d4d4;
 		background-image: url("./assets/beakWon.png");
@@ -531,18 +764,23 @@
 	
 	.rotate{
 		transform:rotate( 90deg );
-		position: absolute;
-		top: 500px;
-		left: 250px;
+		position: relative;
+    top: 41px;
+    left: -44px;
 		transition: 700ms;
 	}
 	
-	.rotateCard{
-		transform:rotate( 90deg );
+	.coinPosition{
 		position: absolute;
-		top: 340px;
-		left: 490px;
-		transition: 700ms;
+		left: 353px;
+	}
+
+	.cardPosition{
+		position: absolute;
+		transform: rotate(90deg);
+		top: 369px;
+    left: 483px;
+		z-index:0;
 	}
 	
 	.insertCoin{
@@ -553,7 +791,6 @@
 	
 	.insertPaper{
 		border: none;
-		position: absolute;
 		background-position: -200px 0;
 	}
 	
