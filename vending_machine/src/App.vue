@@ -1,10 +1,10 @@
 <template>
-  <div id="app"  @dragover="dragOverKimin">
+  <div id="app">
     <div id="left">
       <h1 >Vending Machine Project</h1>  
       <div id="machine" >
         <div id="showWindow">
-          <div v-for="drink in drinks" :key="drink.name"  class="drinks">
+          <div v-for="(drink) in drinks" :key="drink.name"  class="drinks">
             <div :class="drink.class"></div>
             <span 
             v-html="Kwon + drink.price"
@@ -30,10 +30,9 @@
               <div id="paperSlot">지폐 투입구
                 <div
                   id="paper"
-                  
-                  @drop="dropKimin"
-                  @dragover="dragOverKimin"
-                  @dragleave="dragLeaveKimin"
+                  @drop="dropMoney"
+                  @dragover.prevent="dragoverMoney"
+                  @dragleave="moneyLeaved"
                 >
                 <hr>
                 </div>
@@ -46,9 +45,9 @@
                 </div>
                 <div id="coinSlot" 
                   
-                  @dragover="dragOverKimin"
-                  @dragleave="dragLeaveKimin"
-                  @drop="dropKimin"
+                  @dragover.prevent="dragoverMoney"
+                  @dragleave="moneyLeaved"
+                  @drop="dropMoney"
                   >
                     <svg viewBox="2 2 20 20">
                       <path fill="currentColor" d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M14,7H10V9H11V15H10V17H14V15H13V9H14V7Z" />
@@ -57,10 +56,10 @@
               </div>
             </div>
             <div id="cardSlot">카드투입구
-              <div 
-              @drop="dropKimin"
-              @dragover="dragOverKimin"
-              @dragleave="dragLeaveKimin"
+              <div
+              @drop="dropMoney"
+              @dragover.prevent="dragoverMoney"
+              @dragleave="moneyLeaved"
               id="cardCover">
                 <div id="cardSlotLeft"></div>
                 <div id="cardSlotRight"></div>
@@ -74,8 +73,7 @@
     </div>
     <div id="right">
       <div id="wallet"
-      
-      @drop="dropKimin"
+      @drop="dropMoney"
       >
         <div v-for="(money,i) in wallet" :key="i"
         :id="money.id"
@@ -87,11 +85,10 @@
         </div>  
       </div>
     </div>
-  </div> 
+  </div>
 </template>
 
 <script>
-
 
 
 export default {
@@ -99,6 +96,9 @@ export default {
   data(){
     return {
       moneyAmount: "0",
+      msg: 'Hello Vue!',
+      active: false,
+      small:true,
       Kwon: "&#8361;",
       wallet:[
         { 
@@ -160,23 +160,21 @@ export default {
     }
   },
   methods :{
-    dragKimin(e){
+    dragMoney(e){
       console.log(e)
       console.warn('drag Start');
       e.dataTransfer.setData('targetId',e.target.id);
       e.dataTransfer.dropEffect = "move";
     },
-    dragOverKimin(e){
-      e.preventDefault();
+    dragoverMoney(e){
       const target = e.currentTarget;
       target.style.border="3px solid red";
     },
-    dragLeaveKimin(e){
-      const target = e.currentTarget;
+    moneyLeaved(event){
+      const target = event.currentTarget;
       target.style.border="none";
     },
-    dropKimin(e){
-      console.log("dropped")
+    dropMoney(e){
       const target = e.currentTarget;
       target.style.border="none";
       var targetId = e.dataTransfer.getData('targetId');
@@ -217,8 +215,7 @@ export default {
     },
     selectDrink(drink){
       const can = document.createElement('div')
-      console.log(!drink.quantity)
-      if(!drink.quantity || this.moneyAmount < drink.price) return;
+      if(!drink.quantity || (this.moneyAmount < drink.price)) return;
       if(drink.quantity){
         const price = drink.price.replaceAll(",","")*1
         this.moneyAmount -= price;
@@ -265,6 +262,16 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   height: 100%;
+}
+
+.active {
+  color: red;
+}
+.title {
+  font-size: 40px;
+}
+.color {
+  color: orange;
 }
 
 #left{

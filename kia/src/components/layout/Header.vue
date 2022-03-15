@@ -69,9 +69,9 @@
         <img src="https://www.kia.com/content/dam/kwcms/kr/ko/images/common/logo.png" alt="">
       </div>
       <div>
-        <a href="https://www.kia.com/kr/vehicles/theallnewkianiro/microsite.html"></a>
-        <a href="https://www.kia.com/kr/kia-ev/brand.html">Kia EV</a>
-        <a href="https://www.kia.com/kr/service/information/q-trust.html">기아 멤버스</a>
+        <a class="middleHeaderItem" href="https://www.kia.com/kr/vehicles/theallnewkianiro/microsite.html"></a>
+        <a class="middleHeaderItem" href="https://www.kia.com/kr/kia-ev/brand.html">Kia EV</a>
+        <a class="middleHeaderItem" href="https://www.kia.com/kr/service/information/q-trust.html">기아 멤버스</a>
       </div>
     </div>
     <div id='bottomHeader'>
@@ -278,8 +278,8 @@ li{
   transition: linear 300ms;
 }
 
-a {
-  color: black !important;
+#middleHeader a {
+  color: black;
 }
 
 a:hover{

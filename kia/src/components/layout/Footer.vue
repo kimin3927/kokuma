@@ -238,7 +238,7 @@ export default {
 	}
 
 	#footerFirst a{
-		color: white;
+		color: white !important;
 		font-weight: 600;	
 		font-size: 1em;
 	}
